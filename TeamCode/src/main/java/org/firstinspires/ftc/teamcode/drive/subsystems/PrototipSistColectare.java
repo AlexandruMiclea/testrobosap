@@ -8,7 +8,7 @@ public class PrototipSistColectare {
     private DcMotor motorSistColectare;
 
     public PrototipSistColectare(HardwareMap hardwareMap){
-        motorSistColectare = hardwareMap.dcMotor.get("motor sistem colectare");
+        motorSistColectare = hardwareMap.dcMotor.get("MotorSistemColectare");
 
         motorSistColectare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -17,7 +17,7 @@ public class PrototipSistColectare {
         motorSistColectare.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
-    public void intake() {motorSistColectare.setPower(0.5);}
-    public void outtake() {motorSistColectare.setPower(-0.5);}
+    public void intake() {motorSistColectare.setPower(0.9);}
+    public void outtake() {motorSistColectare.setPower(-0.9);}
     public void stop(){motorSistColectare.setPower(0);}
 }

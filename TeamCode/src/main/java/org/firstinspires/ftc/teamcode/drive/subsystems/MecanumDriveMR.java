@@ -39,7 +39,8 @@ public class MecanumDriveMR extends SampleMecanumDriveBase { //TODO: switch to M
     public MecanumDriveMR(HardwareMap hardwareMap) {
         super();
 
-        gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
+        //gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
+        //gyro.calibrate();
 
 
         motorFL = hardwareMap.dcMotor.get("MotorFL");
