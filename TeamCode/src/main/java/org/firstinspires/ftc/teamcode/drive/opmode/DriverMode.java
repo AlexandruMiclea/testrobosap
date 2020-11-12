@@ -22,6 +22,7 @@ public class DriverMode extends OpMode {
     public void loop() {
         //Practic baietii nostri au exact functia noastra de calculat vitezele
         robot.drive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x));
+
         if (gamepad1.a){
             robot.sistColectare.intake();
         }
@@ -30,6 +31,16 @@ public class DriverMode extends OpMode {
         }
         else {
             robot.sistColectare.stop();
+        }
+
+        if (gamepad1.x){
+            robot.bratPivotant.moveForward();
+        }
+        else if (gamepad1.y){
+            robot.bratPivotant.moveBackward();
+        }
+        else {
+            robot.bratPivotant.stop();
         }
 
 
