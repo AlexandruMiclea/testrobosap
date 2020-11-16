@@ -18,11 +18,11 @@ public class PrototipBrat {
     }
 
     public void moveForward(){
-        brat.setPower(0.5);
+        brat.setPower(0.4);
     }
 
     public void moveBackward(){
-        brat.setPower(-0.5);
+        brat.setPower(-0.4);
     }
 
     public void stop(){
