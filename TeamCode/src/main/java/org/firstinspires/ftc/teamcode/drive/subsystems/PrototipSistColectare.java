@@ -8,7 +8,7 @@ public class PrototipSistColectare {
     private DcMotor motorSistColectare;
 
     public PrototipSistColectare(HardwareMap hardwareMap){
-        motorSistColectare = hardwareMap.dcMotor.get("MotorSistemColectare");
+        //motorSistColectare = hardwareMap.dcMotor.get("MotorSistemColectare");
 
         motorSistColectare.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
