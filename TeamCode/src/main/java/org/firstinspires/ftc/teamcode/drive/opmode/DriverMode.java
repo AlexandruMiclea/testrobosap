@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -52,11 +51,26 @@ public class DriverMode extends OpMode {
 //        }
 
         if (gamepad1.a) {
-            robot.bratGarou.moveForward();
+            robot.bratGarou.expandTube();
         }else if (gamepad1.b) {
-            robot.bratGarou.moveBackward();
+            robot.bratGarou.shrinkTube();
         }else {
-            robot.bratGarou.stop();
+            robot.bratGarou.stopTube();
+        }
+
+        if(gamepad1.dpad_up){
+            robot.bratGarou.slideUp();
+        } else if(gamepad1.dpad_down) {
+            robot.bratGarou.slideDown();
+        }
+        else {
+            robot.bratGarou.slideStop();
+        }
+
+        if(gamepad1.left_bumper){
+            robot.bratGarou.block();
+        } else if(gamepad1.right_bumper) {
+            robot.bratGarou.unblock();
         }
     }
 }
