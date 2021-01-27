@@ -40,37 +40,38 @@ public class DriverMode extends OpMode {
 //            bServoLift = false;
 //        }
 //
-//        if (gamepad1.left_trigger > 0.1){
-//            robot.bratPivotant.moveForward(gamepad1.left_trigger);
-//        }
-//        else if (gamepad1.right_trigger > 0.1){
-//            robot.bratPivotant.moveBackward(gamepad1.right_trigger);
-//        }
-//        else {
-//            robot.bratPivotant.stop();
-//        }
-
-        if (gamepad1.a) {
-            robot.bratGarou.expandTube();
-        }else if (gamepad1.b) {
-            robot.bratGarou.shrinkTube();
-        }else {
-            robot.bratGarou.stopTube();
+        if (gamepad1.left_trigger > 0.1){
+            robot.protoAruncare.rotate(gamepad1.left_trigger);
         }
-
-        if(gamepad1.dpad_up){
-            robot.bratGarou.slideUp();
-        } else if(gamepad1.dpad_down) {
-            robot.bratGarou.slideDown();
+        else if (gamepad1.right_trigger > 0.1){
+            robot.protoAruncare.rotate(-gamepad1.right_trigger);
         }
         else {
-            robot.bratGarou.slideStop();
+            robot.protoAruncare.stop();
         }
 
-        if(gamepad1.left_bumper){
-            robot.bratGarou.block();
-        } else if(gamepad1.right_bumper) {
-            robot.bratGarou.unblock();
-        }
+//        if (gamepad1.a) {
+//            robot.bratGarou.expandTube();
+//        }else if (gamepad1.b) {
+//            robot.bratGarou.shrinkTube();
+//        }else {
+//            robot.bratGarou.stopTube();
+//        }
+//
+//        if(gamepad1.dpad_up){
+//            robot.bratGarou.slideUp();
+//        } else if(gamepad1.dpad_down) {
+//            robot.bratGarou.slideDown();
+//        }
+//        else {
+//            robot.bratGarou.slideStop();
+//        }
+//
+//        if(gamepad1.left_bumper){
+//            robot.bratGarou.block();
+//        } else if(gamepad1.right_bumper) {
+//            robot.bratGarou.unblock();
+//        }
+
     }
 }
