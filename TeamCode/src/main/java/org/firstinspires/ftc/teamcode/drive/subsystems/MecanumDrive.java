@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 //import org.firstinspires.ftc.teamcode.drive.localizer.encoder.BrokeEncoderLocalizer;
 //import org.firstinspires.ftc.teamcode.drive.localizer.vision.VuforiaThread;
 import org.firstinspires.ftc.teamcode.drive.localizer.BrokeEncoderLocalizer;
-import org.firstinspires.ftc.teamcode.drive.mecanumsamples.SampleMecanumDriveBase;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveBase;
 //import org.firstinspires.ftc.teamcode.drive.localizer.vision.TensorFlowThread;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class MecanumDrive extends SampleMecanumDriveBase { //TODO: switch to Mec
     private BNO055IMU imu;
 
     public MecanumDrive(HardwareMap hardwareMap) {
-        super();
+        super(hardwareMap);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -57,32 +57,32 @@ public class MecanumDrive extends SampleMecanumDriveBase { //TODO: switch to Mec
         }
 
         if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
-            setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
+            setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
         motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
         motorFL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //add localizer
-       // setLocalizer(new BrokeEncoderLocalizer(hardwareMap));
+        // setLocalizer(new BrokeEncoderLocalizer(hardwareMap));
     }
 
-    @Override
-    public PIDCoefficients getPIDCoefficients(DcMotor.RunMode runMode) {
-        PIDFCoefficients coefficients = motorFL.getPIDFCoefficients(runMode);
-        return new PIDCoefficients(coefficients.p, coefficients.i, coefficients.d);
-    }
+//    @Override
+//    public PIDFCoefficients getPIDFCoefficients(DcMotor.RunMode runMode) {
+//        PIDFCoefficients coefficients = motorFL.getPIDFCoefficients(runMode);
+//        return new PIDFCoefficients(coefficients.p, coefficients.i, coefficients.d, coefficients.f);
+//    }
+//
+//    @Override
+//    public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
+//        for (DcMotorEx motor : motors) {
+//            motor.setPIDFCoefficients(runMode, new PIDFCoefficients(
+//                    coefficients.kP, coefficients.kI, coefficients.kD, getMotorVelocityF()
+//            ));
+//        }
+//    }
 
-    @Override
-    public void setPIDCoefficients(DcMotor.RunMode runMode, PIDCoefficients coefficients) {
-        for (DcMotorEx motor : motors) {
-            motor.setPIDFCoefficients(runMode, new PIDFCoefficients(
-                    coefficients.kP, coefficients.kI, coefficients.kD, getMotorVelocityF()
-            ));
-        }
-    }
-
-  //  @NonNull
+    //  @NonNull
     @Override
     public List<Double> getWheelPositions() {
         List<Double> wheelPositions = new ArrayList<>();

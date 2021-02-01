@@ -36,7 +36,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@TeleOp
+@TeleOp(name = "OpenCV Test", group = "Concept")
 public class EasyOpenCVExample extends LinearOpMode
 {
     OpenCvInternalCamera phoneCam;
@@ -99,13 +99,13 @@ public class EasyOpenCVExample extends LinearOpMode
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(181,98);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(100,50);
 
-        static final int REGION_WIDTH = 35;
-        static final int REGION_HEIGHT = 25;
+        static final int REGION_WIDTH = 150;
+        static final int REGION_HEIGHT = 150;
 
-        final int FOUR_RING_THRESHOLD = 150;
-        final int ONE_RING_THRESHOLD = 135;
+        final int FOUR_RING_THRESHOLD = 160;
+        final int ONE_RING_THRESHOLD = 150;
 
         Point region1_pointA = new Point(
                 REGION1_TOPLEFT_ANCHOR_POINT.x,
