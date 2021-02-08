@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.tank;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.drive.mecanumsamples.SampleMecanumDriveBase;
+import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveChassis;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDrive;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveMR;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.PrototipAruncare;
@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.drive.mecanumsamples.SampleMecanumDriveBas
 public class Robot {
     private boolean initialize;
     //public MecanumDriveMR drive;
-    public SampleMecanumDriveBase drive;
+    public MecanumDriveChassis drive;
     //public PrototipSistColectare sistColectare = null;
     //public PrototipBrat bratPivotant;
     //public PrototipGarou bratGarou;
@@ -22,7 +22,7 @@ public class Robot {
     public Robot (HardwareMap hardwareMap) {
         initialize = true;
 
-        drive = new SampleMecanumDriveBase(hardwareMap);
+        drive = new MecanumDriveChassis(hardwareMap);
         //sistColectare = new PrototipSistColectare(hardwareMap);
         //bratPivotant = new PrototipBrat(hardwareMap);
         //bratGarou = new PrototipGarou(hardwareMap);
