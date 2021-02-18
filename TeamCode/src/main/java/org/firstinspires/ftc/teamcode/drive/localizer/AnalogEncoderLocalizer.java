@@ -130,8 +130,7 @@ class absoluteEncoder{
 
         if ((derivative < -MAX_VOLTAGE / 2) && (derivative != 0)){
             derivative += MAX_VOLTAGE;
-        }
-        if ((derivative > MAX_VOLTAGE / 2) && (derivative != 0)){
+        } else if ((derivative > MAX_VOLTAGE / 2) && (derivative != 0)){
             derivative -= MAX_VOLTAGE;
         }
 
@@ -169,7 +168,7 @@ class absoluteEncoder{
     }
 
     public static double toThreeDec(double num) {
-        DecimalFormat numberFormat = new DecimalFormat("#.000");
+        DecimalFormat numberFormat = new DecimalFormat("#.00");
         return Double.parseDouble(numberFormat.format(num));
     }
 }
