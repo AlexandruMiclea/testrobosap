@@ -22,7 +22,7 @@ public class OpenCVThreadTest extends LinearOpMode{
         openCV.start();
 
         while(opModeIsActive()){
-            telemetry.addData("# Object Detected", openCV.getAnalysis());
+            telemetry.addData("threshold", openCV.getAnalysis());
             telemetry.addData("label", openCV.getRingPosition());
 
             telemetry.update();

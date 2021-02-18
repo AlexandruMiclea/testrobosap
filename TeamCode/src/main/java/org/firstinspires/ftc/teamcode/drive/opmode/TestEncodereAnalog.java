@@ -19,6 +19,7 @@ public class TestEncodereAnalog extends LinearOpMode {
             telemetry.addData("Voltaje: ", encodere.getVoltages());
             telemetry.addData("Derivate: ", encodere.getDerivatives());
             telemetry.addData("Voltaje totale: ", encodere.getWheelPositions());
+            telemetry.addData("val random decimal test: ", encodere.toThreeDec(1.0240000000000012));
             telemetry.update();
         };
     }

@@ -11,6 +11,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,9 +21,9 @@ import static java.lang.Math.abs;
 
 public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 4175; //TODO
-    public static double WHEEL_RADIUS = 6; // inch
+    public static double WHEEL_RADIUS = 4; // inch
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
-    public static double MAX_VOLTAGE = 3.25;
+    public static double MAX_VOLTAGE = 3.27;
 
     public static double ENCODER_RATIO = 1.0; // ratio between left encoder ticks per rev and right encoder ticks per rev
 
@@ -54,6 +57,7 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
 
     public static double voltageToInches(double pos) {
         return ((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE);
+//        return toThreeDec(((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE));
     }
 
     @NonNull
@@ -67,8 +71,10 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
 
     public List<Double> getVoltages() {
         return Arrays.asList(
-                rightEncoder.readVoltage(),
-                middleEncoder.readVoltage()
+//                rightEncoder.readVoltage(),
+//                middleEncoder.readVoltage()
+                rightEncoder.toThreeDec(rightEncoder.readVoltage()),
+                middleEncoder.toThreeDec(middleEncoder.readVoltage())
         );
     }
 
@@ -77,6 +83,19 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
                 rightEncoder.getDerivative(),
                 middleEncoder.getDerivative()
         );
+    }
+
+    public double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    public static double toThreeDec(double num) {
+        DecimalFormat numberFormat = new DecimalFormat("#.000");
+        return Double.parseDouble(numberFormat.format(num));
     }
 
     @Override
@@ -99,11 +118,15 @@ class absoluteEncoder{
 //    }
 
     public double getDerivative(){
-        double current = encoder.getVoltage();
-        double eps = 1e-3;
+        double current = toThreeDec(encoder.getVoltage());
+//        double current = (double) Math.round(encoder.getVoltage()*1000d)/1000d;
 
-        double derivative = current - lastVoltage;
-        if (abs(derivative) <= eps) derivative = 0;
+        double eps = 2 * 1e-3;
+
+        double derivative = toThreeDec(current - lastVoltage);
+//        toThreeDec(derivative);
+
+//        if (abs(derivative) <= eps) derivative = 0;
 
         if ((derivative < -MAX_VOLTAGE / 2) && (derivative != 0)){
             derivative += MAX_VOLTAGE;
@@ -113,24 +136,41 @@ class absoluteEncoder{
         }
 
         lastVoltage = current;
+//        round(derivative, 3);
+//        toThreeDec(derivative);
 
         return derivative;
     }
 
     public double getTotalVoltage(){
-        double current = encoder.getVoltage();
+//        double current = encoder.getVoltage();
 
         double derivative = getDerivative();
+//        toThreeDec(derivative);
 
         totalVoltage += derivative;
+//        toThreeDec(totalVoltage);
 
         return totalVoltage;
 
     }
 
     public double readVoltage() {
-        double current = encoder.getVoltage();
-        return current;
+//        double current = encoder.getVoltage();
+        return encoder.getVoltage();
+    }
+
+    public double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    public static double toThreeDec(double num) {
+        DecimalFormat numberFormat = new DecimalFormat("#.000");
+        return Double.parseDouble(numberFormat.format(num));
     }
 }
 
