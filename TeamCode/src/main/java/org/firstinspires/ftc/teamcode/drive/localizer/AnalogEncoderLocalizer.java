@@ -85,6 +85,13 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         );
     }
 
+    public List <Double> getTotalVoltages(){
+        return Arrays.asList(
+                rightEncoder.getTotalVoltage(),
+                middleEncoder.getTotalVoltage()
+        );
+    }
+
     public double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -126,7 +133,7 @@ class absoluteEncoder{
         double derivative = toThreeDec(current - lastVoltage);
 //        toThreeDec(derivative);
 
-//        if (abs(derivative) <= eps) derivative = 0;
+        if (abs(derivative) <= eps) derivative = 0;
 
         if ((derivative < -MAX_VOLTAGE / 2) && (derivative != 0)){
             derivative += MAX_VOLTAGE;
@@ -168,7 +175,7 @@ class absoluteEncoder{
     }
 
     public static double toThreeDec(double num) {
-        DecimalFormat numberFormat = new DecimalFormat("#.00");
+        DecimalFormat numberFormat = new DecimalFormat("#.000");
         return Double.parseDouble(numberFormat.format(num));
     }
 }
