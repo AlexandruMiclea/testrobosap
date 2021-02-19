@@ -21,7 +21,7 @@ import static java.lang.Math.abs;
 
 public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 4175; //TODO
-    public static double WHEEL_RADIUS = 4; // inch
+    public static double WHEEL_RADIUS = 4; // inch, care e defapt diametrul but oh well
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
     public static double MAX_VOLTAGE = 3.27;
 
@@ -56,7 +56,7 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
     }
 
     public static double voltageToInches(double pos) {
-        return ((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE);
+        return ((pos * WHEEL_RADIUS * 2 * Math.PI) / MAX_VOLTAGE);
 //        return toThreeDec(((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE));
     }
 
