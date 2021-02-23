@@ -92,6 +92,13 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         );
     }
 
+    public List <Double> getTotalVoltagesWithIndex(){
+        return Arrays.asList(
+                rightEncoder.getVoltageWithIndex(),
+                middleEncoder.getVoltageWithIndex()
+        );
+    }
+
     public double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -116,6 +123,9 @@ class absoluteEncoder{
     public double lastVoltage;
     public double totalVoltage;
 
+    public double turnIndex = 0;
+    public double voltageWithIndex;
+
     public static double MAX_VOLTAGE = 3.25;
 
 //    absoluteEncoder (AnalogSensor encoder, double lastVoltage, double totalVoltage){
@@ -137,8 +147,10 @@ class absoluteEncoder{
 
         if ((derivative < -MAX_VOLTAGE / 2) && (derivative != 0)){
             derivative += MAX_VOLTAGE;
+//            turnIndex ++;
         } else if ((derivative > MAX_VOLTAGE / 2) && (derivative != 0)){
             derivative -= MAX_VOLTAGE;
+//            turnIndex --;
         }
 
         lastVoltage = current;
@@ -146,6 +158,7 @@ class absoluteEncoder{
 //        toThreeDec(derivative);
 
         return derivative;
+//        return turnIndex;
     }
 
     public double getTotalVoltage(){
@@ -160,6 +173,7 @@ class absoluteEncoder{
         return totalVoltage;
 
     }
+
 
     public double readVoltage() {
 //        double current = encoder.getVoltage();
@@ -177,6 +191,25 @@ class absoluteEncoder{
     public static double toThreeDec(double num) {
         DecimalFormat numberFormat = new DecimalFormat("#.000");
         return Double.parseDouble(numberFormat.format(num));
+    }
+
+    public double getVoltageWithIndex(){ //TODO cleanup, momentan functioneaza ca un get index
+        double current = toThreeDec(encoder.getVoltage());
+
+        double derivative = toThreeDec(current - lastVoltage);
+
+        if ((derivative < -MAX_VOLTAGE / 2) && (derivative != 0)){
+            turnIndex ++;
+        } else if ((derivative > MAX_VOLTAGE / 2) && (derivative != 0)){
+            turnIndex --;
+        }
+
+        lastVoltage = current;
+
+        voltageWithIndex = current + turnIndex * MAX_VOLTAGE;
+
+
+        return voltageWithIndex;
     }
 }
 
