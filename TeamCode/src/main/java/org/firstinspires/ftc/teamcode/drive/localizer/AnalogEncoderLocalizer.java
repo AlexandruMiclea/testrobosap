@@ -49,6 +49,9 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         rightEncoder.encoder = hardwareMap.get(AnalogInput.class, "rightEncoder");
         middleEncoder.encoder = hardwareMap.get(AnalogInput.class, "middleEncoder");
 
+//        rightEncoder.setInitVoltInitVolt(rightEncoder.encoder.getVoltage());
+//        middleEncoder.setInitVolt(middleEncoder.encoder.getVoltage());
+
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -56,7 +59,7 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
     }
 
     public static double voltageToInches(double pos) {
-        return ((pos * WHEEL_RADIUS * 2 * Math.PI) / MAX_VOLTAGE);
+        return ((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE);
 //        return toThreeDec(((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE));
     }
 
@@ -64,8 +67,8 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
-                voltageToInches(rightEncoder.getTotalVoltage()),
-                voltageToInches(middleEncoder.getTotalVoltage())
+                voltageToInches(rightEncoder.getVoltageWithIndex()),
+                voltageToInches(middleEncoder.getVoltageWithIndex())
         );
     }
 
@@ -99,6 +102,13 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         );
     }
 
+    public List <Double> getIndex(){
+        return Arrays.asList(
+                rightEncoder.getTurnIndex(),
+                middleEncoder.getTurnIndex()
+        );
+    }
+
     public double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -119,19 +129,26 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
 }
 
 class absoluteEncoder{
-    public AnalogInput encoder;
+    public static AnalogInput encoder;
     public double lastVoltage;
     public double totalVoltage;
 
+    public double lastIndexVoltage=0;
     public double turnIndex = 0;
     public double voltageWithIndex;
 
-    public static double MAX_VOLTAGE = 3.25;
+    public static double MAX_VOLTAGE =3.25;
+
+//    public double initVolt;
 
 //    absoluteEncoder (AnalogSensor encoder, double lastVoltage, double totalVoltage){
 //        this.encoder = encoder;
 //        this.lastVoltage = lastVoltage;
 //        this.totalVoltage = totalVoltage;
+//    }
+
+//    public void setInitVolt(double initVolt){
+//        this.initVolt = initVolt;
 //    }
 
     public double getDerivative(){
@@ -194,22 +211,26 @@ class absoluteEncoder{
     }
 
     public double getVoltageWithIndex(){ //TODO cleanup, momentan functioneaza ca un get index
-        double current = toThreeDec(encoder.getVoltage());
+        double current1 = encoder.getVoltage();
 
-        double derivative = toThreeDec(current - lastVoltage);
+        double derivative1 = current1 - lastIndexVoltage;
 
-        if ((derivative < -MAX_VOLTAGE / 2) && (derivative != 0)){
-            turnIndex ++;
-        } else if ((derivative > MAX_VOLTAGE / 2) && (derivative != 0)){
-            turnIndex --;
+        if ((derivative1 < -MAX_VOLTAGE / 2) && (derivative1 != 0)){
+            turnIndex +=1;
+        } else if ((derivative1 > MAX_VOLTAGE / 2) && (derivative1 != 0)){
+            turnIndex -= 1;
         }
 
-        lastVoltage = current;
+        lastIndexVoltage = current1;
 
-        voltageWithIndex = current + turnIndex * MAX_VOLTAGE;
+        voltageWithIndex = current1 + turnIndex * MAX_VOLTAGE;
 
 
         return voltageWithIndex;
+    }
+
+    public double getTurnIndex(){
+        return turnIndex;
     }
 }
 
