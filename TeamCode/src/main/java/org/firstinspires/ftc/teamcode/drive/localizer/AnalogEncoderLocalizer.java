@@ -112,7 +112,7 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
 }
 
 class absoluteEncoder{
-    public static AnalogInput encoder;
+    public AnalogInput encoder;
     public double lastVoltage;
     public double totalVoltage;
 
@@ -122,7 +122,7 @@ class absoluteEncoder{
 
     public static double MAX_VOLTAGE =3.25;
 
-    public double initVolt = 0;
+    public double initVolt;
 
 //    absoluteEncoder (AnalogSensor encoder, double lastVoltage, double totalVoltage){
 //        this.encoder = encoder;
@@ -131,7 +131,7 @@ class absoluteEncoder{
 //    }
 
     public void setInitVolt(double initVoltage){
-        initVolt = initVoltage;
+        this.initVolt = initVoltage;
     }
 
     public double getDerivative(){
