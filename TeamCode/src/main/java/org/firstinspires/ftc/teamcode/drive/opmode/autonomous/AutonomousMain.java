@@ -11,11 +11,13 @@ public abstract class AutonomousMain extends LinearOpMode {
 
     private Robot robot;
     public static int MAX_MILISECONDS = 3000;
+    private static double FOAM_TILE_INCH = 23.622;
 
-    //Poses and vectors
+    private Pose2d startPose;
+    private Vector2d wobbleMarker;
+    private Vector2d parkingVector;
 
-
-    public void initAutonomous(String COLOR){
+    public void initAutonomous(){
         telemetry.addData(">", "Initializing...");
         telemetry.update();
 
@@ -28,17 +30,16 @@ public abstract class AutonomousMain extends LinearOpMode {
         telemetry.addData(">", "Initialized");
         telemetry.update();
 
-        switch(COLOR){
-            case "blue":
-                //TODO
-                break;
-            case "red":
-                //TODO
-                break;
-            default:
-                break;
-        }
+        //aparent avem doar o parte de teren *smiling cowboy face*
+        startPose = new Pose2d(2 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(180));
+        wobbleMarker = new Vector2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH);
+        parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
+    }
 
+    public void runAutonomous(){
+        robot.drive.getLocalizer().setPoseEstimate(startPose);
+
+        robot.
     }
 
 }
