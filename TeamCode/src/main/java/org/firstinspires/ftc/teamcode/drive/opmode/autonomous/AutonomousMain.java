@@ -14,7 +14,7 @@ public abstract class AutonomousMain extends LinearOpMode {
     private static double FOAM_TILE_INCH = 23.622;
 
     private Pose2d startPose;
-    private Vector2d wobbleMarker;
+    private Pose2d wobbleMarker;
     private Vector2d parkingVector;
 
     public void initAutonomous(){
@@ -32,14 +32,18 @@ public abstract class AutonomousMain extends LinearOpMode {
 
         //aparent avem doar o parte de teren *smiling cowboy face*
         startPose = new Pose2d(2 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(180));
-        wobbleMarker = new Vector2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH);
+        wobbleMarker = new Pose2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH);
         parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
     }
 
     public void runAutonomous(){
         robot.drive.getLocalizer().setPoseEstimate(startPose);
 
-        robot.
+        //rotatia ca sa priviti inelele
+        //lineTo wobbleMarker
+        //rotatia 90 (inspre ce tile vrem sa lasam wobble goal-ul)
+        //lineTo parkingVector
+
     }
 
 }
