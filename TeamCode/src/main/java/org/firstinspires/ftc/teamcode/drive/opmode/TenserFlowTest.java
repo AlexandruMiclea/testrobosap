@@ -18,8 +18,6 @@ public class TenserFlowTest extends LinearOpMode {
 
     public TensorFlowThread tensorFlow ;
 
-
-
     @Override
     public void runOpMode() {
         tensorFlow = new TensorFlowThread(hardwareMap);
