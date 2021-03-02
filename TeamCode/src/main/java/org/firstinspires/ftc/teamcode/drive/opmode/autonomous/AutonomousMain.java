@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.autonomous;
 
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.path.heading.HeadingInterpolator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
@@ -14,9 +18,10 @@ public abstract class AutonomousMain extends LinearOpMode {
     private static double FOAM_TILE_INCH = 23.622;
 
     private Pose2d startPose;
-    private Pose2d wobbleMarker;
+    private Vector2d wobbleMarker;
+    private double targetAngle;
     // private Vector2d parkingVector;
-    private Pose2d parkingVector;
+    private Vector2d parkingVector;
 
     public void initAutonomous(){
         telemetry.addData(">", "Initializing...");
@@ -32,33 +37,47 @@ public abstract class AutonomousMain extends LinearOpMode {
         telemetry.update();
 
         //aparent avem doar o parte de teren *smiling cowboy face*
-        startPose = new Pose2d(2 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(180));
-        wobbleMarker = new Pose2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH);
+        startPose = new Pose2d(2 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(90));
+        wobbleMarker = new Vector2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH);
         // parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
-        parkingVector = new Pose2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
+        parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
     }
 
     public void runAutonomous(){
         robot.drive.getLocalizer().setPoseEstimate(startPose);
 
-        robot.drive.turn(Math.toRadians(35));
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(wobbleMarker).build());
+        // fa initial movements ca sa vezi inelele
+        // robot.drive.turn(Math.toRadians(35));
 
-//        if(/*zero ringuri*/) {
-//            robot.drive.turn(Math.toRadians(360));
-//        }
-//        if(/*un ring*/) {
-//            robot.drive.turn(Math.toRadians(270));
-//        }
-//        if(/*patru ringuri*/) {
-//            robot.drive.turn(Math.toRadians(180));
-//        }
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(parkingVector).build());
 
-        //rotatia ca sa priviti inelele
-        //lineTo wobbleMarker
-        //rotatia 90 (inspre ce tile vrem sa lasam wobble goal-ul)
-        //lineTo parkingVector
+        robot.timer.startTime();
+
+
+        //vezi ce se intampla aici si daca iti trebuie idle
+        while (robot.timer.milliseconds() < MAX_MILISECONDS){
+            switch(robot.openCV.getRingPosition()){
+                case FOUR:
+                    targetAngle = Math.toRadians(0);
+                    break;
+                case ONE:
+                    targetAngle = Math.toRadians(90);
+                    break;
+                default:
+                    targetAngle = Math.toRadians(180);
+                    break;
+            }
+            idle();
+        }
+
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(wobbleMarker).build());
+
+        // da drumul la wobble goal
+
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).lineTo(parkingVector).build());
+
+        //TODO testeaza cum ar merge
+
+
 
     }
 
