@@ -20,6 +20,7 @@ public abstract class AutonomousMain extends LinearOpMode {
     private Pose2d startPose;
     private Vector2d wobbleMarker;
     private double targetAngle;
+    private Vector2d seeRings;
     // private Vector2d parkingVector;
     private Vector2d parkingVector;
 
@@ -38,6 +39,7 @@ public abstract class AutonomousMain extends LinearOpMode {
 
         //aparent avem doar o parte de teren *smiling cowboy face*
         startPose = new Pose2d(2 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(90));
+        seeRings = new Vector2d (2 * FOAM_TILE_INCH, -2.3 * FOAM_TILE_INCH);
         wobbleMarker = new Vector2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH);
         // parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
         parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
@@ -47,7 +49,9 @@ public abstract class AutonomousMain extends LinearOpMode {
         robot.drive.getLocalizer().setPoseEstimate(startPose);
 
         // fa initial movements ca sa vezi inelele
-        // robot.drive.turn(Math.toRadians(35));
+
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).lineTo(seeRings).build());
+        robot.drive.turn(Math.toRadians(35));
 
 
         robot.timer.startTime();
@@ -70,6 +74,7 @@ public abstract class AutonomousMain extends LinearOpMode {
         }
 
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(wobbleMarker).build());
+        // robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(wobbleMarker, new LinearInterpolator(robot.drive.getPoseEstimate().getHeading(), targetAngle)).build());
 
         // da drumul la wobble goal
 
