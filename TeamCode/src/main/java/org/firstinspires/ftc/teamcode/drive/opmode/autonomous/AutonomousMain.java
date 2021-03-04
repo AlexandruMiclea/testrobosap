@@ -5,6 +5,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.path.heading.ConstantInterpolator;
 import com.acmerobotics.roadrunner.path.heading.HeadingInterpolator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -73,8 +74,9 @@ public abstract class AutonomousMain extends LinearOpMode {
             idle();
         }
 
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(wobbleMarker).build());
-        // robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(wobbleMarker, new LinearInterpolator(robot.drive.getPoseEstimate().getHeading(), targetAngle)).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).lineTo(wobbleMarker).build());
+
+        robot.drive.turn(targetAngle);
 
         // da drumul la wobble goal
 

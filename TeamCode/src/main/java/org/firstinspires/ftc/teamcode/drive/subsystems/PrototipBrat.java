@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class PrototipBrat {
-    private DcMotor motorBrat;
+    public DcMotor motorBrat;
     private Servo servoBrat;
 
     public PrototipBrat(HardwareMap hardwareMap){
@@ -15,17 +15,17 @@ public class PrototipBrat {
 
         motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBrat.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         servoBrat.setPosition(1);
     }
 
     public void moveForward(double speed){
-        motorBrat.setPower(Math.min(speed, 0.11));
+        motorBrat.setPower(Math.max(speed, 0.11));
     }
 
     public void moveBackward(double speed){
-        motorBrat.setPower(Math.max(-speed, -0.2));
+        motorBrat.setPower(Math.min(-speed, -0.2));
     }
 
     public void stop(){
