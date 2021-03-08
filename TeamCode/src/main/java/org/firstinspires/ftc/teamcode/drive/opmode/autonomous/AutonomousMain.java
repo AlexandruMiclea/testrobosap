@@ -19,7 +19,7 @@ public abstract class AutonomousMain extends LinearOpMode {
     private static double FOAM_TILE_INCH = 23.622;
 
     private Pose2d startPose;
-    private Vector2d wobbleMarker;
+    private Pose2d wobbleMarker;
     private double targetAngle;
     private Vector2d seeRings;
     // private Vector2d parkingVector;
@@ -41,7 +41,7 @@ public abstract class AutonomousMain extends LinearOpMode {
         //aparent avem doar o parte de teren *smiling cowboy face*
         startPose = new Pose2d(2 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(90));
         seeRings = new Vector2d (2 * FOAM_TILE_INCH, -2.3 * FOAM_TILE_INCH);
-        wobbleMarker = new Vector2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH);
+        wobbleMarker = new Pose2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH);
         // parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
         parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
     }
@@ -74,13 +74,17 @@ public abstract class AutonomousMain extends LinearOpMode {
             idle();
         }
 
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).lineTo(wobbleMarker).build());
+        wobbleMarker = new Pose2d(2.5 * FOAM_TILE_INCH, 1.5 * FOAM_TILE_INCH, targetAngle);
 
-        robot.drive.turn(targetAngle);
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).splineToSplineHeading(wobbleMarker, targetAngle).build());
 
-        // da drumul la wobble goal
+        // da drumul la wobble goal aka
+        // 1) coboara brat
+        // 2) unclamp
+        // 3) ridica brat so it not in the way
 
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).lineTo(parkingVector).build());
+        // de vazut daca incurca sau nu wobble goalul mergand pe diagonala
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(parkingVector).build());
 
         //TODO testeaza cum ar merge
 
