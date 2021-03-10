@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.teamcode.drive.localizer.AnalogEncoderLocalizer;
+import org.firstinspires.ftc.teamcode.drive.localizer.BrokeEncoderLocalizer;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 
@@ -92,7 +94,7 @@ public class MecanumDriveChassis extends MecanumDrive {
 
     private LinkedList<Pose2d> poseHistory;
 
-    public DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
 
@@ -170,7 +172,7 @@ public class MecanumDriveChassis extends MecanumDrive {
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-//        setLocalizer(new BrokeEncoderLocalizer(hardwareMap));
+        setLocalizer(new AnalogEncoderLocalizer(hardwareMap));
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {

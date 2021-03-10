@@ -30,22 +30,22 @@ public class DriverMode extends OpMode {
 
 
 
-        List<Double> powers = MecanumKinematics.robotToWheelVelocities(
-                new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x),
-                1.0,
-                1.0
-
-        );
-
-        telemetry.addData("fl? ", powers.get(0));
-        telemetry.addData("fl power", robot.drive.leftFront.getPower());
-
-        telemetry.addData("bl? ", powers.get(1));
-
-        telemetry.addData("fr? ", powers.get(2));
-        telemetry.addData("br? ", powers.get(3));
-
-        telemetry.update();
+//        List<Double> powers = MecanumKinematics.robotToWheelVelocities(
+//                new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x),
+//                1.0,
+//                1.0
+//
+//        );
+//
+//        telemetry.addData("fl? ", powers.get(0));
+//        telemetry.addData("fl power", robot.drive.leftFront.getPower());
+//
+//        telemetry.addData("bl? ", powers.get(1));
+//
+//        telemetry.addData("fr? ", powers.get(2));
+//        telemetry.addData("br? ", powers.get(3));
+//
+//        telemetry.update();
 
         /*if (gamepad1.a){
             robot.sistColectare.intake();
@@ -57,18 +57,18 @@ public class DriverMode extends OpMode {
             robot.sistColectare.stop();
         }*/
 
-        if(gamepad1.a && !bServoLift){
-            bServoLift = true;
-            robot.bratPivotant.raiseClaw();
-        } else if (!gamepad1.a) {
-            bServoLift = false;
-        }
-
-        if (gamepad1.x){
-            robot.bratPivotant.moveBackward(0.5);
-        } else if (gamepad1.y){
-            robot.bratPivotant.moveForward(0.5);
-        } else robot.bratPivotant.stop();
+//        if(gamepad1.a && !bServoLift){
+//            bServoLift = true;
+//            robot.bratPivotant.raiseClaw();
+//        } else if (!gamepad1.a) {
+//            bServoLift = false;
+//        }
+//
+//        if (gamepad1.x){
+//            robot.bratPivotant.moveBackward(0.5);
+//        } else if (gamepad1.y){
+//            robot.bratPivotant.moveForward(0.5);
+//        } else robot.bratPivotant.stop();
 //
 //        if (gamepad1.left_trig0.1){
 //            robot.protoAruncare.rotate(gamepad1.left_trigger);

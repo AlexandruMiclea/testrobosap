@@ -26,11 +26,12 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
 
     public static double ENCODER_RATIO = 1.0; // ratio between left encoder ticks per rev and right encoder ticks per rev
 
-    public static double LATERAL_DISTANCE = 13; // inch; distance between the left and right wheels
+    public static double LATERAL_DISTANCE = 14 ; // inch; distance between the left and right wheels
     public static double FORWARD_OFFSET = 0; // inch; offset of the lateral wheel
 
-    private  absoluteEncoder rightEncoder = new absoluteEncoder();
     private absoluteEncoder middleEncoder = new absoluteEncoder();
+    private absoluteEncoder rightEncoder = new absoluteEncoder();
+
     BNO055IMU imu;
 
     public AnalogEncoderLocalizer(HardwareMap hardwareMap) {
@@ -39,11 +40,13 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
         ));
 
-        rightEncoder.encoder = hardwareMap.get(AnalogInput.class, "rightEncoder");
-        middleEncoder.encoder = hardwareMap.get(AnalogInput.class, "middleEncoder");
 
-        rightEncoder.setInitVolt(rightEncoder.encoder.getVoltage());
+        middleEncoder.encoder = hardwareMap.get(AnalogInput.class, "middleEncoder");
+        rightEncoder.encoder = hardwareMap.get(AnalogInput.class, "rightEncoder");
+
         middleEncoder.setInitVolt(middleEncoder.encoder.getVoltage());
+        rightEncoder.setInitVolt(rightEncoder.encoder.getVoltage());
+
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
