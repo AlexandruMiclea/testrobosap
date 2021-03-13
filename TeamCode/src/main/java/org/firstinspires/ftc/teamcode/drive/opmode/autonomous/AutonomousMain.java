@@ -22,6 +22,8 @@ public class AutonomousMain extends LinearOpMode {
     private Pose2d wobbleMarker;
     private double targetAngle;
     private Vector2d seeRings;
+    private Vector2d testpose;
+    private Vector2d testpose2;
     // private Vector2d parkingVector;
     private Vector2d parkingVector;
 
@@ -39,7 +41,9 @@ public class AutonomousMain extends LinearOpMode {
         telemetry.update();
 
         //aparent avem doar o parte de teren *smiling cowboy face*
-        startPose = new Pose2d(-2.5 * FOAM_TILE_INCH, -2 * FOAM_TILE_INCH, Math.toRadians(90));
+        startPose = new Pose2d(-2.5 * FOAM_TILE_INCH, -2 * FOAM_TILE_INCH, Math.toRadians(0));
+        testpose = new Vector2d(-0.5 * FOAM_TILE_INCH, -2 * FOAM_TILE_INCH);
+        testpose2 = new Vector2d(-1.5 * FOAM_TILE_INCH, -2 * FOAM_TILE_INCH);
 //        seeRings = new Vector2d (-2.3 * FOAM_TILE_INCH, 2 * FOAM_TILE_INCH);
         wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH);
         // parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
@@ -47,7 +51,12 @@ public class AutonomousMain extends LinearOpMode {
     }
 
     public void runAutonomous(){
+
         robot.drive.getLocalizer().setPoseEstimate(startPose);
+
+        
+
+
 
         // fa initial movements ca sa vezi inelele
 
@@ -71,9 +80,7 @@ public class AutonomousMain extends LinearOpMode {
 //            }
 //            idle();
 //        }
-
         targetAngle = Math.toRadians(0);
-        wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, targetAngle);
 
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).splineToSplineHeading(wobbleMarker, targetAngle).build());
 
@@ -83,7 +90,7 @@ public class AutonomousMain extends LinearOpMode {
         // 3) ridica brat so it not in the way
 
         // de vazut daca incurca sau nu wobble goalul mergand pe diagonala
-//        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(parkingVector).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(parkingVector).build());
 
         //TODO testeaza cum ar merge
 
@@ -95,9 +102,7 @@ public class AutonomousMain extends LinearOpMode {
     public void runOpMode(){
         initAutonomous();
         waitForStart();
-        while (opModeIsActive()){
-            runAutonomous();
-        }
+        runAutonomous();
     }
 
 }

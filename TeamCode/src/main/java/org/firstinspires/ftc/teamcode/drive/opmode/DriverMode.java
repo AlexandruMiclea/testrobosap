@@ -57,19 +57,19 @@ public class DriverMode extends OpMode {
             robot.sistColectare.stop();
         }*/
 
-//        if(gamepad1.a && !bServoLift){
-//            bServoLift = true;
-//            robot.bratPivotant.raiseClaw();
-//        } else if (!gamepad1.a) {
-//            bServoLift = false;
-//        }
-//
-//        if (gamepad1.x){
-//            robot.bratPivotant.moveBackward(0.5);
-//        } else if (gamepad1.y){
-//            robot.bratPivotant.moveForward(0.5);
-//        } else robot.bratPivotant.stop();
-//
+        if(gamepad1.a && !bServoLift){
+            bServoLift = true;
+            robot.bratPivotant.raiseClaw();
+        } else if (!gamepad1.a) {
+            bServoLift = false;
+        }
+
+        if (gamepad1.x){
+            robot.bratPivotant.moveBackward(0.5);
+        } else if (gamepad1.y){
+            robot.bratPivotant.moveForward(0.5);
+        } else robot.bratPivotant.stop();
+
 //        if (gamepad1.left_trig0.1){
 //            robot.protoAruncare.rotate(gamepad1.left_trigger);
 //        }
