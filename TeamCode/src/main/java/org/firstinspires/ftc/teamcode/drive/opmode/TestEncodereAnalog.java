@@ -4,14 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.localizer.AnalogEncoderLocalizer;
+import org.firstinspires.ftc.teamcode.drive.localizer.AnalogEncoderLocalizerMR;
 
 @TeleOp(name = "Test Encodere Analog", group = "Concept")
 public class TestEncodereAnalog extends LinearOpMode {
-    public AnalogEncoderLocalizer encodere;
+    public AnalogEncoderLocalizerMR encodere;
 
     @Override
     public void runOpMode() {
-        encodere = new AnalogEncoderLocalizer(hardwareMap);
+        encodere = new AnalogEncoderLocalizerMR(hardwareMap);
 
         waitForStart();
 

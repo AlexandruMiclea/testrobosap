@@ -2,25 +2,23 @@ package org.firstinspires.ftc.teamcode.drive.localizer;
 
 //import android.support.annotation.NonNull;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.TwoTrackingWheelLocalizer;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-//import com.qualcomm.robotcore.hardware.AnalogSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 import static java.lang.Math.abs;
 
-public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
+//import com.qualcomm.robotcore.hardware.AnalogSensor;
+
+public class AnalogEncoderLocalizerMR extends TwoTrackingWheelLocalizer {
     public static double WHEEL_RADIUS = 4; // inch, care e defapt diametrul but oh well
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
     public static double MAX_VOLTAGE = 3.27;
@@ -33,9 +31,10 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
     private absoluteEncoder middleEncoder = new absoluteEncoder();
     private absoluteEncoder rightEncoder = new absoluteEncoder();
 
-    private BNO055IMU imu;
+    private ModernRoboticsI2cGyro gyro;
+    private double lastAngle, globalAngle;
 
-    public AnalogEncoderLocalizer(HardwareMap hardwareMap) {
+    public AnalogEncoderLocalizerMR(HardwareMap hardwareMap) {
         super(Arrays.asList(
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
@@ -48,16 +47,14 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         middleEncoder.setInitVolt(middleEncoder.encoder.getVoltage());
         rightEncoder.setInitVolt(rightEncoder.encoder.getVoltage());
 
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        imu.initialize(parameters);
+        gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
+        gyro.calibrate();
+        while (gyro.isCalibrating()){
+        }
     }
 
     public static double voltageToInches(double pos) {
         return ((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE);
-//        return toThreeDec(((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE));
     }
 
     @NonNull
@@ -67,6 +64,23 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
                 voltageToInches(rightEncoder.getVoltageWithIndex()),
                 voltageToInches(middleEncoder.getVoltageWithIndex())
         );
+    }
+
+
+    @Override
+    public double getHeading() {
+        double current = gyro.getHeading();
+
+        double delta = current-lastAngle;
+        if(delta > 180) {
+            delta-=360;
+        } else if (delta < -180){
+            delta +=360;
+        }
+
+        lastAngle = current;
+        globalAngle +=delta;
+        return globalAngle;
     }
 
     public List<Double> getVoltages() {
@@ -108,90 +122,7 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         DecimalFormat numberFormat = new DecimalFormat("#.000");
         return Double.parseDouble(numberFormat.format(num));
     }
-
-    @Override
-    public double getHeading() {
-        return imu.getAngularOrientation().firstAngle;
-    }
-
 }
 
-class absoluteEncoder{
-    public AnalogInput encoder;
-    public double lastVoltage;
-    public double totalVoltage;
 
-    public double lastIndexVoltage=0;
-    public double turnIndex = 0;
-    public double voltageWithIndex;
-
-    public static double MAX_VOLTAGE =3.25;
-
-    public double initVolt;
-
-
-    public void setInitVolt(double initVoltage){
-        this.initVolt = initVoltage;
-    }
-
-    public double getDerivative(){
-        double current = toThreeDec(encoder.getVoltage());
-
-        double eps = 2 * 1e-3;
-
-        double derivative = toThreeDec(current - lastVoltage);
-
-        if (abs(derivative) <= eps) derivative = 0;
-
-        if ((derivative < -MAX_VOLTAGE / 2) && (derivative != 0)){
-            derivative += MAX_VOLTAGE;
-        } else if ((derivative > MAX_VOLTAGE / 2) && (derivative != 0)){
-            derivative -= MAX_VOLTAGE;
-        }
-
-        lastVoltage = current;
-
-        return derivative;
-    }
-
-    public double getTotalVoltage(){
-        double derivative = getDerivative();
-
-        totalVoltage += derivative;
-
-        return totalVoltage;
-    }
-
-
-    public double readVoltage() {
-        return encoder.getVoltage();
-    }
-
-    public static double toThreeDec(double num) {
-        DecimalFormat numberFormat = new DecimalFormat("#.000");
-        return Double.parseDouble(numberFormat.format(num));
-    }
-
-    public double getVoltageWithIndex(){
-        double current1 = encoder.getVoltage();
-
-        double derivative1 = current1 - lastIndexVoltage;
-
-        if ((derivative1 < -MAX_VOLTAGE / 2) && (derivative1 != 0)){
-            turnIndex ++;
-        } else if ((derivative1 > MAX_VOLTAGE / 2) && (derivative1 != 0)){
-            turnIndex --;
-        }
-
-        lastIndexVoltage = current1;
-
-        voltageWithIndex = current1 + (turnIndex * MAX_VOLTAGE) - initVolt;
-
-        return voltageWithIndex;
-    }
-
-    public double getTurnIndex(){
-        return turnIndex;
-    }
-}
 
