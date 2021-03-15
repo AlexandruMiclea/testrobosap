@@ -13,24 +13,24 @@ import org.firstinspires.ftc.teamcode.drive.subsystems.PrototipBrat;
 
 public class Robot {
     private boolean initialize;
-    //public MecanumDriveChassis drive;
+    public MecanumDriveChassis drive;
     public OpenCVThread openCV;
     public ElapsedTime timer;
     //public PrototipSistColectare sistColectare = null;
-   public PrototipBrat bratPivotant;
+//   public PrototipBrat bratPivotant;
 //    public PrototipAruncare protoAruncare;
-    public AnalogEncoderLocalizerMR localizerMR;
+//    public AnalogEncoderLocalizerMR localizerMR;
 
     public Robot (HardwareMap hardwareMap) {
         initialize = true;
 
-        //drive = new MecanumDriveChassis(hardwareMap);
+        drive = new MecanumDriveChassis(hardwareMap);
         openCV = new OpenCVThread(hardwareMap);
         timer = new ElapsedTime();
         //sistColectare = new PrototipSistColectare(hardwareMap);
-        bratPivotant = new PrototipBrat(hardwareMap);
+//        bratPivotant = new PrototipBrat(hardwareMap);
 //        protoAruncare = new PrototipAruncare(hardwareMap);
-        localizerMR = new AnalogEncoderLocalizerMR(hardwareMap);
+//        localizerMR = new AnalogEncoderLocalizerMR(hardwareMap);
 
         initialize = false;
     }
