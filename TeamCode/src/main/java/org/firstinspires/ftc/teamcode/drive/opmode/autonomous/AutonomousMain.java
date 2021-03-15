@@ -24,9 +24,7 @@ public class AutonomousMain extends LinearOpMode {
     private Pose2d startPose;
     private Pose2d wobbleMarker;
     private double targetAngle;
-    private Vector2d seeRings;
     private Vector2d testpose;
-    private Vector2d testpose2;
     // private Vector2d parkingVector;
     private Vector2d parkingVector;
 
@@ -48,8 +46,6 @@ public class AutonomousMain extends LinearOpMode {
         //aparent avem doar o parte de teren *smiling cowboy face*
         startPose = new Pose2d(-2.5 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
         testpose = new Vector2d(-0.5 * FOAM_TILE_INCH, -2 * FOAM_TILE_INCH);
-//        testpose2 = new Vector2d(-1.5 * FOAM_TILE_INCH, -2 * FOAM_TILE_INCH);
-//        seeRings = new Vector2d (-2.3 * FOAM_TILE_INCH, 2 * FOAM_TILE_INCH);
         wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(90));
         // parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
         parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-1.5 * FOAM_TILE_INCH);
@@ -79,30 +75,25 @@ public class AutonomousMain extends LinearOpMode {
                     testpose = new Vector2d(2*FOAM_TILE_INCH, -1*FOAM_TILE_INCH);
                     break;
             }
-            idle();
+//            idle();
         }
 
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).lineTo(testpose).build());
 
-
-//        targetAngle = Math.toRadians(-90);
-
 //        Pose2d current = new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(), robot.drive.getLocalizer().getPoseEstimate().getY(), Math.toRadians(30));
 
-//        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(current).splineToLinearHeading(wobbleMarker, targetAngle).build());
+//        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(current).splineToLinearHeading(wobbleMarker, Math.toRadians(-90)).build());
 
         // da drumul la wobble goal aka
         // 1) coboara brat
         // 2) unclamp
         // 3) ridica brat so it not in the way
 
-        // de vazut daca incurca sau nu wobble goalul mergand pe diagonala
+        // TODO: de vazut daca incurca sau nu wobble goalul mergand pe diagonala
+        // DONE: incurca intr adevar wobble goal ul mergand pe diagonala, trebuie sa facem niste pathuri diferite
 //        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(parkingVector).build());
 
         //TODO testeaza cum ar merge
-
-
-
     }
 
     @Override
