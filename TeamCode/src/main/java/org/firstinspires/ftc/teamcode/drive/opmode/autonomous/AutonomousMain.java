@@ -101,6 +101,11 @@ public class AutonomousMain extends LinearOpMode {
         initAutonomous();
         waitForStart();
         runAutonomous();
+        try {
+            robot.openCV.finalize();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
 }
