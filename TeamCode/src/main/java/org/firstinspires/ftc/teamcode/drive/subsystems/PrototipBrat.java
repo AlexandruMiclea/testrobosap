@@ -41,4 +41,13 @@ public class PrototipBrat {
         }
     }
 
+    public void raiseClaw(boolean clamped){
+        if(!clamped){
+            servoBrat.setPosition(0);
+        }
+        else if(clamped){
+            servoBrat.setPosition(1);
+        }
+    }
+
 }

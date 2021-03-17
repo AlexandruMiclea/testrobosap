@@ -18,8 +18,8 @@ import org.firstinspires.ftc.teamcode.drive.tank.Robot;
 public class AutonomousMain extends LinearOpMode {
 
     private Robot robot;
-    public static int MAX_MILISECONDS = 3000;
-    private static double FOAM_TILE_INCH = 23.622;
+    public static int MAX_MILISECONDS = 3500;
+    private static double FOAM_TILE_INCH = 23.6;
 
     private Pose2d startPose;
     private Pose2d wobbleMarker;
@@ -35,6 +35,7 @@ public class AutonomousMain extends LinearOpMode {
         telemetry.update();
 
         robot = new Robot(hardwareMap);
+        robot.bratPivotant.raiseClaw(true);
 
         while (robot.isInitialize() && opModeIsActive()) {
             idle();
@@ -44,9 +45,9 @@ public class AutonomousMain extends LinearOpMode {
         telemetry.update();
 
         //aparent avem doar o parte de teren *smiling cowboy face*
-        startPose = new Pose2d(-2.5 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
+        startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
         testpose = new Vector2d(-0.5 * FOAM_TILE_INCH, -2 * FOAM_TILE_INCH);
-        wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(90));
+        wobbleMarker = new Pose2d(-0.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(0));
         // parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
         parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-1.5 * FOAM_TILE_INCH);
         numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
@@ -57,43 +58,48 @@ public class AutonomousMain extends LinearOpMode {
         robot.drive.getLocalizer().setPoseEstimate(startPose);
 
         robot.timer.startTime();
+        robot.timer.reset();
+        robot.timer.startTime();
 
-        //vezi ce se intampla aici si daca iti trebuie idle
         while (robot.timer.milliseconds() < MAX_MILISECONDS){
             numberOfRing = robot.openCV.getRingPosition();
-            switch(numberOfRing){
-                case FOUR:
-//                    wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(-90));
-                    testpose = new Vector2d(-1*FOAM_TILE_INCH, -1*FOAM_TILE_INCH);
-                    break;
-                case ONE:
-//                    wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(0));
-                    testpose = new Vector2d(0.5*FOAM_TILE_INCH, -1*FOAM_TILE_INCH);
-                    break;
-                default:
-//                    wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(90));
-                    testpose = new Vector2d(2*FOAM_TILE_INCH, -1*FOAM_TILE_INCH);
-                    break;
-            }
-//            idle();
         }
 
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).lineTo(testpose).build());
+        if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
+            wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(-90));
+        } else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
+            wobbleMarker = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(-90));
+        } else {
+            wobbleMarker = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(180));
+        }
 
-//        Pose2d current = new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(), robot.drive.getLocalizer().getPoseEstimate().getY(), Math.toRadians(30));
+        try {
+            robot.openCV.finalize();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
 
-//        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(current).splineToLinearHeading(wobbleMarker, Math.toRadians(-90)).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(), robot.drive.getLocalizer().getPoseEstimate().getY(), robot.drive.getLocalizer().getPoseEstimate().getHeading())).strafeLeft(0.2*FOAM_TILE_INCH).build());
 
-        // da drumul la wobble goal aka
-        // 1) coboara brat
-        // 2) unclamp
-        // 3) ridica brat so it not in the way
+        Pose2d current = new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(),  robot.drive.getLocalizer().getPoseEstimate().getY(), Math.toRadians(40));
+//        Pose2d current = new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(), robot.drive.getLocalizer().getPoseEstimate().getY(),  robot.drive.getLocalizer().getPoseEstimate().getHeading());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(current).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
 
-        // TODO: de vazut daca incurca sau nu wobble goalul mergand pe diagonala
-        // DONE: incurca intr adevar wobble goal ul mergand pe diagonala, trebuie sa facem niste pathuri diferite
-//        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getLocalizer().getPoseEstimate()).strafeTo(parkingVector).build());
+        robot.timer.reset();
+        robot.timer.startTime();
+        robot.bratPivotant.moveBackward(0.4);
+        while (robot.timer.milliseconds() < 700){
+            idle();
+        }
 
-        //TODO testeaza cum ar merge
+        robot.bratPivotant.raiseClaw(false);
+
+        robot.timer.reset();
+        robot.timer.startTime();
+        robot.bratPivotant.moveForward(0.4);
+        while (robot.timer.milliseconds() < 700){
+            idle();
+        }
     }
 
     @Override
