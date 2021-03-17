@@ -402,4 +402,9 @@ public class MecanumDriveChassis extends MecanumDrive {
     public double getRawExternalHeading() {
         return imu.getAngularOrientation().firstAngle;
     }
+
+    //TODO do it work i wonder?
+    public Pose2d getCurrentPose(){
+        return new Pose2d(this.getLocalizer().getPoseEstimate().getX(), this.getLocalizer().getPoseEstimate().getY(), this.getLocalizer().getPoseEstimate().getHeading());
+    }
 }

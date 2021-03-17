@@ -5,11 +5,9 @@ import android.view.animation.LinearInterpolator;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.path.heading.ConstantInterpolator;
-import com.acmerobotics.roadrunner.path.heading.HeadingInterpolator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.localizer.vision.RingStackDeterminationPipeline;
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
@@ -23,9 +21,6 @@ public class AutonomousMain extends LinearOpMode {
 
     private Pose2d startPose;
     private Pose2d wobbleMarker;
-    private double targetAngle;
-    private Vector2d testpose;
-    // private Vector2d parkingVector;
     private Vector2d parkingVector;
 
     public RingStackDeterminationPipeline.RingPosition numberOfRing;
@@ -37,29 +32,26 @@ public class AutonomousMain extends LinearOpMode {
         robot = new Robot(hardwareMap);
         robot.bratPivotant.raiseClaw(true);
 
+        //aparent avem doar o parte de teren *smiling cowboy face*
+        startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
+        wobbleMarker = new Pose2d(-0.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(0));
+        parkingVector = new Vector2d(-0.5 * FOAM_TILE_INCH,-2.5 * FOAM_TILE_INCH);
+
+        numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
+
         while (robot.isInitialize() && opModeIsActive()) {
             idle();
         }
 
         telemetry.addData(">", "Initialized");
         telemetry.update();
-
-        //aparent avem doar o parte de teren *smiling cowboy face*
-        startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
-        testpose = new Vector2d(-0.5 * FOAM_TILE_INCH, -2 * FOAM_TILE_INCH);
-        wobbleMarker = new Pose2d(-0.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(0));
-        // parkingVector = new Vector2d(1.5 * FOAM_TILE_INCH,0.5 * FOAM_TILE_INCH);
-        parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-1.5 * FOAM_TILE_INCH);
-        numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
     }
 
     public void runAutonomous(){
 
         robot.drive.getLocalizer().setPoseEstimate(startPose);
 
-        robot.timer.startTime();
         robot.timer.reset();
-        robot.timer.startTime();
 
         while (robot.timer.milliseconds() < MAX_MILISECONDS){
             numberOfRing = robot.openCV.getRingPosition();
@@ -79,26 +71,15 @@ public class AutonomousMain extends LinearOpMode {
             throwable.printStackTrace();
         }
 
+        //move away from the wall so we dont hit it, might not need it if we dont rotate at beggining of spline
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(), robot.drive.getLocalizer().getPoseEstimate().getY(), robot.drive.getLocalizer().getPoseEstimate().getHeading())).strafeLeft(0.2*FOAM_TILE_INCH).build());
 
-        Pose2d current = new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(),  robot.drive.getLocalizer().getPoseEstimate().getY(), Math.toRadians(40));
-//        Pose2d current = new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(), robot.drive.getLocalizer().getPoseEstimate().getY(),  robot.drive.getLocalizer().getPoseEstimate().getHeading());
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(current).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getCurrentPose(), Math.toRadians(40)).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
 
-        robot.timer.reset();
-        robot.timer.startTime();
-        robot.bratPivotant.moveBackward(0.4);
-        while (robot.timer.milliseconds() < 700){
-            idle();
-        }
+        wobbleCatchRelease(true, robot.timer);
 
-        robot.bratPivotant.raiseClaw(false);
-
-        robot.timer.reset();
-        robot.timer.startTime();
-        robot.bratPivotant.moveForward(0.4);
-        while (robot.timer.milliseconds() < 700){
-            idle();
+        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getCurrentPose()).strafeTo(parkingVector).build());
         }
     }
 
@@ -114,4 +95,37 @@ public class AutonomousMain extends LinearOpMode {
         }
     }
 
+
+    //TODO move to bratPivotant for proper OOP, figure out a way to do it without idle()
+    public void wobbleCatchRelease(boolean release, ElapsedTime timer) {
+        if (release) {
+            timer.reset();
+            robot.bratPivotant.moveBackward(0.4);
+            while (timer.milliseconds() < 700) {
+                idle();
+            }
+
+            robot.bratPivotant.raiseClaw(false);
+
+            timer.reset();
+            robot.bratPivotant.moveForward(0.4);
+            while (timer.milliseconds() < 700) {
+                idle();
+            }
+        } else {
+            timer.reset();
+            robot.bratPivotant.moveForward(0.4);
+            while (timer.milliseconds() < 700) {
+                idle();
+            }
+
+            robot.bratPivotant.raiseClaw(true);
+
+            timer.reset();
+            robot.bratPivotant.moveBackward(0.4);
+            while (timer.milliseconds() < 700) {
+                idle();
+            }
+        }
+    }
 }
