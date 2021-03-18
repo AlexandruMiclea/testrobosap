@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.localizer.vision.RingStackDeterminationPipeline;
@@ -31,6 +32,10 @@ public class AutonomousMain extends LinearOpMode {
 
         robot = new Robot(hardwareMap);
         robot.bratPivotant.raiseClaw(true);
+        robot.bratPivotant.motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bratPivotant.toPosition(robot.bratPivotant.highConstraint);
+
+        robot.openCV.start();
 
         //aparent avem doar o parte de teren *smiling cowboy face*
         startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
@@ -74,13 +79,13 @@ public class AutonomousMain extends LinearOpMode {
         //move away from the wall so we dont hit it, might not need it if we dont rotate at beggining of spline
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(), robot.drive.getLocalizer().getPoseEstimate().getY(), robot.drive.getLocalizer().getPoseEstimate().getHeading())).strafeLeft(0.2*FOAM_TILE_INCH).build());
 
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getCurrentPose(), Math.toRadians(40)).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(40)).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
 
-        wobbleCatchRelease(true, robot.timer);
+        robot.bratPivotant.toPosition(robot.bratPivotant.lowConstraint);
 
-        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
-            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getCurrentPose()).strafeTo(parkingVector).build());
-        }
+//        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
+//            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
+//        }
     }
 
     @Override
@@ -92,40 +97,6 @@ public class AutonomousMain extends LinearOpMode {
             robot.openCV.finalize();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-        }
-    }
-
-
-    //TODO move to bratPivotant for proper OOP, figure out a way to do it without idle()
-    public void wobbleCatchRelease(boolean release, ElapsedTime timer) {
-        if (release) {
-            timer.reset();
-            robot.bratPivotant.moveBackward(0.4);
-            while (timer.milliseconds() < 700) {
-                idle();
-            }
-
-            robot.bratPivotant.raiseClaw(false);
-
-            timer.reset();
-            robot.bratPivotant.moveForward(0.4);
-            while (timer.milliseconds() < 700) {
-                idle();
-            }
-        } else {
-            timer.reset();
-            robot.bratPivotant.moveForward(0.4);
-            while (timer.milliseconds() < 700) {
-                idle();
-            }
-
-            robot.bratPivotant.raiseClaw(true);
-
-            timer.reset();
-            robot.bratPivotant.moveBackward(0.4);
-            while (timer.milliseconds() < 700) {
-                idle();
-            }
         }
     }
 }

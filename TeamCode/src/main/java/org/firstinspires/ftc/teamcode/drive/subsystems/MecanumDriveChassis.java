@@ -166,12 +166,9 @@ public class MecanumDriveChassis extends MecanumDrive {
             setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-        // TODO: reverse any motors using DcMotor.setDirection()
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        // TODO: if desired, use setLocalizer() to change the localization method
-        // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
         setLocalizer(new AnalogEncoderLocalizer(hardwareMap));
     }
 
@@ -403,8 +400,9 @@ public class MecanumDriveChassis extends MecanumDrive {
         return imu.getAngularOrientation().firstAngle;
     }
 
-    //TODO do it work i wonder?
-    public Pose2d getCurrentPose(){
-        return new Pose2d(this.getLocalizer().getPoseEstimate().getX(), this.getLocalizer().getPoseEstimate().getY(), this.getLocalizer().getPoseEstimate().getHeading());
+    public void adjustPositionIter(Pose2d targetPose, int iterations){
+        for(int i=0; i < iterations; i++){
+            this.followTrajectory(this.trajectoryBuilder(this.getPoseEstimate()).strafeTo(targetPose.vec()).build());
+        }
     }
 }

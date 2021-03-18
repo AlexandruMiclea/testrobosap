@@ -17,7 +17,7 @@ public class Robot {
     public OpenCVThread openCV;
     public ElapsedTime timer;
     //public PrototipSistColectare sistColectare = null;
-   public PrototipBrat bratPivotant;
+    public PrototipBrat bratPivotant;
 //    public PrototipAruncare protoAruncare;
 //    public AnalogEncoderLocalizerMR localizerMR;
 
@@ -26,7 +26,6 @@ public class Robot {
 
         drive = new MecanumDriveChassis(hardwareMap);
         openCV = new OpenCVThread(hardwareMap);
-        openCV.start();
         timer = new ElapsedTime();
         //sistColectare = new PrototipSistColectare(hardwareMap);
         bratPivotant = new PrototipBrat(hardwareMap);

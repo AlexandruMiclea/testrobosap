@@ -8,11 +8,11 @@ import org.firstinspires.ftc.teamcode.drive.localizer.AnalogEncoderLocalizerMR;
 
 @TeleOp(name = "Test Encodere Analog", group = "Concept")
 public class TestEncodereAnalog extends LinearOpMode {
-    public AnalogEncoderLocalizerMR encodere;
+    public AnalogEncoderLocalizer encodere;
 
     @Override
     public void runOpMode() {
-        encodere = new AnalogEncoderLocalizerMR(hardwareMap);
+        encodere = new AnalogEncoderLocalizer(hardwareMap);
 
         waitForStart();
 

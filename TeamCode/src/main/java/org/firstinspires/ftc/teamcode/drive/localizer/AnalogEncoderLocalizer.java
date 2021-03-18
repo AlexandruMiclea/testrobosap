@@ -22,10 +22,7 @@ import static java.lang.Math.abs;
 
 public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
     public static double WHEEL_RADIUS = 4; // inch, care e defapt diametrul but oh well
-    public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
     public static double MAX_VOLTAGE = 3.27;
-
-    public static double ENCODER_RATIO = 1.0; // ratio between left encoder ticks per rev and right encoder ticks per rev
 
     public static double LATERAL_DISTANCE = 14 ; // inch; distance between the left and right wheels
     public static double FORWARD_OFFSET = 0; // inch; offset of the lateral wheel
@@ -57,7 +54,6 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
 
     public static double voltageToInches(double pos) {
         return ((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE);
-//        return toThreeDec(((pos * WHEEL_RADIUS * Math.PI) / MAX_VOLTAGE));
     }
 
     @NonNull
@@ -102,11 +98,6 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
                 rightEncoder.getTurnIndex(),
                 middleEncoder.getTurnIndex()
         );
-    }
-
-    public static double toThreeDec(double num) {
-        DecimalFormat numberFormat = new DecimalFormat("#.000");
-        return Double.parseDouble(numberFormat.format(num));
     }
 
     @Override

@@ -9,24 +9,33 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class PrototipBrat {
     public DcMotor motorBrat;
     private Servo servoBrat;
+    public int lowConstraint=-1000, highConstraint=-90;
 
     public PrototipBrat(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
         servoBrat = hardwareMap.servo.get("servoBrat");
 
-        motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBrat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBrat.setDirection(DcMotorSimple.Direction.FORWARD);
         motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         servoBrat.setPosition(1);
     }
 
-    public void moveForward(double speed) {
-        motorBrat.setPower(Math.max(speed, 0.11));
+    public void liftArm(double speed) {
+        if(motorBrat.getCurrentPosition()>highConstraint){
+            stop();
+        } else {
+            motorBrat.setPower(Math.min(speed, 0.5));
+        }
     }
 
-    public void moveBackward(double speed) {
-        motorBrat.setPower(Math.min(-speed, -0.2));
+    public void lowerArm(double speed) {
+        if(motorBrat.getCurrentPosition()<lowConstraint){
+            stop();
+        } else {
+            motorBrat.setPower(Math.max(-speed, -0.3));
+        }
     }
 
     public void stop() {
@@ -34,10 +43,10 @@ public class PrototipBrat {
     }
 
     public void raiseClaw() {
-        if (servoBrat.getPosition() == 1) {
+        if (servoBrat.getPosition() == 0.8) {
             servoBrat.setPosition(0);
         } else if (servoBrat.getPosition() == 0) {
-            servoBrat.setPosition(1);
+            servoBrat.setPosition(0.8);
         }
     }
 
@@ -45,9 +54,12 @@ public class PrototipBrat {
         if (!clamped) {
             servoBrat.setPosition(0);
         } else if (clamped) {
-            servoBrat.setPosition(1);
+            servoBrat.setPosition(0.8);
         }
     }
 
+    public void toPosition(int position){
+        motorBrat.setTargetPosition(position);
+    }
 
 }

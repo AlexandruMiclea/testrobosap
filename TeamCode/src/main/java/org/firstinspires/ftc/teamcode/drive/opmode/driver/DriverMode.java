@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
 
@@ -17,6 +18,7 @@ public class DriverMode extends OpMode {
     @Override
     public void init() {
         robot = new Robot(hardwareMap);
+        robot.bratPivotant.motorBrat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override
@@ -48,12 +50,15 @@ public class DriverMode extends OpMode {
             bServoLift = false;
         }
 
-        if (gamepad2.x){
-            robot.bratPivotant.moveBackward(0.5);
-        } else if (gamepad2.y){
-            robot.bratPivotant.moveForward(0.5);
+        if (gamepad2.left_trigger>0){
+            robot.bratPivotant.liftArm(gamepad2.left_trigger);
+        } else if (gamepad2.right_trigger>0){
+            robot.bratPivotant.lowerArm(gamepad2.right_trigger);
         } else robot.bratPivotant.stop();
 
+
+        telemetry.addData("ticks arm", robot.bratPivotant.motorBrat.getCurrentPosition());
+        telemetry.update();
 //        if (gamepad1.left_trig0.1){
 //            robot.protoAruncare.rotate(gamepad1.left_trigger);
 //        }
