@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.localizer.vision;
+package org.firstinspires.ftc.teamcode.drive.localization.vision;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 

@@ -10,8 +10,8 @@ public class PrototipBrat {
     public DcMotor motorBrat;
     private Servo servoBrat;
     public int lowConstraint = -370, highConstraint = -1400;
-    private boolean isBusy;
-    private boolean isConstraints;
+    private boolean isBusy, isConstraints;
+    private double maxLiftSpeed = 0.5, maxLowerSpeed = 0.3;
 
     public PrototipBrat(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
@@ -32,38 +32,41 @@ public class PrototipBrat {
         return isConstraints;
     }
 
-    public void liftArm(double speed) {
-        if (isConstraints){
-            if(motorBrat.getCurrentPosition()>highConstraint){
-                stop();
-            } else {
-                motorBrat.setPower(Math.min(speed, 0.5));
-            }
-        } else {
-            motorBrat.setPower(Math.min(speed, 0.5));
-        }
-
-    }
-
-
-    public void lowerArm(double speed) {
-        if(isConstraints){
-            if(motorBrat.getCurrentPosition()<lowConstraint){
-                stop();
-            } else {
-                motorBrat.setPower(Math.max(-speed, -0.3));
-            }
-        } else {
-            motorBrat.setPower(Math.max(-speed, -0.3));
-        }
-
+    public boolean getIsBusy(){
+        return isBusy;
     }
 
     public void stop() {
         motorBrat.setPower(0);
     }
 
-    public void raiseClaw() {
+    public void liftArm(double speed) {
+        if (isConstraints){
+            if(motorBrat.getCurrentPosition()>highConstraint){
+                stop();
+            } else {
+                motorBrat.setPower(speed * maxLiftSpeed);
+            }
+        } else {
+            motorBrat.setPower(speed * maxLiftSpeed);
+        }
+
+    }
+
+    public void lowerArm(double speed) {
+        if(isConstraints){
+            if(motorBrat.getCurrentPosition()<lowConstraint){
+                stop();
+            } else {
+                motorBrat.setPower(-speed * maxLowerSpeed);
+            }
+        } else {
+            motorBrat.setPower(-speed * maxLowerSpeed);
+        }
+
+    }
+
+    public void clawToggle() {
         if (servoBrat.getPosition() == 0.8) {
             servoBrat.setPosition(0);
         } else if (servoBrat.getPosition() == 0) {
@@ -71,7 +74,7 @@ public class PrototipBrat {
         }
     }
 
-    public void raiseClaw(boolean clamped) {
+    public void clawToggle(boolean clamped) {
         if (!clamped) {
             servoBrat.setPosition(0);
         } else if (clamped) {
@@ -79,12 +82,8 @@ public class PrototipBrat {
         }
     }
 
-    public boolean getIsBusy(){
-      return isBusy;
-    }
-
     public void toPosition(int position){
-        motorBrat.setPower(0.4);
+        motorBrat.setPower(0.3);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(position);
         while(motorBrat.isBusy()){
@@ -92,10 +91,6 @@ public class PrototipBrat {
         }
         motorBrat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         stop();
-    }
-
-    public void encoderMode(){
-        motorBrat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 }

@@ -1,18 +1,13 @@
-package org.firstinspires.ftc.teamcode.drive.opmode;
+package org.firstinspires.ftc.teamcode.drive.opmode.tests;
 
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.drive.localizer.vision.OpenCVThread;
-import org.firstinspires.ftc.teamcode.drive.localizer.vision.RingStackDeterminationPipeline;
-import org.firstinspires.ftc.teamcode.drive.localizer.vision.TensorFlowThread;
+import org.firstinspires.ftc.teamcode.drive.localization.vision.OpenCVThread;
+import org.firstinspires.ftc.teamcode.drive.localization.vision.RingStackDeterminationPipeline;
 
-import java.util.List;
-
-@TeleOp(name = "OpenCV Thread Test", group = "Concept")
+@TeleOp(name = "OpenCV Thread Test", group = "test")
 public class OpenCVThreadTest extends LinearOpMode{
     public OpenCVThread openCV;
     public RingStackDeterminationPipeline.RingPosition ring;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.localizer;
+package org.firstinspires.ftc.teamcode.drive.localization.localizers;
 
 //import android.support.annotation.NonNull;
 
@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+
+import org.firstinspires.ftc.teamcode.drive.localization.absoluteEncoder;
 
 import static java.lang.Math.abs;
 
@@ -83,45 +85,6 @@ public class AnalogEncoderLocalizerMR extends TwoTrackingWheelLocalizer {
         return globalAngle;
     }
 
-    public List<Double> getVoltages() {
-        return Arrays.asList(
-                rightEncoder.toThreeDec(rightEncoder.readVoltage()),
-                middleEncoder.toThreeDec(middleEncoder.readVoltage())
-        );
-    }
-
-    public List <Double> getDerivatives(){
-        return Arrays.asList(
-                rightEncoder.getDerivative(),
-                middleEncoder.getDerivative()
-        );
-    }
-
-    public List <Double> getTotalVoltages(){
-        return Arrays.asList(
-                rightEncoder.getTotalVoltage(),
-                middleEncoder.getTotalVoltage()
-        );
-    }
-
-    public List <Double> getTotalVoltagesWithIndex(){
-        return Arrays.asList(
-                rightEncoder.getVoltageWithIndex(),
-                middleEncoder.getVoltageWithIndex()
-        );
-    }
-
-    public List <Double> getIndex(){
-        return Arrays.asList(
-                rightEncoder.getTurnIndex(),
-                middleEncoder.getTurnIndex()
-        );
-    }
-
-    public static double toThreeDec(double num) {
-        DecimalFormat numberFormat = new DecimalFormat("#.000");
-        return Double.parseDouble(numberFormat.format(num));
-    }
 }
 
 

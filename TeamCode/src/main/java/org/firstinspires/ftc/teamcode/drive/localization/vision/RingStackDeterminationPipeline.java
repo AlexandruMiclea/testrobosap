@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.localizer.vision;
+package org.firstinspires.ftc.teamcode.drive.localization.vision;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

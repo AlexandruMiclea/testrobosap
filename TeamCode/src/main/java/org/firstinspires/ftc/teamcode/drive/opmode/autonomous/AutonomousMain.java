@@ -1,19 +1,15 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.autonomous;
 
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.drive.localizer.vision.RingStackDeterminationPipeline;
+import org.firstinspires.ftc.teamcode.drive.localization.vision.RingStackDeterminationPipeline;
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
 
-@Autonomous(group = "drive")
+@Autonomous(name="Autonomie Standard",group = "autonomous")
 public class AutonomousMain extends LinearOpMode {
 
     private Robot robot;
@@ -31,7 +27,7 @@ public class AutonomousMain extends LinearOpMode {
         telemetry.update();
 
         robot = new Robot(hardwareMap);
-        robot.bratPivotant.raiseClaw(true);
+        robot.bratPivotant.clawToggle(true);
         robot.bratPivotant.motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.bratPivotant.toPosition(robot.bratPivotant.highConstraint);
 
@@ -84,7 +80,7 @@ public class AutonomousMain extends LinearOpMode {
         robot.bratPivotant.toPosition(robot.bratPivotant.lowConstraint);
         while (robot.bratPivotant.getIsBusy()) idle();
 
-        robot.bratPivotant.raiseClaw(false);
+        robot.bratPivotant.clawToggle(false);
 
         robot.bratPivotant.toPosition(robot.bratPivotant.highConstraint);
         while (robot.bratPivotant.getIsBusy()) idle();

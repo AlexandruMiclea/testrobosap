@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.drive.opmode;
+package org.firstinspires.ftc.teamcode.drive.opmode.tests;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.drive.localizer.AnalogEncoderLocalizer;
-import org.firstinspires.ftc.teamcode.drive.localizer.AnalogEncoderLocalizerMR;
+import org.firstinspires.ftc.teamcode.drive.localization.localizers.AnalogEncoderLocalizer;
 
-@TeleOp(name = "Test Encodere Analog", group = "Concept")
+@TeleOp(name = "Test Encodere Analog", group = "test")
 public class TestEncodereAnalog extends LinearOpMode {
     public AnalogEncoderLocalizer encodere;
 
@@ -17,13 +17,9 @@ public class TestEncodereAnalog extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            telemetry.addData("Voltaje: ", encodere.getVoltages());
-            telemetry.addData("Derivate: ", encodere.getDerivatives());
-            telemetry.addData("Voltaje totale: ", encodere.getTotalVoltages());
             telemetry.addData("Index: ", encodere.getIndex());
             telemetry.addData("Voltaje totale cu index: ", encodere.getTotalVoltagesWithIndex());
             telemetry.addData("Voltaje totale in inch: ", encodere.getWheelPositions());
-//            telemetry.addData("val random decimal test: ", encodere.toThreeDec(1.0240000000000012));
             telemetry.update();
         };
     }

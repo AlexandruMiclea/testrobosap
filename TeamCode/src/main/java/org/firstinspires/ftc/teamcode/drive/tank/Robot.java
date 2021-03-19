@@ -3,8 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.tank;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.drive.localizer.AnalogEncoderLocalizerMR;
-import org.firstinspires.ftc.teamcode.drive.localizer.vision.OpenCVThread;
+import org.firstinspires.ftc.teamcode.drive.localization.vision.OpenCVThread;
 import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveChassis;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.PrototipAruncare;
 import org.firstinspires.ftc.teamcode.drive.subsystems.PrototipBrat;
