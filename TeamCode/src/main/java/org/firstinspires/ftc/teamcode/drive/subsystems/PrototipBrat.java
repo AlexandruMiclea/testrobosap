@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class PrototipBrat {
     public DcMotor motorBrat;
     private Servo servoBrat;
-    public int lowConstraint= 530, highConstraint=1570;
+    public int lowConstraint = -370, highConstraint = -1400;
 
     public PrototipBrat(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
@@ -54,6 +54,7 @@ public class PrototipBrat {
         motorBrat.setPower(0.4);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(position);
+        while(motorBrat.isBusy())
     }
 
     public void encoderMode(){

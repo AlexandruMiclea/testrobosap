@@ -36,6 +36,14 @@ public class DriverMode extends OpMode {
             robot.bratPivotant.lowerArm(gamepad2.right_trigger);
         } else robot.bratPivotant.stop();
 
+        if (gamepad2.right_bumper){
+            robot.bratPivotant.toPosition(robot.bratPivotant.lowConstraint);
+            while(robot.bratPivotant)
+        }
+        if(gamepad2.left_bumper){
+            robot.bratPivotant.toPosition(robot.bratPivotant.highConstraint);
+        }
+
         telemetry.addData("pozitie brat: ", robot.bratPivotant.motorBrat.getCurrentPosition());
         telemetry.update();
     }
