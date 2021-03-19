@@ -11,6 +11,7 @@ public class PrototipBrat {
     private Servo servoBrat;
     public int lowConstraint = -370, highConstraint = -1400;
     private boolean isBusy;
+    private boolean isConstraints;
 
     public PrototipBrat(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
@@ -23,12 +24,39 @@ public class PrototipBrat {
         servoBrat.setPosition(1);
     }
 
-    public void liftArm(double speed) {
-        motorBrat.setPower(Math.min(speed, 0.5));
+    public void setConstraints(boolean constraints){
+        this.isConstraints = constraints;
     }
 
+    public boolean getConstraints(){
+        return isConstraints;
+    }
+
+    public void liftArm(double speed) {
+        if (isConstraints){
+            if(motorBrat.getCurrentPosition()>highConstraint){
+                stop();
+            } else {
+                motorBrat.setPower(Math.min(speed, 0.5));
+            }
+        } else {
+            motorBrat.setPower(Math.min(speed, 0.5));
+        }
+
+    }
+
+
     public void lowerArm(double speed) {
-        motorBrat.setPower(Math.max(-speed, -0.3));
+        if(isConstraints){
+            if(motorBrat.getCurrentPosition()<lowConstraint){
+                stop();
+            } else {
+                motorBrat.setPower(Math.max(-speed, -0.3));
+            }
+        } else {
+            motorBrat.setPower(Math.max(-speed, -0.3));
+        }
+
     }
 
     public void stop() {

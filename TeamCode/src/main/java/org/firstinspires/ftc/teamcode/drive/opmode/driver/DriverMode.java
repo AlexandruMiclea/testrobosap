@@ -26,13 +26,19 @@ public class DriverMode extends OpMode {
         //Practic baietii nostri au exact functia noastra de calculat vitezele
         robot.drive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x));
 
-        robot.bratPivotant.raiseClaw(gamepad2.a);
+        if(gamepad2.a){
+            robot.bratPivotant.raiseClaw();
+        }
+
+        if(gamepad2.x){
+            robot.bratPivotant.setConstraints(!robot.bratPivotant.getConstraints());
+        }
 
         if (gamepad2.left_trigger>0){
-            robot.bratPivotant.encoderMode();
+//            robot.bratPivotant.encoderMode();
             robot.bratPivotant.liftArm(gamepad2.left_trigger);
         } else if (gamepad2.right_trigger>0){
-            robot.bratPivotant.encoderMode();
+//            robot.bratPivotant.encoderMode();
             robot.bratPivotant.lowerArm(gamepad2.right_trigger);
         } else robot.bratPivotant.stop();
 
