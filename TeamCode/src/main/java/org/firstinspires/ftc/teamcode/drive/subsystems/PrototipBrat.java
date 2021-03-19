@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class PrototipBrat {
     public DcMotor motorBrat;
     private Servo servoBrat;
-    public int lowConstraint=-800, highConstraint=-90;
+    public int lowConstraint= 530, highConstraint=1570;
 
     public PrototipBrat(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
@@ -23,19 +23,11 @@ public class PrototipBrat {
     }
 
     public void liftArm(double speed) {
-        if(motorBrat.getCurrentPosition()>highConstraint){
-            stop();
-        } else {
-            motorBrat.setPower(Math.min(speed, 0.5));
-        }
+        motorBrat.setPower(Math.min(speed, 0.5));
     }
 
     public void lowerArm(double speed) {
-        if(motorBrat.getCurrentPosition()<lowConstraint){
-            stop();
-        } else {
-            motorBrat.setPower(Math.max(-speed, -0.3));
-        }
+        motorBrat.setPower(Math.max(-speed, -0.3));
     }
 
     public void stop() {

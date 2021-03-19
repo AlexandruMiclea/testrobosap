@@ -88,9 +88,9 @@ public class AutonomousMain extends LinearOpMode {
         robot.bratPivotant.toPosition(robot.bratPivotant.highConstraint);
         while (robot.bratPivotant.motorBrat.isBusy()) idle();
 
-//        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
-//            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
-//        }
+        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
+        }
     }
 
     @Override
