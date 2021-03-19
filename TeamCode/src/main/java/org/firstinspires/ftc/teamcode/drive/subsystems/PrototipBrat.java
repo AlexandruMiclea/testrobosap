@@ -10,6 +10,7 @@ public class PrototipBrat {
     public DcMotor motorBrat;
     private Servo servoBrat;
     public int lowConstraint = -370, highConstraint = -1400;
+    private boolean isBusy;
 
     public PrototipBrat(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
@@ -50,11 +51,19 @@ public class PrototipBrat {
         }
     }
 
+    public boolean getIsBusy(){
+      return isBusy;
+    }
+
     public void toPosition(int position){
         motorBrat.setPower(0.4);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(position);
-        while(motorBrat.isBusy())
+        while(motorBrat.isBusy()){
+            isBusy = true;
+        }
+        motorBrat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stop();
     }
 
     public void encoderMode(){
