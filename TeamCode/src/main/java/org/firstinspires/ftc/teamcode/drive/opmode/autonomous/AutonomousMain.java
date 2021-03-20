@@ -36,8 +36,8 @@ public class AutonomousMain extends LinearOpMode {
 
         //aparent avem doar o parte de teren *smiling cowboy face*
         startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
-        wobbleMarker = new Pose2d(-0.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(0));
-        parkingVector = new Vector2d(-0.5 * FOAM_TILE_INCH,-2.5 * FOAM_TILE_INCH);
+        wobbleMarker = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(180));
+        parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-2.5 * FOAM_TILE_INCH);
 
         numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
 
@@ -64,7 +64,7 @@ public class AutonomousMain extends LinearOpMode {
         } else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
             wobbleMarker = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(-90));
         } else {
-            wobbleMarker = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(180));
+            wobbleMarker = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(-180));
         }
 
         try {
@@ -74,7 +74,8 @@ public class AutonomousMain extends LinearOpMode {
         }
 
         //move away from the wall so we don't hit it, might not need it if we don't rotate at beginning of spline
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(new Pose2d(robot.drive.getLocalizer().getPoseEstimate().getX(), robot.drive.getLocalizer().getPoseEstimate().getY(), robot.drive.getLocalizer().getPoseEstimate().getHeading())).strafeLeft(0.2*FOAM_TILE_INCH).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeLeft(0.2*FOAM_TILE_INCH).build());
+        robot.drive.turn(Math.toRadians(90));
 
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(40)).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
 
