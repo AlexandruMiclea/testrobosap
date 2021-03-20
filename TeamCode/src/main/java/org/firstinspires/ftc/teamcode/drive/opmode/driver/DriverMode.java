@@ -36,18 +36,24 @@ public class DriverMode extends OpMode {
         }
 
         //miscat brat wobble goal sus jos
-        if (gamepad1.left_trigger>0){
-            robot.bratPivotant.liftArm(gamepad2.left_trigger);
-        } else if (gamepad1.right_trigger>0){
-            robot.bratPivotant.lowerArm(gamepad2.right_trigger);
-        } else robot.bratPivotant.stop();
-
-        //test to position
-        if (gamepad1.right_bumper){
-            robot.bratPivotant.toPosition(robot.bratPivotant.getLowConstraint());
+        if (gamepad1.left_trigger > 0 || gamepad1.right_trigger > 0) {
+            if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
+                robot.bratPivotant.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            if(gamepad1.left_trigger > 0)
+                robot.bratPivotant.moveArm(gamepad2.left_trigger);
+            else if(gamepad1.right_trigger > 0)
+                robot.bratPivotant.moveArm(-gamepad2.right_trigger);
         }
-        if(gamepad1.left_bumper){
-            robot.bratPivotant.toPosition(robot.bratPivotant.getHighConstraint());
+        else if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
+            robot.bratPivotant.stop();
+        }
+        //test to position
+        else if (gamepad1.right_bumper){
+            robot.bratPivotant.armPositionToggle(false);
+        }
+        else if(gamepad1.left_bumper){
+            robot.bratPivotant.armPositionToggle(true);
         }
 
         /*telemetry.addData("pozitie brat: ", robot.bratPivotant.motorBrat.getCurrentPosition());

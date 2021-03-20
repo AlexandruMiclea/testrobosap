@@ -28,7 +28,8 @@ public class AutonomousMain extends LinearOpMode {
 
         robot = new Robot(hardwareMap);
         robot.bratPivotant.clawToggle(true);
-        robot.bratPivotant.toPosition(robot.bratPivotant.getHighConstraint());
+        robot.bratPivotant.armPositionToggle(true);
+
         while (robot.bratPivotant.getIsBusy()) idle();
 
         robot.openCV.start();
@@ -77,12 +78,12 @@ public class AutonomousMain extends LinearOpMode {
 
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(40)).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
 
-        robot.bratPivotant.toPosition(robot.bratPivotant.getLowConstraint());
+        robot.bratPivotant.armPositionToggle(false);
         while (robot.bratPivotant.getIsBusy()) idle();
 
         robot.bratPivotant.clawToggle(false);
 
-        robot.bratPivotant.toPosition(robot.bratPivotant.getHighConstraint());
+        robot.bratPivotant.armPositionToggle(true);
         while (robot.bratPivotant.getIsBusy()) idle();
 
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){

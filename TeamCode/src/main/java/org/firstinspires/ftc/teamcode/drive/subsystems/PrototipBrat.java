@@ -4,15 +4,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
+//TODO: to the thread - (clasa Subsystem care e thread)
 public class PrototipBrat {
+    private int LOW_CONSTRAINT = -370;
+    private int HIGH_CONSTRAINT = -1400;
+    private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
+
     private DcMotor motorBrat;
     private Servo servoBrat;
-    private int lowConstraint = -370;
-    private int highConstraint = -1400;
-    private boolean isBusy, isConstraints;
-    private double maxLiftSpeed = 0.5, maxLowerSpeed = 0.3;
+    private boolean isConstraints;
 
     public PrototipBrat(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
@@ -29,46 +30,36 @@ public class PrototipBrat {
         this.isConstraints = constraints;
     }
 
-    public int getLowConstraint() { return lowConstraint;  }
+    public void setMotorMode(DcMotor.RunMode mode){ motorBrat.setMode(mode); }
 
-    public int getHighConstraint() { return highConstraint; }
+    public DcMotor.RunMode getMotorMode(){ return motorBrat.getMode(); }
 
     public boolean getConstraints(){
         return isConstraints;
     }
 
     public boolean getIsBusy(){
-        return isBusy;
+        return motorBrat.isBusy();
     }
 
     public void stop() {
         motorBrat.setPower(0);
     }
 
-    public void liftArm(double speed) {
+    public void moveArm(double speed) {
         if (isConstraints){
-            if(motorBrat.getCurrentPosition()>highConstraint){
+            if(speed > 0 && motorBrat.getCurrentPosition() > HIGH_CONSTRAINT){
+                stop();
+            }
+            else if(speed < 0 && motorBrat.getCurrentPosition() < LOW_CONSTRAINT){
                 stop();
             } else {
-                motorBrat.setPower(speed * maxLiftSpeed);
+                motorBrat.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
             }
+
         } else {
-            motorBrat.setPower(speed * maxLiftSpeed);
+            motorBrat.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
         }
-
-    }
-
-    public void lowerArm(double speed) {
-        if(isConstraints){
-            if(motorBrat.getCurrentPosition()<lowConstraint){
-                stop();
-            } else {
-                motorBrat.setPower(-speed * maxLowerSpeed);
-            }
-        } else {
-            motorBrat.setPower(-speed * maxLowerSpeed);
-        }
-
     }
 
     public void clawToggle() {
@@ -87,15 +78,9 @@ public class PrototipBrat {
         }
     }
 
-    public void toPosition(int position){
+    public void armPositionToggle(boolean up){
         motorBrat.setPower(0.3);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBrat.setTargetPosition(position);
-        while(motorBrat.isBusy()){
-            isBusy = true;
-        }
-        motorBrat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        stop();
+        motorBrat.setTargetPosition(up? HIGH_CONSTRAINT : LOW_CONSTRAINT);
     }
-
 }
