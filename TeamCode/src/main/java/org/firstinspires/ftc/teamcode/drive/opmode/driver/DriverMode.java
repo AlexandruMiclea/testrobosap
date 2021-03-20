@@ -41,9 +41,9 @@ public class DriverMode extends OpMode {
                 robot.bratPivotant.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
             if(gamepad1.left_trigger > 0)
-                robot.bratPivotant.moveArm(gamepad2.left_trigger);
+                robot.bratPivotant.moveArm(gamepad1.left_trigger);
             else if(gamepad1.right_trigger > 0)
-                robot.bratPivotant.moveArm(-gamepad2.right_trigger);
+                robot.bratPivotant.moveArm(-gamepad1.right_trigger);
         }
         else if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
             robot.bratPivotant.stop();
