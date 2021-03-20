@@ -36,7 +36,7 @@ public class DriverMode extends OpMode {
         }
 
         //miscat brat wobble goal sus jos
-        if (gamepad1.left_trigger > 0 || gamepad1.right_trigger > 0) {
+        if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
                 robot.bratPivotant.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
@@ -57,6 +57,13 @@ public class DriverMode extends OpMode {
         }
 
         telemetry.addData("pozitie brat: ", robot.bratPivotant.getPosition());
+        telemetry.addData("constraints: ", robot.bratPivotant.getConstraints());
+        telemetry.addData("motor mode: ", robot.bratPivotant.getMotorMode());
+
+        if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
+            telemetry.addData("target", robot.bratPivotant.getTargetPosition());
+        }
+
         telemetry.update();
     }
 }

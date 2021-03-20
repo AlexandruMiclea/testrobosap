@@ -36,6 +36,8 @@ public class PrototipBrat {
 
     public int getPosition() { return motorBrat.getCurrentPosition(); }
 
+    public int getTargetPosition() { return motorBrat.getTargetPosition(); }
+
     public boolean getConstraints(){
         return isConstraints;
     }
