@@ -14,6 +14,7 @@ public class DriverMode extends OpMode {
 
     private Robot robot = null;
     //private boolean bServoLift = false;
+    private boolean bIsAPressed = false;
 
     @Override
     public void init() {
@@ -27,7 +28,10 @@ public class DriverMode extends OpMode {
 
         //inchis/deschis gheara wobble goal
         if(gamepad1.a){
-            robot.bratPivotant.clawToggle();
+            robot.bratPivotant.clawToggle(true);
+        }
+        if (gamepad1.b){
+            robot.bratPivotant.clawToggle(false);
         }
 
         //oprit sau pornit constraints
