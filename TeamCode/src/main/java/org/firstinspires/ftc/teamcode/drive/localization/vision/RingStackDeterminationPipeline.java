@@ -37,8 +37,8 @@ public class RingStackDeterminationPipeline extends OpenCvPipeline {
     //ONE: 146-148
     //FOUR: 153-154
 
-    final int FOUR_RING_THRESHOLD = 153;
-    final int ONE_RING_THRESHOLD = 146;
+    final int FOUR_RING_THRESHOLD = 150;
+    final int ONE_RING_THRESHOLD = 144;
 
     Point region1_pointA = new Point(
             REGION1_TOPLEFT_ANCHOR_POINT.x,
