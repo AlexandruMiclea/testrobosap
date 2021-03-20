@@ -10,6 +10,7 @@ public class PrototipBrat {
     private int LOW_CONSTRAINT = 950;
     private int HIGH_CONSTRAINT = -380;
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
+    private double CLAMPED_POS = 0.8, UNCLAMPED_POS = 0;
 
     private DcMotor motorBrat;
     private Servo servoBrat;
@@ -23,7 +24,7 @@ public class PrototipBrat {
         motorBrat.setDirection(DcMotorSimple.Direction.FORWARD);
         motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        servoBrat.setPosition(1);
+        servoBrat.setPosition(CLAMPED_POS);
     }
 
     public void setConstraints(boolean constraints){
@@ -67,10 +68,10 @@ public class PrototipBrat {
     }
 
     public void clawToggle() {
-        if (servoBrat.getPosition() == 0.8) {
-            servoBrat.setPosition(0);
-        } else if (servoBrat.getPosition() == 0) {
-            servoBrat.setPosition(0.8);
+        if (servoBrat.getPosition() == CLAMPED_POS) {
+            servoBrat.setPosition(UNCLAMPED_POS);
+        } else if (servoBrat.getPosition() == UNCLAMPED_POS) {
+            servoBrat.setPosition(CLAMPED_POS);
         }
     }
 
