@@ -35,8 +35,16 @@ public class DriverMode extends OpMode {
             robot.bratPivotant.setConstraints(!robot.bratPivotant.getConstraints());
         }
 
+        //test to position
+        if (gamepad1.right_bumper){
+            robot.bratPivotant.armPositionToggle(false);
+        }
+        else if(gamepad1.left_bumper){
+            robot.bratPivotant.armPositionToggle(true);
+        }
         //miscat brat wobble goal sus jos
-        if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
+        else if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
+            telemetry.addData("Apasam pe triggere", "");
             if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
                 robot.bratPivotant.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
@@ -45,15 +53,9 @@ public class DriverMode extends OpMode {
             else if(gamepad1.right_trigger > 0)
                 robot.bratPivotant.moveArm(-gamepad1.right_trigger);
         }
+
         else if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
             robot.bratPivotant.stop();
-        }
-        //test to position
-        else if (gamepad1.right_bumper){
-            robot.bratPivotant.armPositionToggle(false);
-        }
-        else if(gamepad1.left_bumper){
-            robot.bratPivotant.armPositionToggle(true);
         }
 
         telemetry.addData("pozitie brat: ", robot.bratPivotant.getPosition());
