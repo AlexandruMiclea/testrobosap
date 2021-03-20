@@ -56,7 +56,7 @@ public class DriverMode extends OpMode {
             robot.bratPivotant.armPositionToggle(true);
         }
 
-        /*telemetry.addData("pozitie brat: ", robot.bratPivotant.motorBrat.getCurrentPosition());
-        telemetry.update();*/
+        telemetry.addData("pozitie brat: ", robot.bratPivotant.getPosition());
+        telemetry.update();
     }
 }

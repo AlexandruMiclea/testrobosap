@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class PrototipBrat {
-    private int LOW_CONSTRAINT = -370;
-    private int HIGH_CONSTRAINT = -1400;
+    private int LOW_CONSTRAINT = 950;
+    private int HIGH_CONSTRAINT = -380;
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
 
     private DcMotor motorBrat;
@@ -33,6 +33,8 @@ public class PrototipBrat {
     public void setMotorMode(DcMotor.RunMode mode){ motorBrat.setMode(mode); }
 
     public DcMotor.RunMode getMotorMode(){ return motorBrat.getMode(); }
+
+    public int getPosition() { return motorBrat.getCurrentPosition(); }
 
     public boolean getConstraints(){
         return isConstraints;
