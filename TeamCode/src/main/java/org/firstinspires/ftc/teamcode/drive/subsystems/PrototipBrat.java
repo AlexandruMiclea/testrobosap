@@ -7,9 +7,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PrototipBrat {
-    public DcMotor motorBrat;
+    private DcMotor motorBrat;
     private Servo servoBrat;
-    public int lowConstraint = -370, highConstraint = -1400;
+    private int lowConstraint = -370;
+    private int highConstraint = -1400;
     private boolean isBusy, isConstraints;
     private double maxLiftSpeed = 0.5, maxLowerSpeed = 0.3;
 
@@ -27,6 +28,10 @@ public class PrototipBrat {
     public void setConstraints(boolean constraints){
         this.isConstraints = constraints;
     }
+
+    public int getLowConstraint() { return lowConstraint;  }
+
+    public int getHighConstraint() { return highConstraint; }
 
     public boolean getConstraints(){
         return isConstraints;
