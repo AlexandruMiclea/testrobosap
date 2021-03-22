@@ -92,7 +92,7 @@ public class AutonomousMain extends LinearOpMode {
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
         }
-        
+
     }
 
     @Override

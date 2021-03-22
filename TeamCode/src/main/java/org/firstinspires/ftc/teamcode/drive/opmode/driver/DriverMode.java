@@ -57,7 +57,6 @@ public class DriverMode extends OpMode {
             else if(gamepad1.right_trigger > 0)
                 robot.wobbleArm.moveArm(-gamepad1.right_trigger);
         }
-
         else if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
             robot.wobbleArm.stop();
         }

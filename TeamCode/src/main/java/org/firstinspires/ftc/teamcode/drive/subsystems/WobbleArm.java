@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.drive.subsystems;
 
+import com.acmerobotics.roadrunner.drive.DriveSignal;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
-public class WobbleArm {
+public class WobbleArm extends Subsystem {
     private int LOW_CONSTRAINT = -2000;
     private int HIGH_CONSTRAINT = -800;
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
@@ -25,6 +26,8 @@ public class WobbleArm {
         motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         servoBrat.setPosition(CLAMPED_POS);
+
+        mode = Mode.IDLE;
     }
 
     public void setConstraints(boolean constraints){
@@ -41,10 +44,6 @@ public class WobbleArm {
 
     public boolean getConstraints(){
         return isConstraints;
-    }
-
-    public boolean getIsBusy(){
-        return motorBrat.isBusy();
     }
 
     public void stop() {
@@ -83,9 +82,30 @@ public class WobbleArm {
         }
     }
 
-    public void armPositionToggle(boolean up){
-        motorBrat.setPower(0.3);
+    public void armPositionToggleAsync(boolean up){
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(up? HIGH_CONSTRAINT : LOW_CONSTRAINT);
+        mode = Mode.BUSY;
+    }
+
+    public void armPositionToggle(boolean up){
+        armPositionToggleAsync(up);
+        waitForIdle();
+    }
+
+    public void update(){
+        switch (mode){
+            case IDLE:
+                //do nothing
+                break;
+            case BUSY:
+                //something
+                motorBrat.setPower(0.3);
+
+                if (!motorBrat.isBusy()) {
+                    mode = Subsystem.Mode.IDLE;
+                }
+                break;
+        }
     }
 }
