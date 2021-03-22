@@ -28,46 +28,46 @@ public class DriverMode extends OpMode {
 
         //inchis/deschis gheara wobble goal
         if(gamepad1.a){
-            robot.bratPivotant.clawToggle(true);
+            robot.wobbleArm.clawToggle(true);
         }
         if (gamepad1.b){
-            robot.bratPivotant.clawToggle(false);
+            robot.wobbleArm.clawToggle(false);
         }
 
         //oprit sau pornit constraints
         if(gamepad1.x){
-            robot.bratPivotant.setConstraints(!robot.bratPivotant.getConstraints());
+            robot.wobbleArm.setConstraints(!robot.wobbleArm.getConstraints());
         }
 
         //test to position
         if (gamepad1.right_bumper){
-            robot.bratPivotant.armPositionToggle(false);
+            robot.wobbleArm.armPositionToggle(false);
         }
         else if(gamepad1.left_bumper){
-            robot.bratPivotant.armPositionToggle(true);
+            robot.wobbleArm.armPositionToggle(true);
         }
         //miscat brat wobble goal sus jos
         else if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             telemetry.addData("Apasam pe triggere", "");
-            if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
-                robot.bratPivotant.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
+                robot.wobbleArm.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
             if(gamepad1.left_trigger > 0)
-                robot.bratPivotant.moveArm(gamepad1.left_trigger);
+                robot.wobbleArm.moveArm(gamepad1.left_trigger);
             else if(gamepad1.right_trigger > 0)
-                robot.bratPivotant.moveArm(-gamepad1.right_trigger);
+                robot.wobbleArm.moveArm(-gamepad1.right_trigger);
         }
 
-        else if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
-            robot.bratPivotant.stop();
+        else if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
+            robot.wobbleArm.stop();
         }
 
-        telemetry.addData("pozitie brat: ", robot.bratPivotant.getPosition());
-        telemetry.addData("constraints: ", robot.bratPivotant.getConstraints());
-        telemetry.addData("motor mode: ", robot.bratPivotant.getMotorMode());
+        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
+        telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
+        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
 
-        if(robot.bratPivotant.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
-            telemetry.addData("target", robot.bratPivotant.getTargetPosition());
+        if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
+            telemetry.addData("target", robot.wobbleArm.getTargetPosition());
         }
 
         telemetry.update();

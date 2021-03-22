@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.drive.localization;
+package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
-public class absoluteEncoder{
+public class AbsoluteEncoder {
     public AnalogInput encoder;
     public double lastIndexVoltage=0;
     public double turnIndex = 0;
-    public double voltageWithIndex;
+    public double voltageWithIndex =0;
 
     public static double MAX_VOLTAGE =3.25;
 

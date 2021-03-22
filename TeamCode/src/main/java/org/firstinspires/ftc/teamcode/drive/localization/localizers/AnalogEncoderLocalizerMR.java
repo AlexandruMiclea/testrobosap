@@ -8,13 +8,12 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 
-import org.firstinspires.ftc.teamcode.drive.localization.absoluteEncoder;
+import org.firstinspires.ftc.teamcode.util.AbsoluteEncoder;
 
 import static java.lang.Math.abs;
 
@@ -30,8 +29,8 @@ public class AnalogEncoderLocalizerMR extends TwoTrackingWheelLocalizer {
     public static double LATERAL_DISTANCE = 14 ; // inch; distance between the left and right wheels
     public static double FORWARD_OFFSET = 0; // inch; offset of the lateral wheel
 
-    private absoluteEncoder middleEncoder = new absoluteEncoder();
-    private absoluteEncoder rightEncoder = new absoluteEncoder();
+    private AbsoluteEncoder middleEncoder = new AbsoluteEncoder();
+    private AbsoluteEncoder rightEncoder = new AbsoluteEncoder();
 
     private ModernRoboticsI2cGyro gyro;
     private double lastAngle, globalAngle;

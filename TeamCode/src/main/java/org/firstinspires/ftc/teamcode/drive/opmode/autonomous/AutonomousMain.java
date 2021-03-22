@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.drive.opmode.autonomous;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.localization.vision.RingStackDeterminationPipeline;
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
@@ -27,10 +27,10 @@ public class AutonomousMain extends LinearOpMode {
         telemetry.update();
 
         robot = new Robot(hardwareMap);
-        robot.bratPivotant.clawToggle(true);
-        robot.bratPivotant.armPositionToggle(true);
+        robot.wobbleArm.clawToggle(true);
 
-        while (robot.bratPivotant.getIsBusy()) idle();
+        robot.wobbleArm.armPositionToggle(true);
+        while (robot.wobbleArm.getIsBusy()) idle();
 
         robot.openCV.start();
 
@@ -53,12 +53,13 @@ public class AutonomousMain extends LinearOpMode {
 
         robot.drive.getLocalizer().setPoseEstimate(startPose);
 
+        //Wait a few seconds to identify the the number of rings
         robot.timer.reset();
-
         while (robot.timer.milliseconds() < MAX_MILISECONDS){
             numberOfRing = robot.openCV.getRingPosition();
         }
 
+        //Set a target position on the field depending on the numbe of rings identified
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             wobbleMarker = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(-90));
         } else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
@@ -67,6 +68,7 @@ public class AutonomousMain extends LinearOpMode {
             wobbleMarker = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(-180));
         }
 
+        //Close OpenCV and thread as they are not used any longer
         try {
             robot.openCV.finalize();
         } catch (Throwable throwable) {
@@ -79,17 +81,18 @@ public class AutonomousMain extends LinearOpMode {
 
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(40)).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
 
-        robot.bratPivotant.armPositionToggle(false);
-        while (robot.bratPivotant.getIsBusy()) idle();
+        robot.wobbleArm.armPositionToggle(false);
+        while (robot.wobbleArm.getIsBusy()) idle();
 
-        robot.bratPivotant.clawToggle(false);
+        robot.wobbleArm.clawToggle(false);
 
-        robot.bratPivotant.armPositionToggle(true);
-        while (robot.bratPivotant.getIsBusy()) idle();
+        robot.wobbleArm.armPositionToggle(true);
+        while (robot.wobbleArm.getIsBusy()) idle();
 
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
         }
+        
     }
 
     @Override

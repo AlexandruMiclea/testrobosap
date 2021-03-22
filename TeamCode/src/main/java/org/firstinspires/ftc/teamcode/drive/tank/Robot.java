@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.localization.vision.OpenCVThread;
 import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveChassis;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.PrototipAruncare;
-import org.firstinspires.ftc.teamcode.drive.subsystems.PrototipBrat;
+import org.firstinspires.ftc.teamcode.drive.subsystems.WobbleArm;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.PrototipGarou;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.PrototipSistColectare;
 
@@ -16,7 +16,7 @@ public class Robot {
     public OpenCVThread openCV;
     public ElapsedTime timer;
     //public PrototipSistColectare sistColectare = null;
-    public PrototipBrat bratPivotant;
+    public WobbleArm wobbleArm;
 //    public PrototipAruncare protoAruncare;
 //    public AnalogEncoderLocalizerMR localizerMR;
 
@@ -27,7 +27,7 @@ public class Robot {
         openCV = new OpenCVThread(hardwareMap);
         timer = new ElapsedTime();
         //sistColectare = new PrototipSistColectare(hardwareMap);
-        bratPivotant = new PrototipBrat(hardwareMap);
+        wobbleArm = new WobbleArm(hardwareMap);
 //        protoAruncare = new PrototipAruncare(hardwareMap);
 //        localizerMR = new AnalogEncoderLocalizerMR(hardwareMap);
 

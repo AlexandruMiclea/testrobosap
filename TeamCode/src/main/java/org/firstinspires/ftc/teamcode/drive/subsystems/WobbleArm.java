@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
-public class PrototipBrat {
+public class WobbleArm {
     private int LOW_CONSTRAINT = -2000;
     private int HIGH_CONSTRAINT = -800;
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
@@ -16,7 +16,7 @@ public class PrototipBrat {
     private Servo servoBrat;
     private boolean isConstraints;
 
-    public PrototipBrat(HardwareMap hardwareMap) {
+    public WobbleArm(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
         servoBrat = hardwareMap.servo.get("servoBrat");
 

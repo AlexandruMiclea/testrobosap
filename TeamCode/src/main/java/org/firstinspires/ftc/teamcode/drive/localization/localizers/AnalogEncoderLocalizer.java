@@ -11,7 +11,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.drive.localization.absoluteEncoder;
+import org.firstinspires.ftc.teamcode.util.AbsoluteEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,17 +25,16 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
     public static double LATERAL_DISTANCE = 14 ; // inch; distance between the left and right wheels
     public static double FORWARD_OFFSET = 0; // inch; offset of the lateral wheel
 
-    private absoluteEncoder middleEncoder = new absoluteEncoder();
-    private absoluteEncoder rightEncoder = new absoluteEncoder();
+    private AbsoluteEncoder middleEncoder = new AbsoluteEncoder();
+    private AbsoluteEncoder rightEncoder = new AbsoluteEncoder();
 
     private BNO055IMU imu;
 
     public AnalogEncoderLocalizer(HardwareMap hardwareMap) {
         super(Arrays.asList(
-                new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
-                new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
+                new Pose2d(0, -LATERAL_DISTANCE / 2, 0), //right wheel distance from center in inch
+                new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) //front wheel distance from center in inch
         ));
-
 
         middleEncoder.encoder = hardwareMap.get(AnalogInput.class, "middleEncoder");
         rightEncoder.encoder = hardwareMap.get(AnalogInput.class, "rightEncoder");
