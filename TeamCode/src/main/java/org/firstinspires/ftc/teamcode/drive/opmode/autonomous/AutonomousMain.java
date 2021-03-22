@@ -30,7 +30,6 @@ public class AutonomousMain extends LinearOpMode {
         robot.wobbleArm.clawToggle(true);
 
         robot.wobbleArm.armPositionToggle(true);
-        while (robot.wobbleArm.getIsBusy()) idle();
 
         robot.openCV.start();
 
@@ -82,12 +81,10 @@ public class AutonomousMain extends LinearOpMode {
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(40)).splineToLinearHeading(wobbleMarker, Math.toRadians(0)).build());
 
         robot.wobbleArm.armPositionToggle(false);
-        while (robot.wobbleArm.getIsBusy()) idle();
 
         robot.wobbleArm.clawToggle(false);
 
         robot.wobbleArm.armPositionToggle(true);
-        while (robot.wobbleArm.getIsBusy()) idle();
 
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
