@@ -12,6 +12,10 @@ public class OpenCVThread extends Thread{
     OpenCvInternalCamera phoneCam;
     RingStackDeterminationPipeline pipeline;
 
+    private int analysis;
+    private RingStackDeterminationPipeline.RingPosition numberOfRing;
+
+
     //Constructor
     public OpenCVThread(HardwareMap hardwareMap) {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -41,9 +45,6 @@ public class OpenCVThread extends Thread{
         phoneCam.stopStreaming();
         phoneCam.closeCameraDevice();
     }
-
-    public int analysis;
-    public RingStackDeterminationPipeline.RingPosition numberOfRing;
 
     public int getAnalysis()
     {

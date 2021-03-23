@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 
 public class AbsoluteEncoder {
     public AnalogInput encoder;
-    public double lastIndexVoltage=0;
-    public double turnIndex = 0;
-    public double voltageWithIndex =0;
+    private double lastIndexVoltage=0;
+    private double turnIndex = 0;
+    private double voltageWithIndex =0;
 
-    public static double MAX_VOLTAGE =3.25;
+    private static double MAX_VOLTAGE =3.25;
 
-    public double initVolt;
+    private double initVolt;
 
     public void setInitVolt(double initVoltage){
         this.initVolt = initVoltage;
