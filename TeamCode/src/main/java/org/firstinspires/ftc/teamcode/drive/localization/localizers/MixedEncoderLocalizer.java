@@ -42,7 +42,6 @@ public class MixedEncoderLocalizer extends TwoTrackingWheelLocalizer {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
-
     }
 
     public static double encoderTicksToInches(int ticks) {
@@ -50,7 +49,7 @@ public class MixedEncoderLocalizer extends TwoTrackingWheelLocalizer {
     }
 
     public static double voltageToInches(double pos) {
-        return ((pos * WHEEL_RADIUS * 2* Math.PI) / MAX_VOLTAGE);
+        return ((pos * WHEEL_RADIUS * 2 * Math.PI) / MAX_VOLTAGE);
     }
 
     @Override
