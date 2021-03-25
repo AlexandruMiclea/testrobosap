@@ -28,10 +28,12 @@ public class RingStackDeterminationPipeline extends OpenCvPipeline {
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(200,130);
 
-    static final int REGION_WIDTH = 90;
-    static final int REGION_HEIGHT = 60;
+    //TODO redo
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(800,468);
+
+    static final int REGION_WIDTH = 360;
+    static final int REGION_HEIGHT = 216;
 
     //NONE: 141-143
     //ONE: 146-148
@@ -39,6 +41,8 @@ public class RingStackDeterminationPipeline extends OpenCvPipeline {
 
     final int FOUR_RING_THRESHOLD = 150;
     final int ONE_RING_THRESHOLD = 144;
+
+    //TODO end redo
 
     Point region1_pointA = new Point(
             REGION1_TOPLEFT_ANCHOR_POINT.x,
