@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class AbsoluteEncoder {
-    public AnalogInput encoder;
+    private AnalogInput encoder;
     private double lastIndexVoltage=0;
     private double turnIndex = 0;
     private double voltageWithIndex =0;
@@ -15,6 +16,9 @@ public class AbsoluteEncoder {
     public void setInitVolt(double initVoltage){
         this.initVolt = initVoltage;
     }
+
+    public double getMaxVoltage() { return MAX_VOLTAGE; }
+
 
     public double getVoltageWithIndex(){
         double current1 = encoder.getVoltage();
@@ -36,5 +40,10 @@ public class AbsoluteEncoder {
 
     public double getTurnIndex(){
         return turnIndex;
+    }
+
+    public AbsoluteEncoder(AnalogInput encoder) {
+        this.encoder = encoder;
+        this.initVolt = encoder.getVoltage();
     }
 }

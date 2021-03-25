@@ -42,6 +42,8 @@ public class Encoder {
     private double velocityEstimate;
     private double lastUpdateTime;
 
+    private static double TICKS_PER_REV = 4096; //TODO
+
     public Encoder(DcMotorEx motor, NanoClock clock) {
         this.motor = motor;
         this.clock = clock;
@@ -89,5 +91,9 @@ public class Encoder {
 
     public double getCorrectedVelocity() {
         return inverseOverflow(getRawVelocity(), velocityEstimate);
+    }
+
+    public double getTicksPerRev() {
+        return TICKS_PER_REV;
     }
 }

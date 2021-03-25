@@ -29,11 +29,16 @@ public class SubsystemClassTest extends LinearOpMode {
 
         waitForStart();
 
+        robot.drive.turn(90);
         robot.wobbleArm.armPositionToggle(false);
         robot.wobbleArm.clawToggle(false);
+        robot.drive.turn(-90);
         robot.wobbleArm.clawToggle(true);
-        robot.wobbleArm.clawToggle(false);
         robot.wobbleArm.armPositionToggle(true);
-
+        robot.drive.turn(90);
+        robot.wobbleArm.clawToggle(false);
+        robot.wobbleArm.armPositionToggle(false);
+        robot.drive.turn(-90);
+        robot.wobbleArm.armPositionToggle(true);
     }
 }

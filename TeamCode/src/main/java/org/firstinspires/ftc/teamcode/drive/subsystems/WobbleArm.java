@@ -1,15 +1,16 @@
 package org.firstinspires.ftc.teamcode.drive.subsystems;
 
-import com.acmerobotics.roadrunner.drive.DriveSignal;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.drive.Subsystem;
+
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class WobbleArm extends Subsystem {
-    private int LOW_CONSTRAINT = -2000;
-    private int HIGH_CONSTRAINT = -800;
+    private int LOW_CONSTRAINT = -850;
+    private int HIGH_CONSTRAINT = 0;
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
     private double CLAMPED_POS = 0.8, UNCLAMPED_POS = 0;
 
@@ -83,6 +84,7 @@ public class WobbleArm extends Subsystem {
     }
 
     public void armPositionToggleAsync(boolean up){
+        motorBrat.setPower(0.3);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(up? HIGH_CONSTRAINT : LOW_CONSTRAINT);
         mode = Mode.BUSY;
@@ -99,9 +101,6 @@ public class WobbleArm extends Subsystem {
                 //do nothing
                 break;
             case BUSY:
-                //something
-                motorBrat.setPower(0.3);
-
                 if (!motorBrat.isBusy()) {
                     mode = Subsystem.Mode.IDLE;
                 }

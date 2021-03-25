@@ -19,14 +19,12 @@ import java.util.List;
 import static java.lang.Math.abs;
 
 public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
-    public static double WHEEL_DIAMETER = 4; // inch
-    public static double MAX_VOLTAGE = 3.27;
+    private static double WHEEL_DIAMETER = 4; // inch
 
-    public static double LATERAL_DISTANCE = 14 ; // inch; distance between the left and right wheels
-    public static double FORWARD_OFFSET = 0; // inch; offset of the lateral wheel
+    private static double LATERAL_DISTANCE = 14 ; // inch; distance between the left and right wheels
+    private static double FORWARD_OFFSET = 0; // inch; offset of the lateral wheel
 
-    private AbsoluteEncoder middleEncoder = new AbsoluteEncoder();
-    private AbsoluteEncoder rightEncoder = new AbsoluteEncoder();
+    private AbsoluteEncoder middleEncoder, rightEncoder;
 
     private BNO055IMU imu;
 
@@ -36,12 +34,8 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) //front wheel distance from center in inch
         ));
 
-        middleEncoder.encoder = hardwareMap.get(AnalogInput.class, "middleEncoder");
-        rightEncoder.encoder = hardwareMap.get(AnalogInput.class, "rightEncoder");
-
-        middleEncoder.setInitVolt(middleEncoder.encoder.getVoltage());
-        rightEncoder.setInitVolt(rightEncoder.encoder.getVoltage());
-
+        rightEncoder = new AbsoluteEncoder(hardwareMap.get(AnalogInput.class, "rightEncoder"));
+        middleEncoder = new AbsoluteEncoder(hardwareMap.get(AnalogInput.class, "middleEncoder"));
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -49,16 +43,16 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         imu.initialize(parameters);
     }
 
-    public static double voltageToInches(double pos) {
-        return ((pos * WHEEL_DIAMETER * Math.PI) / MAX_VOLTAGE);
+    public double voltageToInches(AbsoluteEncoder encoder) {
+        return ((encoder.getVoltageWithIndex() * WHEEL_DIAMETER * Math.PI) / encoder.getMaxVoltage());
     }
 
     @NonNull
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
-                voltageToInches(rightEncoder.getVoltageWithIndex()),
-                voltageToInches(middleEncoder.getVoltageWithIndex())
+                voltageToInches(rightEncoder),
+                voltageToInches(middleEncoder)
         );
     }
 

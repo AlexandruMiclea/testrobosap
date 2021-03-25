@@ -69,6 +69,7 @@ public class DriverMode extends OpMode {
             telemetry.addData("target", robot.wobbleArm.getTargetPosition());
         }
 
+        telemetry.addData("Index: ", robot.localizer.getWheelPositions());
         telemetry.update();
     }
 }

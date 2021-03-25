@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.teamcode.drive.localization.localizers.AnalogEncoderLocalizer;
+import org.firstinspires.ftc.teamcode.drive.localization.localizers.MixedEncoderLocalizer;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 
@@ -168,7 +169,7 @@ public class MecanumDriveChassis extends MecanumDrive {
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        setLocalizer(new AnalogEncoderLocalizer(hardwareMap));
+        setLocalizer(new MixedEncoderLocalizer(hardwareMap));
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {

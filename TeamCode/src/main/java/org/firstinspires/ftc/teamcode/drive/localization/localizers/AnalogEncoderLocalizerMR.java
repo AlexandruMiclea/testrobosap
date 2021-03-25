@@ -29,8 +29,7 @@ public class AnalogEncoderLocalizerMR extends TwoTrackingWheelLocalizer {
     public static double LATERAL_DISTANCE = 14 ; // inch; distance between the left and right wheels
     public static double FORWARD_OFFSET = 0; // inch; offset of the lateral wheel
 
-    private AbsoluteEncoder middleEncoder = new AbsoluteEncoder();
-    private AbsoluteEncoder rightEncoder = new AbsoluteEncoder();
+    private AbsoluteEncoder middleEncoder, rightEncoder;
 
     private ModernRoboticsI2cGyro gyro;
     private double lastAngle, globalAngle;
@@ -41,12 +40,8 @@ public class AnalogEncoderLocalizerMR extends TwoTrackingWheelLocalizer {
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
         ));
 
-
-        middleEncoder.encoder = hardwareMap.get(AnalogInput.class, "middleEncoder");
-        rightEncoder.encoder = hardwareMap.get(AnalogInput.class, "rightEncoder");
-
-        middleEncoder.setInitVolt(middleEncoder.encoder.getVoltage());
-        rightEncoder.setInitVolt(rightEncoder.encoder.getVoltage());
+        rightEncoder = new AbsoluteEncoder(hardwareMap.get(AnalogInput.class, "rightEncoder"));
+        middleEncoder = new AbsoluteEncoder(hardwareMap.get(AnalogInput.class, "middleEncoder"));
 
         gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
         gyro.calibrate();
