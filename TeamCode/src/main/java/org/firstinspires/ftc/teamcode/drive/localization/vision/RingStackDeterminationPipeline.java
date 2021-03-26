@@ -30,7 +30,7 @@ public class RingStackDeterminationPipeline extends OpenCvPipeline {
      */
 
     //TODO redo
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(800,468);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(800,240);
 
     static final int REGION_WIDTH = 360;
     static final int REGION_HEIGHT = 216;
@@ -39,8 +39,8 @@ public class RingStackDeterminationPipeline extends OpenCvPipeline {
     //ONE: 146-148
     //FOUR: 153-154
 
-    final int FOUR_RING_THRESHOLD = 150;
-    final int ONE_RING_THRESHOLD = 144;
+    final int FOUR_RING_THRESHOLD = 140;
+    final int ONE_RING_THRESHOLD = 132;
 
     //TODO end redo
 

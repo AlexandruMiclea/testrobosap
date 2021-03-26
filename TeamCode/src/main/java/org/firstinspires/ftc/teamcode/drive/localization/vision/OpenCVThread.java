@@ -19,7 +19,7 @@ public class OpenCVThread extends Thread{
     //Constructor
     public OpenCVThread(HardwareMap hardwareMap) {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "CAMERANAME"); //TODO get camera name
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Cameraa"); //TODO get camera name
         Webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         pipeline = new RingStackDeterminationPipeline();
         Webcam.setPipeline(pipeline);

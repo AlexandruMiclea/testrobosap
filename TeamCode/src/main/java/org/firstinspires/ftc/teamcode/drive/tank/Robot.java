@@ -14,25 +14,22 @@ import org.firstinspires.ftc.teamcode.drive.subsystems.WobbleArm;
 public class Robot {
     private boolean initialize;
     public MecanumDriveChassis drive;
-//    public OpenCVThread openCV;
+    public OpenCVThread openCV;
     public ElapsedTime timer;
-    //public PrototipSistColectare sistColectare = null;
     public WobbleArm wobbleArm;
-//    public PrototipAruncare protoAruncare;
-//    public AnalogEncoderLocalizerMR localizerMR;
-    public MixedEncoderLocalizer localizer;
+//    public MixedEncoderLocalizer localizer;
 
     public Robot (HardwareMap hardwareMap) {
         initialize = true;
 
         drive = new MecanumDriveChassis(hardwareMap);
-//        openCV = new OpenCVThread(hardwareMap);
+        openCV = new OpenCVThread(hardwareMap);
         timer = new ElapsedTime();
         //sistColectare = new PrototipSistColectare(hardwareMap);
         wobbleArm = new WobbleArm(hardwareMap);
 //        protoAruncare = new PrototipAruncare(hardwareMap);
 //        localizerMR = new AnalogEncoderLocalizerMR(hardwareMap);
-        localizer = new MixedEncoderLocalizer(hardwareMap);
+//        localizer = new MixedEncoderLocalizer(hardwareMap);
 
         initialize = false;
     }

@@ -58,8 +58,8 @@ public class MixedEncoderLocalizer extends TwoTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
-                encoderTicksToInches(middleEncoder),
-                voltageToInches(rightEncoder)
+                voltageToInches(rightEncoder),
+                encoderTicksToInches(middleEncoder)
         );
     }
 }
