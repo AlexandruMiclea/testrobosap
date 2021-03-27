@@ -80,7 +80,7 @@ public class AutonomousMain extends LinearOpMode {
         robot.drive.turn(Math.toRadians(90));
 
         //drive to where we drop the wobble goal
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(40)).splineToLinearHeading(wobbleDropPose, Math.toRadians(0)).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(60)).splineToLinearHeading(wobbleDropPose, Math.toRadians(0)).build());
 
         //drop wobble goal and lift arm back up
         robot.wobbleArm.armPositionToggle(false);
