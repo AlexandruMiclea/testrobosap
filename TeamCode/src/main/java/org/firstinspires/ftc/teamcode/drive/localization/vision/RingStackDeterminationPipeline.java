@@ -39,8 +39,8 @@ public class RingStackDeterminationPipeline extends OpenCvPipeline {
     //ONE: 146-148
     //FOUR: 153-154
 
-    final int FOUR_RING_THRESHOLD = 146;
-    final int ONE_RING_THRESHOLD = 138;
+    final int FOUR_RING_THRESHOLD = 137;
+    final int ONE_RING_THRESHOLD = 132;
 
     //TODO end redo
 

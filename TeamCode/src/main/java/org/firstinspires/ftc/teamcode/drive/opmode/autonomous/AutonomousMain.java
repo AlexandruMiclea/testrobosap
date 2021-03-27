@@ -83,9 +83,9 @@ public class AutonomousMain extends LinearOpMode {
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(80)).splineToLinearHeading(wobbleDropPose, Math.toRadians(0)).build());
 
         //drop wobble goal and lift arm back up
-        robot.wobbleArm.armPositionToggle(false);
-        robot.wobbleArm.clawToggle(false);
         robot.wobbleArm.armPositionToggle(true);
+        robot.wobbleArm.clawToggle(false);
+        robot.wobbleArm.armPositionToggle(false);
 
         //move to grab second wobble
 //        //TODO set values of tangents
