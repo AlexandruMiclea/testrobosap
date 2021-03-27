@@ -35,7 +35,7 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         ));
 
         rightEncoder = new AbsoluteEncoder(hardwareMap.get(AnalogInput.class, "rightEncoder"));
-        middleEncoder = new AbsoluteEncoder(hardwareMap.get(AnalogInput.class, "middleEncoder"));
+        middleEncoder = new AbsoluteEncoder(hardwareMap.get(AnalogInput.class, "middle"));
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -69,6 +69,15 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
                 middleEncoder.getTurnIndex()
         );
     }
+
+    public List <Double> getMaxVoltageRev(){
+        return Arrays.asList(
+                rightEncoder.getMaxVoltageRev(),
+                middleEncoder.getMaxVoltageRev()
+        );
+    }
+
+
 
     @Override
     public double getHeading() {

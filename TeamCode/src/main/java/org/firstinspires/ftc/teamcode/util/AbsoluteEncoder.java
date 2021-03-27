@@ -19,6 +19,8 @@ public class AbsoluteEncoder {
 
     public double getMaxVoltage() { return MAX_VOLTAGE; }
 
+    public double getMaxVoltageRev(){ return encoder.getMaxVoltage(); }
+
 
     public double getVoltageWithIndex(){
         double current1 = encoder.getVoltage();
