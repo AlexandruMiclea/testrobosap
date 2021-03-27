@@ -77,7 +77,12 @@ public class AnalogEncoderLocalizer extends TwoTrackingWheelLocalizer {
         );
     }
 
-
+    public List <Double> getVolt(){
+        return Arrays.asList(
+                rightEncoder.getVoltage(),
+                middleEncoder.getVoltage()
+        );
+    }
 
     @Override
     public double getHeading() {

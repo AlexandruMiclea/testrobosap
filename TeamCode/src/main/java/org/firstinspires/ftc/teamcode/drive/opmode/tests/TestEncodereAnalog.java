@@ -21,6 +21,7 @@ public class TestEncodereAnalog extends LinearOpMode {
             telemetry.addData("Voltaje totale cu index: ", encodere.getTotalVoltagesWithIndex());
             telemetry.addData("Voltaje totale in inch: ", encodere.getWheelPositions());
             telemetry.addData("Max voltagr func: ", encodere.getMaxVoltageRev());
+            telemetry.addData("voltaje pure: ", encodere.getVolt());
             telemetry.update();
         };
     }
