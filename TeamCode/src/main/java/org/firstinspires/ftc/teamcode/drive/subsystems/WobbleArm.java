@@ -91,10 +91,10 @@ public class WobbleArm extends Subsystem {
     }
 
     public void armPositionToggleAsync(boolean up){
-        this.subMode = SubMode.SUB_BUSY;
         motorBrat.setPower(0.2);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
+        this.subMode = SubMode.SUB_BUSY;
     }
 
     public void armPositionToggle(boolean up){
@@ -109,7 +109,7 @@ public class WobbleArm extends Subsystem {
                 break;
             case SUB_BUSY:
 //                motorBrat.setPower(0.2);
-                if (!motorBrat.isBusy() && motorBrat.getCurrentPosition()==motorBrat.getTargetPosition()) {
+                if (!motorBrat.isBusy()) {
                     this.subMode = SubMode.SUB_IDLE;
                 }
                 break;
