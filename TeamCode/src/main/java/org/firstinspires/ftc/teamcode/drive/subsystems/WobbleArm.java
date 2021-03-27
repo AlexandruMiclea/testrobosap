@@ -31,7 +31,7 @@ public class WobbleArm extends Subsystem {
 
         servoBrat.setPosition(CLAMPED_POS);
 
-        mode = Mode.IDLE;
+        mode = SubMode.IDLE;
     }
 
     public void setConstraints(boolean constraints){
@@ -90,12 +90,12 @@ public class WobbleArm extends Subsystem {
         motorBrat.setPower(0.2);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
-        mode = Mode.BUSY;
+        mode = Subsystem.SubMode.BUSY;
     }
 
     public void armPositionToggle(boolean up){
         armPositionToggleAsync(up);
-        waitForIdle();
+        waitForSubIdle();
     }
 
     public void update(){
@@ -104,8 +104,9 @@ public class WobbleArm extends Subsystem {
                 //do nothing
                 break;
             case BUSY:
+//                motorBrat.setPower(0.2);
                 if (!motorBrat.isBusy() && motorBrat.getCurrentPosition()!=motorBrat.getTargetPosition()) {
-                    mode = Subsystem.Mode.IDLE;
+                    mode = Subsystem.SubMode.IDLE;
                 }
                 break;
         }

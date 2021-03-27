@@ -2,20 +2,20 @@ package org.firstinspires.ftc.teamcode.drive;
 
 public abstract class Subsystem {
 
-    protected enum Mode {
+    protected enum SubMode {
         IDLE,
         BUSY
     }
 
-    protected Mode mode;
+    protected SubMode mode;
 
     protected abstract void update();
 
-    protected void waitForIdle() {
-        while (!Thread.currentThread().isInterrupted() && isBusy()) {
+    protected void waitForSubIdle() {
+        while (!Thread.currentThread().isInterrupted() && isSubBusy()) {
             update();
         }
     }
 
-    protected boolean isBusy() { return mode != Subsystem.Mode.IDLE; }
+    protected boolean isSubBusy() { return mode != Subsystem.SubMode.IDLE; }
 }
