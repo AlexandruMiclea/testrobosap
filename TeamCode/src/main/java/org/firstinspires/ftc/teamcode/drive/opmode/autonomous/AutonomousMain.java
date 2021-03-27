@@ -19,10 +19,10 @@ public class AutonomousMain extends LinearOpMode {
     private final Vector2d parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-2.3 * FOAM_TILE_INCH);
     //TODO: adjust depending on arm position
     private final Pose2d secondWobble = new Pose2d(-2.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180));
+    private Vector2d wobbleDropPose = new Vector2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH);
+    private double endTargetTangent = Math.toRadians(-180);
 
-    private Pose2d wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180));
-
-    public RingStackDeterminationPipeline.RingPosition numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
+    private RingStackDeterminationPipeline.RingPosition numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
 
     public void initAutonomous(){
         telemetry.addData(">", "Initializing...");
@@ -61,11 +61,14 @@ public class AutonomousMain extends LinearOpMode {
         //Set a target position on the field depending on the numbe of rings identified
         //TODO: adjust based on wobble arm position cause we need some clearance
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
-            wobbleDropPose = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(-120));
+            wobbleDropPose = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH,Math.toRadians(-120)).vec();
+            endTargetTangent = Math.toRadians(-120);
         } else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
-            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.7 * FOAM_TILE_INCH, Math.toRadians(-90));
+            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.7 * FOAM_TILE_INCH, Math.toRadians(-90)).vec();
+            endTargetTangent = Math.toRadians(-90);
         } else {
-            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180));
+            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180)).vec();
+            endTargetTangent = Math.toRadians(-180);
         }
 
         //Close OpenCV and thread as they are not used any longer
@@ -80,12 +83,12 @@ public class AutonomousMain extends LinearOpMode {
         robot.drive.turn(Math.toRadians(90));
 
         //drive to where we drop the wobble goal
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(80)).splineToLinearHeading(wobbleDropPose, Math.toRadians(0)).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(60)).splineTo(wobbleDropPose, endTargetTangent).build());
 
         //drop wobble goal and lift arm back up
-        robot.wobbleArm.armPositionToggle(true);
-        robot.wobbleArm.clawToggle(false);
         robot.wobbleArm.armPositionToggle(false);
+        robot.wobbleArm.clawToggle(false);
+        robot.wobbleArm.armPositionToggle(true);
 
         //move to grab second wobble
 //        //TODO set values of tangents
