@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.subsystems;
 
+import android.content.IntentFilter;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -78,13 +80,14 @@ public class WobbleArm extends Subsystem {
 
     public void clawToggle(boolean clamped) {
         if (!clamped) {
-            servoBrat.setPosition(0);
+            servoBrat.setPosition(UNCLAMPED_POS);
         } else if (clamped) {
-            servoBrat.setPosition(0.8);
+            servoBrat.setPosition(CLAMPED_POS);
         }
     }
 
     public void armPositionToggleAsync(boolean up){
+        motorBrat.setPower(0.2);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
         mode = Mode.BUSY;
@@ -101,8 +104,7 @@ public class WobbleArm extends Subsystem {
                 //do nothing
                 break;
             case BUSY:
-                motorBrat.setPower(0.3);
-                if (!motorBrat.isBusy()) {
+                if (!motorBrat.isBusy() && motorBrat.getCurrentPosition()!=motorBrat.getTargetPosition()) {
                     mode = Subsystem.Mode.IDLE;
                 }
                 break;
