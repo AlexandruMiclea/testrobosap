@@ -42,6 +42,8 @@ public class WobbleArm extends Subsystem {
 
     public DcMotor.RunMode getMotorMode(){ return motorBrat.getMode(); }
 
+    public Subsystem.SubMode getMode(){ return subMode; }
+
     public int getPosition() { return motorBrat.getCurrentPosition(); }
 
     public int getTargetPosition() { return motorBrat.getTargetPosition(); }
