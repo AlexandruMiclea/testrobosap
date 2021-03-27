@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.localization.vision.RingStackDeterminationPipeline;
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
@@ -31,9 +32,17 @@ public class AutonomousMain extends LinearOpMode {
         robot = new Robot(hardwareMap);
         robot.wobbleArm.clawToggle(true);
 
-        robot.wobbleArm.armPositionToggle(true);
+//        robot.wobbleArm.armPositionToggle(true);
 
         robot.openCV.start();
+
+        robot.wobbleArm.motorBrat.setPower(0.2);
+        robot.wobbleArm.motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.wobbleArm.motorBrat.setTargetPosition(robot.wobbleArm.HIGH_CONSTRAINT);
+        while (robot.wobbleArm.motorBrat.isBusy()){
+            idle();
+        }
+
 
         while (robot.isInitialize() && opModeIsActive()) {
             idle();
@@ -83,9 +92,26 @@ public class AutonomousMain extends LinearOpMode {
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(80)).splineToLinearHeading(wobbleDropPose, Math.toRadians(0)).build());
 
         //drop wobble goal and lift arm back up
-        robot.wobbleArm.armPositionToggle(false);
+        //TODO: asta e cea mai naspa romanizare anti oop posibila dar last resort
+        robot.wobbleArm.motorBrat.setPower(0.2);
+        robot.wobbleArm.motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.wobbleArm.motorBrat.setTargetPosition(robot.wobbleArm.LOW_CONSTRAINT);
+        while (robot.wobbleArm.motorBrat.isBusy()){
+            idle();
+        }
         robot.wobbleArm.clawToggle(false);
-        robot.wobbleArm.armPositionToggle(true);
+
+        robot.wobbleArm.motorBrat.setPower(0.2);
+        robot.wobbleArm.motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.wobbleArm.motorBrat.setTargetPosition(robot.wobbleArm.HIGH_CONSTRAINT);
+        while (robot.wobbleArm.motorBrat.isBusy()){
+            idle();
+        }
+
+
+//        robot.wobbleArm.armPositionToggle(false);
+//        robot.wobbleArm.clawToggle(false);
+//        robot.wobbleArm.armPositionToggle(true);
 
         //move to grab second wobble
 //        //TODO set values of tangents

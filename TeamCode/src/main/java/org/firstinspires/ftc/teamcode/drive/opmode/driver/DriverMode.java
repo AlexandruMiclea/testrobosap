@@ -40,14 +40,15 @@ public class DriverMode extends OpMode {
         }
 
         //test to position
-        if (gamepad1.right_bumper){
-            robot.wobbleArm.armPositionToggle(false);
-        }
-        else if(gamepad1.left_bumper){
-            robot.wobbleArm.armPositionToggle(true);
-        }
-        //miscat brat wobble goal sus jos
-        else if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
+//        if (gamepad1.right_bumper){
+//            robot.wobbleArm.armPositionToggle(false);
+//        }
+//        else if(gamepad1.left_bumper){
+//            robot.wobbleArm.armPositionToggle(true);
+//        }
+//        //miscat brat wobble goal sus jos
+//        else
+            if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             telemetry.addData("Apasam pe triggere", "");
             if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
                 robot.wobbleArm.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
