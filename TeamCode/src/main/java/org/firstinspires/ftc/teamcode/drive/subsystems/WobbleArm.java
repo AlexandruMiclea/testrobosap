@@ -22,14 +22,15 @@ public class WobbleArm {
     private boolean isConstraints;
 
     //TEMP
-    private SubMode subMode;
 
-    protected enum SubMode {
+    private enum SubMode {
         SUB_IDLE,
         SUB_BUSY
     }
 
-    protected void waitForSubIdle() {
+    private SubMode subMode;
+
+    private void waitForSubIdle() {
         while (!Thread.currentThread().isInterrupted() && isSubBusy()) {
             updateSub();
         }
@@ -106,7 +107,7 @@ public class WobbleArm {
     }
 
     public void armPositionToggleAsync(boolean up){
-        motorBrat.setPower(0.2);
+//        motorBrat.setPower(0.2);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
         subMode = SubMode.SUB_BUSY;
@@ -123,9 +124,10 @@ public class WobbleArm {
                 //do nothing
                 break;
             case SUB_BUSY:
-//                motorBrat.setPower(0.2);
+                motorBrat.setPower(0.2);
                 if (!motorBrat.isBusy()) {
                     subMode = SubMode.SUB_IDLE;
+                    stop();
                 }
                 break;
         }
