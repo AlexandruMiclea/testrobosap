@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
-public class WobbleArm extends Subsystem {
+public class WobbleArm {
 
     private int LOW_CONSTRAINT = -1100;
     private int HIGH_CONSTRAINT = -100;
@@ -21,7 +21,22 @@ public class WobbleArm extends Subsystem {
     private Servo servoBrat;
     private boolean isConstraints;
 
+    //TEMP
     private SubMode subMode;
+
+    protected enum SubMode {
+        SUB_IDLE,
+        SUB_BUSY
+    }
+
+    protected void waitForSubIdle() {
+        while (!Thread.currentThread().isInterrupted() && isSubBusy()) {
+            updateSub();
+        }
+    }
+
+    protected boolean isSubBusy() { return subMode != SubMode.SUB_IDLE; }
+    //END TEMP
 
     public WobbleArm(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
@@ -44,7 +59,7 @@ public class WobbleArm extends Subsystem {
 
     public DcMotor.RunMode getMotorMode(){ return motorBrat.getMode(); }
 
-    public Subsystem.SubMode getMode(){ return subMode; }
+    public SubMode getMode(){ return subMode; }
 
     public int getPosition() { return motorBrat.getCurrentPosition(); }
 
@@ -94,23 +109,23 @@ public class WobbleArm extends Subsystem {
         motorBrat.setPower(0.2);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
-        this.subMode = SubMode.SUB_BUSY;
+        subMode = SubMode.SUB_BUSY;
     }
 
     public void armPositionToggle(boolean up){
         armPositionToggleAsync(up);
-        waitForSubIdle(subMode);
+        waitForSubIdle();
     }
 
     public void updateSub(){
-        switch (this.subMode){
+        switch (subMode){
             case SUB_IDLE:
                 //do nothing
                 break;
             case SUB_BUSY:
 //                motorBrat.setPower(0.2);
                 if (!motorBrat.isBusy()) {
-                    this.subMode = SubMode.SUB_IDLE;
+                    subMode = SubMode.SUB_IDLE;
                 }
                 break;
         }
