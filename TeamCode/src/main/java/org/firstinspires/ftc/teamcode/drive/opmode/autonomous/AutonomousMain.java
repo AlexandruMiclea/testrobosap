@@ -16,11 +16,11 @@ public class AutonomousMain extends LinearOpMode {
     private static double FOAM_TILE_INCH = 23.6;
 
     private final Pose2d startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
-    private final Vector2d parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-2.5 * FOAM_TILE_INCH);
+    private final Vector2d parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-2.3 * FOAM_TILE_INCH);
     //TODO: adjust depending on arm position
     private final Pose2d secondWobble = new Pose2d(-2.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180));
 
-    private Pose2d wobbleDropPose = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(-180));
+    private Pose2d wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.6 * FOAM_TILE_INCH, Math.toRadians(-180));
 
     public RingStackDeterminationPipeline.RingPosition numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
 
@@ -61,11 +61,11 @@ public class AutonomousMain extends LinearOpMode {
         //Set a target position on the field depending on the numbe of rings identified
         //TODO: adjust based on wobble arm position cause we need some clearance
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
-            wobbleDropPose = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(-90));
+            wobbleDropPose = new Pose2d(1.2 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH, Math.toRadians(-120));
         } else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
-            wobbleDropPose = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(-90));
+            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.7 * FOAM_TILE_INCH, Math.toRadians(-90));
         } else {
-            wobbleDropPose = new Pose2d(0.5 * FOAM_TILE_INCH, -1.5 * FOAM_TILE_INCH, Math.toRadians(-180));
+            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.3 * FOAM_TILE_INCH, Math.toRadians(-180));
         }
 
         //Close OpenCV and thread as they are not used any longer

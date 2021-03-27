@@ -9,7 +9,7 @@ public class AbsoluteEncoder {
     private double turnIndex = 0;
     private double voltageWithIndex =0;
 
-    private static double MAX_VOLTAGE =3.3;
+    private static double MAX_VOLTAGE =3.25;
 
     private double initVolt;
 
