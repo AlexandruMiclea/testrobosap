@@ -41,10 +41,10 @@ public class DriverMode extends OpMode {
 
         //test to position
         if (gamepad1.right_bumper){
-            robot.wobbleArm.armPositionToggle(false);
+            robot.wobbleArm.armPositionToggleAsync(false);
         }
         else if(gamepad1.left_bumper){
-            robot.wobbleArm.armPositionToggle(true);
+            robot.wobbleArm.armPositionToggleAsync(true);
         }
         //miscat brat wobble goal sus jos
         else if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
@@ -61,16 +61,20 @@ public class DriverMode extends OpMode {
             robot.wobbleArm.stop();
         }
 
+        if(!Thread.currentThread().isInterrupted()){
+            robot.wobbleArm.updateSub();
+        }
+
         telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
         telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
         telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
-//        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
+        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
+        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
 
         if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
             telemetry.addData("target", robot.wobbleArm.getTargetPosition());
         }
 
-//        telemetry.addData("Index: ", robot.localizer.getWheelPositions());
-//        telemetry.update();
+        telemetry.update();
     }
 }
