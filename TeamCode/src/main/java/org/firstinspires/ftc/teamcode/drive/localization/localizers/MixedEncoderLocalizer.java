@@ -33,6 +33,7 @@ public class MixedEncoderLocalizer extends TwoTrackingWheelLocalizer {
         ));
 
         middleEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "middleEncoder"));
+        middleEncoder.setDirection(Encoder.Direction.REVERSE);
         rightEncoder = new AbsoluteEncoder(hardwareMap.get(AnalogInput.class, "rightEncoder"));
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
