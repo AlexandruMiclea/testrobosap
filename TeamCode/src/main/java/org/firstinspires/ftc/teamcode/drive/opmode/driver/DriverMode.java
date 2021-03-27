@@ -64,7 +64,7 @@ public class DriverMode extends OpMode {
         telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
         telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
         telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
-        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
+//        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
 
         if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
             telemetry.addData("target", robot.wobbleArm.getTargetPosition());
