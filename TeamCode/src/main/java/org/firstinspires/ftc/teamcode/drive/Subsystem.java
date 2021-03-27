@@ -7,15 +7,15 @@ public abstract class Subsystem {
         SUB_BUSY
     }
 
-//    protected SubMode subMode;
+    protected SubMode subMode;
 
     protected abstract void updateSub();
 
-    protected void waitForSubIdle(SubMode mode) {
-        while (!Thread.currentThread().isInterrupted() && isSubBusy(mode)) {
+    protected void waitForSubIdle() {
+        while (!Thread.currentThread().isInterrupted() && isSubBusy()) {
             updateSub();
         }
     }
 
-    protected boolean isSubBusy(SubMode mode) { return mode != SubMode.SUB_IDLE; }
+    protected boolean isSubBusy() { return subMode != SubMode.SUB_IDLE; }
 }

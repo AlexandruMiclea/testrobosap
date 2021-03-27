@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
-public class WobbleArm {
+public class WobbleArm extends Subsystem{
 
     private int LOW_CONSTRAINT = -1100;
     private int HIGH_CONSTRAINT = -100;
@@ -20,24 +20,6 @@ public class WobbleArm {
     private DcMotor motorBrat;
     private Servo servoBrat;
     private boolean isConstraints;
-
-    //TEMP
-
-    private enum SubMode {
-        SUB_IDLE,
-        SUB_BUSY
-    }
-
-    private SubMode subMode;
-
-    private void waitForSubIdle() {
-        while (!Thread.currentThread().isInterrupted() && isSubBusy()) {
-            updateSub();
-        }
-    }
-
-    protected boolean isSubBusy() { return subMode != SubMode.SUB_IDLE; }
-    //END TEMP
 
     public WobbleArm(HardwareMap hardwareMap) {
         motorBrat = hardwareMap.dcMotor.get("motorBrat");
@@ -60,7 +42,7 @@ public class WobbleArm {
 
     public DcMotor.RunMode getMotorMode(){ return motorBrat.getMode(); }
 
-    public SubMode getMode(){ return subMode; }
+//    public SubMode getMode(){ return subMode; }
 
     public int getPosition() { return motorBrat.getCurrentPosition(); }
 
@@ -107,7 +89,7 @@ public class WobbleArm {
     }
 
     public void armPositionToggleAsync(boolean up){
-//        motorBrat.setPower(0.2);
+        motorBrat.setPower(0.2);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBrat.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
         subMode = SubMode.SUB_BUSY;
@@ -124,10 +106,9 @@ public class WobbleArm {
                 //do nothing
                 break;
             case SUB_BUSY:
-                motorBrat.setPower(0.2);
+//                motorBrat.setPower(0.2);
                 if (!motorBrat.isBusy()) {
                     subMode = SubMode.SUB_IDLE;
-                    stop();
                 }
                 break;
         }
