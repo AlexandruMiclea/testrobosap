@@ -20,7 +20,7 @@ public class AutonomousMain extends LinearOpMode {
     //TODO: adjust depending on arm position
     private final Pose2d secondWobble = new Pose2d(-2.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180));
 
-    private Pose2d wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.6 * FOAM_TILE_INCH, Math.toRadians(-180));
+    private Pose2d wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180));
 
     public RingStackDeterminationPipeline.RingPosition numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
 
@@ -65,7 +65,7 @@ public class AutonomousMain extends LinearOpMode {
         } else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
             wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.7 * FOAM_TILE_INCH, Math.toRadians(-90));
         } else {
-            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.3 * FOAM_TILE_INCH, Math.toRadians(-180));
+            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180));
         }
 
         //Close OpenCV and thread as they are not used any longer
@@ -80,7 +80,7 @@ public class AutonomousMain extends LinearOpMode {
         robot.drive.turn(Math.toRadians(90));
 
         //drive to where we drop the wobble goal
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(80)).splineToLinearHeading(wobbleDropPose, Math.toRadians(-20)).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(80)).splineToLinearHeading(wobbleDropPose, Math.toRadians(0)).build());
 
         //drop wobble goal and lift arm back up
         robot.wobbleArm.armPositionToggle(false);
