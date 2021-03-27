@@ -9,11 +9,11 @@ public abstract class Subsystem {
 
 //    protected SubMode subMode;
 
-    protected abstract void updateSub(SubMode mode);
+    protected abstract void updateSub();
 
     protected void waitForSubIdle(SubMode mode) {
         while (!Thread.currentThread().isInterrupted() && isSubBusy(mode)) {
-            updateSub(mode);
+            updateSub();
         }
     }
 
