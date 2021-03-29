@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class WobbleArm extends Subsystem{
 
-    private int LOW_CONSTRAINT = -1300;
-    private int HIGH_CONSTRAINT = -100;
+    private int LOW_CONSTRAINT = -600;
+    private int HIGH_CONSTRAINT = 500;
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
     private double CLAMPED_POS = 0.8, UNCLAMPED_POS = 0;
 
