@@ -17,5 +17,5 @@ public abstract class Subsystem {
         }
     }
 
-    protected boolean isSubBusy() { return subMode != SubMode.SUB_IDLE; }
+    public boolean isSubBusy() { return subMode != SubMode.SUB_IDLE; }
 }

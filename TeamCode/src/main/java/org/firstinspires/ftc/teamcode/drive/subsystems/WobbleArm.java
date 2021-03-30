@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.drive.subsystems;
 
-import android.content.IntentFilter;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -10,10 +8,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
-public class WobbleArm extends Subsystem{
+public class WobbleArm extends Subsystem {
 
-    private int LOW_CONSTRAINT = -600;
-    private int HIGH_CONSTRAINT = 500;
+    private int LOW_CONSTRAINT = -1100;
+    private int HIGH_CONSTRAINT = 200;
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
     private double CLAMPED_POS = 0.8, UNCLAMPED_POS = 0;
 
@@ -109,7 +107,7 @@ public class WobbleArm extends Subsystem{
                 break;
             case SUB_BUSY:
 //                motorBrat.setPower(0.2);
-                if (!motorBrat.isBusy()) {
+                if (!motorBrat.isBusy() && motorBrat.getCurrentPosition() == motorBrat.getTargetPosition()) {
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;
