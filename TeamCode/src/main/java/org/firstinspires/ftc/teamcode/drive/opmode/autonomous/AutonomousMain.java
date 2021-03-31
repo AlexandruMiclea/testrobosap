@@ -61,7 +61,6 @@ public class AutonomousMain extends LinearOpMode {
 
         //Set a target position on the field depending on the numbe of rings identified
         //TODO: adjust based on wobble arm position cause we need some clearance
-        numberOfRing = RingStackDeterminationPipeline.RingPosition.ONE;
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             wobbleDropPose = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH,Math.toRadians(-120)).vec();
             endTargetTangent = Math.toRadians(-120);
