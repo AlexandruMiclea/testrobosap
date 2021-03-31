@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.drive.subsystems.WobbleArm;
 public class Robot {
     private boolean initialize;
     public MecanumDriveChassis drive;
-    public OpenCVThread openCV;
+    //public OpenCVThread openCV;
     public ElapsedTime timer;
     public WobbleArm wobbleArm;
 //    public MixedEncoderLocalizer localizer;
@@ -23,8 +23,8 @@ public class Robot {
         initialize = true;
 
         drive = new MecanumDriveChassis(hardwareMap);
-        openCV = new OpenCVThread(hardwareMap);
-        timer = new ElapsedTime();
+        //openCV = new OpenCVThread(hardwareMap);
+        //timer = new ElapsedTime();
         //sistColectare = new PrototipSistColectare(hardwareMap);
         wobbleArm = new WobbleArm(hardwareMap);
 //        protoAruncare = new PrototipAruncare(hardwareMap);

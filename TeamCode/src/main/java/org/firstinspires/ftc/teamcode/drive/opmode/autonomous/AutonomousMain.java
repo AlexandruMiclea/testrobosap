@@ -61,6 +61,7 @@ public class AutonomousMain extends LinearOpMode {
 
         //Set a target position on the field depending on the numbe of rings identified
         //TODO: adjust based on wobble arm position cause we need some clearance
+        numberOfRing = RingStackDeterminationPipeline.RingPosition.ONE;
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             wobbleDropPose = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH,Math.toRadians(-120)).vec();
             endTargetTangent = Math.toRadians(-120);
@@ -86,7 +87,8 @@ public class AutonomousMain extends LinearOpMode {
         //drive to where we drop the wobble goal
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(60)).splineTo(wobbleDropPose, endTargetTangent).build());
 
-        if(numberOfRing == RingStackDeterminationPipeline.RingPosition.NONE) robot.drive.turn(Math.toRadians(-90));
+        if(numberOfRing == RingStackDeterminationPipeline.RingPosition.NONE)
+            robot.drive.turn(Math.toRadians(-90));
 
         //drop wobble goal and lift arm back up
         robot.wobbleArm.armPositionToggle(false);
@@ -98,6 +100,8 @@ public class AutonomousMain extends LinearOpMode {
             telemetry.addData("IsMotorBusy: ", robot.wobbleArm.getMotorIsBusy());
             telemetry.update();
         }
+
+
 
         //move to grab second wobble
 //        //TODO set values of tangents
