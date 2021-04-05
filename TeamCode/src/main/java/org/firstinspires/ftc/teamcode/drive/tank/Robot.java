@@ -25,8 +25,7 @@ public class Robot {
         drive = new MecanumDriveChassis(hardwareMap);
         openCV = new OpenCVThread(hardwareMap);
         timer = new ElapsedTime();
-        //sistColectare = new PrototipSistColectare(hardwareMap);
-        wobbleArm = new WobbleArm(hardwareMap);
+        //sistColectare = new PrototipSistColectare(hardwareMap);/wobbleArm = new WobbleArm(hardwareMap);
 //        protoAruncare = new PrototipAruncare(hardwareMap);
 //        localizerMR = new AnalogEncoderLocalizerMR(hardwareMap);
 //        localizer = new MixedEncoderLocalizer(hardwareMap);

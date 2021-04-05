@@ -92,15 +92,7 @@ public class AutonomousMain extends LinearOpMode {
         //drop wobble goal and lift arm back up
         robot.wobbleArm.armPositionToggle(false);
         robot.wobbleArm.clawToggle(false);
-        robot.wobbleArm.armPositionToggleAsync(true);
-
-        while (!Thread.currentThread().isInterrupted() && robot.wobbleArm.isSubBusy()){
-            robot.wobbleArm.updateSub();
-            telemetry.addData("IsMotorBusy: ", robot.wobbleArm.getMotorIsBusy());
-            telemetry.update();
-        }
-
-
+        robot.wobbleArm.armPositionToggle(true);
 
         //move to grab second wobble
 //        //TODO set values of tangents
