@@ -73,7 +73,9 @@ public class DriverMode extends OpMode {
             robot.thrower.pushRing(true);
         } else if (gamepad2.b){
             robot.thrower.pushRing(false);
-        } else if (gamepad2.y){
+        }
+       //this is only for testing purpose
+        else if (gamepad2.y){
             robot.thrower.pushRing();
         }
 
@@ -114,22 +116,25 @@ public class DriverMode extends OpMode {
             robot.collector.updateSub();
         }
 
+ */
+
         //TELEMETRIES
         telemetry.addData("putere aruncare", robot.thrower.getPower());
-        telemetry.addData("pozitie motor pivot", robot.collector.getPosition());
+        telemetry.addData("motor velocity", robot.thrower.getVelo());
+//        telemetry.addData("pozitie motor pivot", robot.collector.getPosition());
 
         telemetry.addLine();
 
-        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
-        telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
-        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
-        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
-        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
+//        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
+//        telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
+//        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
+//        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
+//        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
+//
+//        if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
+//            telemetry.addData("target", robot.wobbleArm.getTargetPosition());
+//        }
 
-        if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
-            telemetry.addData("target", robot.wobbleArm.getTargetPosition());
-        }
-*/
         telemetry.update();
     }
 }
