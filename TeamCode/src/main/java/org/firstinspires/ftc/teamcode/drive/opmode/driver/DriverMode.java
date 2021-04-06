@@ -61,14 +61,14 @@ public class DriverMode extends OpMode {
         else if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
             robot.wobbleArm.stop();
         }
-
+*/
         //SIST ARUNCARE
         if(gamepad2.left_stick_x > 0){
             robot.thrower.rotateAsync(gamepad2.left_stick_x);
         } else {
             robot.thrower.stop();
         }
-
+/*
         //SIST COLECTARE
         //TODO decomentat cand aveti constraints
         //oprit sau pornit constraints
