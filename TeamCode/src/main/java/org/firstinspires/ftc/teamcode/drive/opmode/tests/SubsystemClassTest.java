@@ -17,8 +17,8 @@ public class SubsystemClassTest extends LinearOpMode {
         telemetry.addData(">", "Initializing...");
         telemetry.update();
         robot = new Robot(hardwareMap);
-        robot.wobbleArm.clawToggle(true);
-        robot.wobbleArm.armPositionToggle(true);
+        /*robot.wobbleArm.clawToggle(true);
+        robot.wobbleArm.armPositionToggle(true);*/
 
         while (robot.isInitialize() && opModeIsActive()) {
             idle();
@@ -29,7 +29,7 @@ public class SubsystemClassTest extends LinearOpMode {
 
         waitForStart();
 
-        robot.wobbleArm.armPositionToggle(false);
+        /*robot.wobbleArm.armPositionToggle(false);
         robot.wobbleArm.clawToggle(false);
         robot.drive.turn(Math.toRadians(-90));
         robot.wobbleArm.clawToggle(true);
@@ -38,6 +38,6 @@ public class SubsystemClassTest extends LinearOpMode {
         robot.wobbleArm.clawToggle(false);
         robot.wobbleArm.armPositionToggle(false);
         robot.drive.turn(Math.toRadians(-90));
-        robot.wobbleArm.armPositionToggle(true);
+        robot.wobbleArm.armPositionToggle(true);*/
     }
 }
