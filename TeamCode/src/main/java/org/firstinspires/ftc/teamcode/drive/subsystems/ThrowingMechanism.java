@@ -12,7 +12,7 @@ public class ThrowingMechanism extends Subsystem {
     private DcMotor throwWheelMotor;
 
     //TODO decomentat cand e montat sau mapat in config
-//    private Servo pushServo;
+    private Servo pushServo;
 
     private double SERVO_PUSHED = 1, SERVO_REST = 0;
 
@@ -20,11 +20,11 @@ public class ThrowingMechanism extends Subsystem {
         throwWheelMotor = hardwareMap.dcMotor.get("motorAruncare");
 
         throwWheelMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        throwWheelMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        throwWheelMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         throwWheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-//        pushServo = hardwareMap.servo.get("servoImpins");
-//        pushServo.setPosition(SERVO_REST);
+        pushServo = hardwareMap.servo.get("servoImpins");
+        pushServo.setPosition(SERVO_REST);
     }
 
     public double getPower(){
@@ -33,10 +33,14 @@ public class ThrowingMechanism extends Subsystem {
 
 
     //TODO nu stiu daca acest set de instructiuni functioneaza sau daca da skip peste ele
-//    public void pushRing(){
-//        pushServo.setPosition(SERVO_PUSHED);
-//        pushServo.setPosition(SERVO_REST);
-//    }
+    public void pushRing(){
+        pushServo.setPosition(SERVO_PUSHED);
+        pushServo.setPosition(SERVO_REST);
+    }
+
+    public void pushRing(boolean push){
+        pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
+    }
 
     public void rotateAsync( double speed){
         speed = Range.clip(speed, -0.9, 0.9);

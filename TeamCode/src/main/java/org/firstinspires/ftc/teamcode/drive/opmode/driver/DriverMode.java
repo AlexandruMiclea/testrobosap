@@ -63,11 +63,20 @@ public class DriverMode extends OpMode {
         }
 */
         //SIST ARUNCARE
-        if(gamepad2.left_stick_x > 0){
+        if(gamepad2.left_stick_y != 0){
             robot.thrower.rotateAsync(gamepad2.left_stick_x);
         } else {
             robot.thrower.stop();
         }
+
+        if(gamepad2.a){
+            robot.thrower.pushRing(true);
+        } else if (gamepad2.b){
+            robot.thrower.pushRing(false);
+        } else if (gamepad2.y){
+            robot.thrower.pushRing();
+        }
+
 /*
         //SIST COLECTARE
         //TODO decomentat cand aveti constraints
