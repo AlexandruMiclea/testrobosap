@@ -8,67 +8,63 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 public class CollectionMechanism extends Subsystem {
-    private DcMotor motorSistColectare;
+    private DcMotor collectArmMotor;
     private Servo servoHoldRing;
 
     //TODO gasit aceste pozitii
-    private double CLAMPED_POSE, UNCLAMPED_POSE;
+    private double CLAMPED_POSE = 1, UNCLAMPED_POSE = 0;
     private int THROW_RAMP_POSE, COLLECT_POSE;
     private double MAX_LIFT_SPEED = 0.9, MAX_LOWER_SPEED = 0.9;
     private boolean isConstraints;
 
     public CollectionMechanism(HardwareMap hardwareMap){
-        motorSistColectare = hardwareMap.dcMotor.get("motorColectare");
+        collectArmMotor = hardwareMap.dcMotor.get("motorColectare");
 
-        motorSistColectare.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorSistColectare.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorSistColectare.setDirection(DcMotorSimple.Direction.FORWARD);
+        collectArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        collectArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        collectArmMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        servoHoldRing =  hardwareMap.servo.get("servoTinutInele");
-        servoHoldRing.setPosition(UNCLAMPED_POSE);
+//        servoHoldRing =  hardwareMap.servo.get("servoTinutInele");
+//        servoHoldRing.setPosition(UNCLAMPED_POSE);
 
+        //TODO true cand avem constraints
         isConstraints = false;
     }
 
-    public double getPosition(){ return motorSistColectare.getCurrentPosition(); }
+    public double getPosition(){ return collectArmMotor.getCurrentPosition(); }
 
-    public DcMotor.RunMode getMotorMode(){ return motorSistColectare.getMode(); }
+    public DcMotor.RunMode getMotorMode(){ return collectArmMotor.getMode(); }
 
-    public void setMotorMode(DcMotor.RunMode mode){ motorSistColectare.setMode(mode); }
+    public void setMotorMode(DcMotor.RunMode mode){ collectArmMotor.setMode(mode); }
 
     public void setConstraints(boolean constraints){
         this.isConstraints = constraints;
     }
 
     public void holdRingToggle(boolean hold){
-        if(hold){
-            servoHoldRing.setPosition(CLAMPED_POSE);
-        } else {
-            servoHoldRing.setPosition(UNCLAMPED_POSE);
-        }
+        servoHoldRing.setPosition(hold? CLAMPED_POSE : UNCLAMPED_POSE);
     }
-
-    public void stop() { motorSistColectare.setPower(0); }
+    public void stop() { collectArmMotor.setPower(0); }
 
     public void moveArm(double speed) {
         if (isConstraints){
-            if(speed > 0 && motorSistColectare.getCurrentPosition() > THROW_RAMP_POSE){
+            if(speed > 0 && collectArmMotor.getCurrentPosition() > THROW_RAMP_POSE){
                 stop();
             }
-            else if(speed < 0 && motorSistColectare.getCurrentPosition() < COLLECT_POSE){
+            else if(speed < 0 && collectArmMotor.getCurrentPosition() < COLLECT_POSE){
                 stop();
             } else {
-                motorSistColectare.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
+                collectArmMotor.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
             }
         } else {
-            motorSistColectare.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
+            collectArmMotor.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
         }
     }
 
     public void collectToggleAsync(boolean isCollecting){
-        motorSistColectare.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorSistColectare.setPower(0.2);
-        motorSistColectare.setTargetPosition(isCollecting ? COLLECT_POSE : THROW_RAMP_POSE);
+        collectArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        collectArmMotor.setPower(0.2);
+        collectArmMotor.setTargetPosition(isCollecting ? COLLECT_POSE : THROW_RAMP_POSE);
         subMode = SubMode.SUB_BUSY;
     }
 
@@ -84,7 +80,7 @@ public class CollectionMechanism extends Subsystem {
                 //do nothing
                 break;
             case SUB_BUSY:
-                if(motorSistColectare.getCurrentPosition() == motorSistColectare.getTargetPosition()){
+                if(collectArmMotor.getCurrentPosition() == collectArmMotor.getTargetPosition()){
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;
