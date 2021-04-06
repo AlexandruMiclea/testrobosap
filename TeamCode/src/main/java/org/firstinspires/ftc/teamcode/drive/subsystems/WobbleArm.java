@@ -15,19 +15,19 @@ public class WobbleArm extends Subsystem {
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
     private double CLAMPED_POS = 0.8, UNCLAMPED_POS = 0;
 
-    private DcMotor motorBrat;
-    private Servo servoBrat;
+    private DcMotor armMotor;
+    private Servo clamServo;
     private boolean isConstraints;
 
     public WobbleArm(HardwareMap hardwareMap) {
-        motorBrat = hardwareMap.dcMotor.get("motorBrat");
-        servoBrat = hardwareMap.servo.get("servoBrat");
+        armMotor = hardwareMap.dcMotor.get("motorBrat");
+        clamServo = hardwareMap.servo.get("servoBrat");
 
-        motorBrat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBrat.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        servoBrat.setPosition(CLAMPED_POS);
+        clamServo.setPosition(CLAMPED_POS);
 
         subMode = SubMode.SUB_IDLE;
     }
@@ -36,62 +36,62 @@ public class WobbleArm extends Subsystem {
         this.isConstraints = constraints;
     }
 
-    public void setMotorMode(DcMotor.RunMode mode){ motorBrat.setMode(mode); }
+    public void setMotorMode(DcMotor.RunMode mode){ armMotor.setMode(mode); }
 
-    public DcMotor.RunMode getMotorMode(){ return motorBrat.getMode(); }
+    public DcMotor.RunMode getMotorMode(){ return armMotor.getMode(); }
 
-    public boolean getMotorIsBusy(){ return motorBrat.isBusy(); }
+    public boolean getMotorIsBusy(){ return armMotor.isBusy(); }
 
     public SubMode getMode(){ return subMode; }
 
-    public int getPosition() { return motorBrat.getCurrentPosition(); }
+    public int getPosition() { return armMotor.getCurrentPosition(); }
 
-    public int getTargetPosition() { return motorBrat.getTargetPosition(); }
+    public int getTargetPosition() { return armMotor.getTargetPosition(); }
 
     public boolean getConstraints(){
         return isConstraints;
     }
 
     public void stop() {
-        motorBrat.setPower(0);
+        armMotor.setPower(0);
     }
 
     public void moveArm(double speed) {
         if (isConstraints){
-            if(speed > 0 && motorBrat.getCurrentPosition() > HIGH_CONSTRAINT){
+            if(speed > 0 && armMotor.getCurrentPosition() > HIGH_CONSTRAINT){
                 stop();
             }
-            else if(speed < 0 && motorBrat.getCurrentPosition() < LOW_CONSTRAINT){
+            else if(speed < 0 && armMotor.getCurrentPosition() < LOW_CONSTRAINT){
                 stop();
             } else {
-                motorBrat.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
+                armMotor.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
             }
 
         } else {
-            motorBrat.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
+            armMotor.setPower(speed * (speed > 0? MAX_LIFT_SPEED : MAX_LOWER_SPEED));
         }
     }
 
     public void clawToggle() {
-        if (servoBrat.getPosition() == CLAMPED_POS) {
-            servoBrat.setPosition(UNCLAMPED_POS);
-        } else if (servoBrat.getPosition() == UNCLAMPED_POS) {
-            servoBrat.setPosition(CLAMPED_POS);
+        if (clamServo.getPosition() == CLAMPED_POS) {
+            clamServo.setPosition(UNCLAMPED_POS);
+        } else if (clamServo.getPosition() == UNCLAMPED_POS) {
+            clamServo.setPosition(CLAMPED_POS);
         }
     }
 
     public void clawToggle(boolean clamped) {
         if (!clamped) {
-            servoBrat.setPosition(UNCLAMPED_POS);
+            clamServo.setPosition(UNCLAMPED_POS);
         } else if (clamped) {
-            servoBrat.setPosition(CLAMPED_POS);
+            clamServo.setPosition(CLAMPED_POS);
         }
     }
 
     public void armPositionToggleAsync(boolean up){
-        motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBrat.setPower(0.2);
-        motorBrat.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(0.2);
+        armMotor.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
         subMode = SubMode.SUB_BUSY;
     }
 
@@ -106,7 +106,7 @@ public class WobbleArm extends Subsystem {
                 //do nothing
                 break;
             case SUB_BUSY:
-                if (motorBrat.getCurrentPosition() == motorBrat.getTargetPosition()) {
+                if (armMotor.getCurrentPosition() == armMotor.getTargetPosition()) {
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;
