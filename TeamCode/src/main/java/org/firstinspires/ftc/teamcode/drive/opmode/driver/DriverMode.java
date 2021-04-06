@@ -26,6 +26,7 @@ public class DriverMode extends OpMode {
         //Practic baietii nostri au exact functia noastra de calculat vitezele
         robot.drive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x));
 
+        //SIST WOBBLE GOAL
         //inchis/deschis gheara wobble goal
         if(gamepad1.a){
             robot.wobbleArm.clawToggle(true);
@@ -61,9 +62,52 @@ public class DriverMode extends OpMode {
             robot.wobbleArm.stop();
         }
 
+        //SIST ARUNCARE
+        if(gamepad2.left_stick_x > 0){
+            robot.thrower.rotateAsync(gamepad2.left_stick_x);
+        } else {
+            robot.thrower.stop();
+        }
+
+        //SIST COLECTARE
+        //TODO decomentat cand aveti constraints
+        //oprit sau pornit constraints
+//        if(gamepad1.x){
+//            robot.collector.setConstraints(!robot.wobbleArm.getConstraints());
+//        }
+
+        //test to position
+        if (gamepad2.right_bumper){
+            robot.collector.collectToggleAsync(false);
+        }
+        else if(gamepad2.left_bumper){
+            robot.collector.collectToggleAsync(true);
+        }
+        //miscat brat wobble goal sus jos
+        else if (gamepad2.left_trigger > 0.1 || gamepad2.right_trigger > 0.1) {
+            telemetry.addData("Apasam pe triggere", "");
+            if(robot.collector.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
+                robot.collector.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            if(gamepad2.left_trigger > 0)
+                robot.collector.moveArm(gamepad1.left_trigger);
+            else if(gamepad2.right_trigger > 0)
+                robot.collector.moveArm(-gamepad1.right_trigger);
+        }
+        else if(robot.collector.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
+            robot.collector.stop();
+        }
+
         if(!Thread.currentThread().isInterrupted()){
             robot.wobbleArm.updateSub();
+            robot.collector.updateSub();
         }
+
+        //TELEMETRIES
+        telemetry.addData("putere aruncare", robot.thrower.getPower());
+        telemetry.addData("pozitie motor pivot", robot.collector.getPosition());
+
+        telemetry.addLine();
 
         telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
         telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());

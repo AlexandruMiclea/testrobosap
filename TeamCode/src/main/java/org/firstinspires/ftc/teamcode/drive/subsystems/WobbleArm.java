@@ -106,8 +106,7 @@ public class WobbleArm extends Subsystem {
                 //do nothing
                 break;
             case SUB_BUSY:
-//                motorBrat.setPower(0.2);
-                if (!motorBrat.isBusy() && motorBrat.getCurrentPosition() == motorBrat.getTargetPosition()) {
+                if (motorBrat.getCurrentPosition() == motorBrat.getTargetPosition()) {
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;
