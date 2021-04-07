@@ -26,44 +26,44 @@ public class DriverMode extends OpMode {
 
         //SIST WOBBLE GOAL
         //inchis/deschis gheara wobble goal
-        if(gamepad1.a){
+        if (gamepad1.a) {
             robot.wobbleArm.clawToggle(true);
         }
-        if (gamepad1.b){
+        if (gamepad1.b) {
             robot.wobbleArm.clawToggle(false);
         }
 
         //oprit sau pornit constraints
-        if(gamepad1.x){
+        if (gamepad1.x) {
             robot.wobbleArm.setConstraints(!robot.wobbleArm.getConstraints());
         }
 
         //test to position
-        if (gamepad1.right_bumper){
+        if (gamepad1.right_bumper) {
             robot.wobbleArm.armPositionToggleAsync(false);
-        }
-        else if(gamepad1.left_bumper){
+        } else if (gamepad1.left_bumper) {
             robot.wobbleArm.armPositionToggleAsync(true);
         }
         //miscat brat wobble goal sus jos
         else if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             telemetry.addData("Apasam pe triggere", "");
-            if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
+            if (robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION) {
                 robot.wobbleArm.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            if(gamepad1.left_trigger > 0)
+            if (gamepad1.left_trigger > 0)
                 robot.wobbleArm.moveArm(gamepad1.left_trigger);
-            else if(gamepad1.right_trigger > 0)
+            else if (gamepad1.right_trigger > 0)
                 robot.wobbleArm.moveArm(-gamepad1.right_trigger);
-        }
-        else if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
+        } else if (robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
             robot.wobbleArm.stop();
         }
 
-        /*//SIST ARUNCARE
-        if(gamepad2.left_stick_y != 0){
-            robot.thrower.rotateAsync(gamepad2.left_stick_x);
-        } else {
+        //SIST ARUNCARE
+        if (gamepad2.left_stick_y != 0) {
+            robot.thrower.rotateAsync(gamepad2.left_stick_y);
+        } else if (gamepad2.dpad_up){
+            robot.thrower.rotateAtSpeedAsync(2800);
+        }else {
             robot.thrower.stop();
         }
 
@@ -75,7 +75,7 @@ public class DriverMode extends OpMode {
        //this is only for testing purpose
         else if (gamepad2.y){
             robot.thrower.pushRing();
-        }*/
+        }
 
 
         //SIST COLECTARE
@@ -121,15 +121,18 @@ public class DriverMode extends OpMode {
 
         //telemetry.addLine();
 
-        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
+//        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
 //        telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
-        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
-        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
-        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
+//        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
+//        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
+//        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
 //
 //        if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
 //            telemetry.addData("target", robot.wobbleArm.getTargetPosition());
 //        }
+
+        telemetry.addData("Thrower current", robot.thrower.getCurrent());
+        telemetry.addData("Thrower speed", robot.thrower.getVelo());
 
         telemetry.update();
     }

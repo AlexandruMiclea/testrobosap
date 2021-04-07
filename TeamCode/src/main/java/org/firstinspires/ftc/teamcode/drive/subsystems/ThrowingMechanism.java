@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 public class ThrowingMechanism extends Subsystem {
@@ -39,6 +40,8 @@ public class ThrowingMechanism extends Subsystem {
 
     public double getVelo(){ return throwWheelMotor.getVelocity();}
 
+    public double getCurrent(){ return  throwWheelMotor.getCurrent(CurrentUnit.AMPS); }
+
     public void stop(){ throwWheelMotor.setPower(0); }
 
     //TODO nu stiu daca acest set de instructiuni functioneaza sau daca da skip peste ele
@@ -51,15 +54,26 @@ public class ThrowingMechanism extends Subsystem {
         pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
     }
 
-    public void rotateAsync(double speed){
-        speed = Range.clip(speed, -0.9, 0.9);
-        throwWheelMotor.setPower(speed);
+    public void rotateAsync(double power){
+        power = Range.clip(power, -0.9, 0.9);
+        throwWheelMotor.setPower(power);
         timer.reset();
         subMode = SubMode.SUB_BUSY;
     }
 
-    public void rotate(double speed){
-        rotateAsync(speed);
+    public void rotateAtSpeedAsync(double speed){
+        throwWheelMotor.setVelocity(speed);
+        timer.reset();
+        subMode = SubMode.SUB_BUSY;
+    }
+
+    public void rotate(double power){
+        rotateAsync(power);
+        waitForSubIdle();
+    }
+
+    public void rotateAtSpeed(double speed){
+        rotateAtSpeedAsync(speed);
         waitForSubIdle();
     }
 

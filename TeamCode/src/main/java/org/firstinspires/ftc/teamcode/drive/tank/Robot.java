@@ -19,7 +19,7 @@ public class Robot {
     public ElapsedTime timer;
     public WobbleArm wobbleArm;
 
-    //public ThrowingMechanism thrower;
+    public ThrowingMechanism thrower;
     public CollectionMechanism collector;
 
     public Robot (HardwareMap hardwareMap) {
@@ -30,7 +30,7 @@ public class Robot {
         timer = new ElapsedTime();
 
         wobbleArm = new WobbleArm(hardwareMap);
-        //thrower = new ThrowingMechanism(hardwareMap);
+        thrower = new ThrowingMechanism(hardwareMap);
         collector = new CollectionMechanism(hardwareMap);
 
         initialize = false;
