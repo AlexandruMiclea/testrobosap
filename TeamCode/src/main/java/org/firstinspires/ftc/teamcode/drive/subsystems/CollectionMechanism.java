@@ -27,6 +27,7 @@ public class CollectionMechanism extends Subsystem {
 //        servoHoldRing =  hardwareMap.servo.get("servoTinutInele");
 //        servoHoldRing.setPosition(UNCLAMPED_POSE);
 
+        subMode = SubMode.SUB_IDLE;
         //TODO true cand avem constraints
         isConstraints = false;
     }

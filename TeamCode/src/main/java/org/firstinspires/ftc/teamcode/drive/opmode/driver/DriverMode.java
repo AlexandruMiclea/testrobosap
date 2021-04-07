@@ -13,8 +13,6 @@ import org.firstinspires.ftc.teamcode.drive.tank.Robot;
 public class DriverMode extends OpMode {
 
     private Robot robot = null;
-    //private boolean bServoLift = false;
-    private boolean bIsAPressed = false;
 
     @Override
     public void init() {
@@ -120,7 +118,6 @@ public class DriverMode extends OpMode {
         telemetry.addData("encoder motor colectare: ", robot.collector.getPosition());
         //telemetry.addData("putere aruncare", robot.thrower.getPower());
         //telemetry.addData("motor velocity", robot.thrower.getVelo());
-//        telemetry.addData("pozitie motor pivot", robot.collector.getPosition());
 
         telemetry.addLine();
 

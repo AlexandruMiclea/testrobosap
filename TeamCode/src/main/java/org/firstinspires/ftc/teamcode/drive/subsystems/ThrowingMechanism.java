@@ -30,6 +30,8 @@ public class ThrowingMechanism extends Subsystem {
         pushServo = hardwareMap.servo.get("servoImpins");
         pushServo.setPosition(SERVO_REST);
 
+        subMode = SubMode.SUB_IDLE;
+
         timer = new ElapsedTime();
     }
 
