@@ -19,7 +19,7 @@ public class AutonomousMain extends LinearOpMode {
     private final Pose2d startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
     private final Vector2d parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-2.3 * FOAM_TILE_INCH);
     //TODO: adjust depending on arm position
-    private final Pose2d secondWobble = new Pose2d(-2.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-180));
+    private final Vector2d secondWobble = new Vector2d(-2.2 * FOAM_TILE_INCH, -1.2 * FOAM_TILE_INCH);
     private Vector2d wobbleDropPose = new Vector2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH);
     private double endTargetTangent = Math.toRadians(-180);
 
@@ -65,10 +65,10 @@ public class AutonomousMain extends LinearOpMode {
             wobbleDropPose = new Pose2d(1.8 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH,Math.toRadians(-90)).vec();
             endTargetTangent = Math.toRadians(-120);
         } else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
-            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.7 * FOAM_TILE_INCH, Math.toRadians(-90)).vec();
+            wobbleDropPose = new Pose2d(0.8 * FOAM_TILE_INCH, -1.7 * FOAM_TILE_INCH, Math.toRadians(-90)).vec();
             endTargetTangent = Math.toRadians(-90);
         } else {
-            wobbleDropPose = new Pose2d(0.3 * FOAM_TILE_INCH, -1.6 * FOAM_TILE_INCH, Math.toRadians(-180)).vec();
+            wobbleDropPose = new Pose2d(0.8 * FOAM_TILE_INCH, -1.6 * FOAM_TILE_INCH, Math.toRadians(-180)).vec();
             endTargetTangent = Math.toRadians(-90);
         }
 
@@ -94,29 +94,35 @@ public class AutonomousMain extends LinearOpMode {
         robot.wobbleArm.clawToggle(false);
         robot.wobbleArm.armPositionToggle(true);
 
-        //move to grab second wobble
-//        //TODO set values of tangents
-//        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(60)).splineToLinearHeading(secondWobble, Math.toRadians(150)).build());
-//
-//        //take wobble goal
-//        robot.wobbleArm.armPositionToggle(false);
-//        robot.wobbleArm.clawToggle(true);
-//        robot.wobbleArm.armPositionToggle(true);
-//
-//        //strafe to drop zone again
-//        robot.drive.turn(-180);
-//        //TODO set values of tangents
-//        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(40)).splineToLinearHeading(wobbleDropPose, Math.toRadians(0)).build());
-//
-//        //drop wobble
-//        robot.wobbleArm.armPositionToggle(false);
-//        robot.wobbleArm.clawToggle(false);
-//        robot.wobbleArm.armPositionToggle(true);
+/*        //move to grab second wobble
 
+        if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR)
+            robot.drive.turn(Math.toRadians(-150));
+
+        //TODO set values of tangents
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineTo(startPose.headingVec(), Math.toRadians(-180)).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineTo(secondWobble, Math.toRadians(-180)).build());
+
+        //take wobble goal
+        robot.wobbleArm.armPositionToggle(false);
+        robot.wobbleArm.clawToggle(true);
+        robot.wobbleArm.armPositionToggle(true);
+
+        //strafe to drop zone again
+
+        robot.drive.turn(Math.toRadians(-180));
+        //TODO set values of tangents
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(90)).splineTo(wobbleDropPose, endTargetTangent).build());
+
+        //drop wobble
+        robot.wobbleArm.armPositionToggle(false);
+        robot.wobbleArm.clawToggle(false);
+        robot.wobbleArm.armPositionToggle(true);
+*/
         //park
-        /*if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
+        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
-        }*/
+        }
 
     }
 }

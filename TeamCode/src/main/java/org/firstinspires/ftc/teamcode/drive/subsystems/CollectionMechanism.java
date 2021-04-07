@@ -63,9 +63,9 @@ public class CollectionMechanism extends Subsystem {
     }
 
     public void collectToggleAsync(boolean isCollecting){
+        collectArmMotor.setTargetPosition(isCollecting ? COLLECT_POSE : THROW_RAMP_POSE);
         collectArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         collectArmMotor.setPower(0.2);
-        collectArmMotor.setTargetPosition(isCollecting ? COLLECT_POSE : THROW_RAMP_POSE);
         subMode = SubMode.SUB_BUSY;
     }
 

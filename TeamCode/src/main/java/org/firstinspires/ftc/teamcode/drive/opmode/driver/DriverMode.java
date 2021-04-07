@@ -115,17 +115,17 @@ public class DriverMode extends OpMode {
         }
 
         //TELEMETRIES
-        telemetry.addData("encoder motor colectare: ", robot.collector.getPosition());
+        //telemetry.addData("encoder motor colectare: ", robot.collector.getPosition());
         //telemetry.addData("putere aruncare", robot.thrower.getPower());
         //telemetry.addData("motor velocity", robot.thrower.getVelo());
 
-        telemetry.addLine();
+        //telemetry.addLine();
 
-//        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
+        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
 //        telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
-//        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
-//        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
-//        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
+        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
+        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
+        telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
 //
 //        if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
 //            telemetry.addData("target", robot.wobbleArm.getTargetPosition());
