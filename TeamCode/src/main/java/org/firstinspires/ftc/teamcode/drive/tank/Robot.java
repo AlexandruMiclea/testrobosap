@@ -17,10 +17,10 @@ public class Robot {
     public MecanumDriveChassis drive;
     public OpenCVThread openCV;
     public ElapsedTime timer;
-    //public WobbleArm wobbleArm;
+    public WobbleArm wobbleArm;
 
-    public ThrowingMechanism thrower;
-    //public CollectionMechanism collector;
+    //public ThrowingMechanism thrower;
+    public CollectionMechanism collector;
 
     public Robot (HardwareMap hardwareMap) {
         initialize = true;
@@ -29,9 +29,9 @@ public class Robot {
         openCV = new OpenCVThread(hardwareMap);
         timer = new ElapsedTime();
 
-        //wobbleArm = new WobbleArm(hardwareMap);
-        thrower = new ThrowingMechanism(hardwareMap);
-        //collector = new CollectionMechanism(hardwareMap);
+        wobbleArm = new WobbleArm(hardwareMap);
+        //thrower = new ThrowingMechanism(hardwareMap);
+        collector = new CollectionMechanism(hardwareMap);
 
         initialize = false;
     }

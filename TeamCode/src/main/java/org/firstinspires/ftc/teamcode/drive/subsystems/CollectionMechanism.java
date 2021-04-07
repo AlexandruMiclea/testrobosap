@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 public class CollectionMechanism extends Subsystem {
     private DcMotor collectArmMotor;
-    private Servo servoHoldRing;
+    //private Servo servoHoldRing;
 
     //TODO gasit aceste pozitii
     private double CLAMPED_POSE = 1, UNCLAMPED_POSE = 0;
@@ -41,9 +41,9 @@ public class CollectionMechanism extends Subsystem {
         this.isConstraints = constraints;
     }
 
-    public void holdRingToggle(boolean hold){
+    /*public void holdRingToggle(boolean hold){
         servoHoldRing.setPosition(hold? CLAMPED_POSE : UNCLAMPED_POSE);
-    }
+    }*/
     public void stop() { collectArmMotor.setPower(0); }
 
     public void moveArm(double speed) {

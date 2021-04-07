@@ -25,7 +25,7 @@ public class DriverMode extends OpMode {
     public void loop() {
         //Practic baietii nostri au exact functia noastra de calculat vitezele
         robot.drive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x));
-/*
+
         //SIST WOBBLE GOAL
         //inchis/deschis gheara wobble goal
         if(gamepad1.a){
@@ -61,8 +61,8 @@ public class DriverMode extends OpMode {
         else if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
             robot.wobbleArm.stop();
         }
-*/
-        //SIST ARUNCARE
+
+        /*//SIST ARUNCARE
         if(gamepad2.left_stick_y != 0){
             robot.thrower.rotateAsync(gamepad2.left_stick_x);
         } else {
@@ -77,9 +77,9 @@ public class DriverMode extends OpMode {
        //this is only for testing purpose
         else if (gamepad2.y){
             robot.thrower.pushRing();
-        }
+        }*/
 
-/*
+
         //SIST COLECTARE
         //TODO decomentat cand aveti constraints
         //oprit sau pornit constraints
@@ -116,11 +116,10 @@ public class DriverMode extends OpMode {
             robot.collector.updateSub();
         }
 
- */
-
         //TELEMETRIES
-        telemetry.addData("putere aruncare", robot.thrower.getPower());
-        telemetry.addData("motor velocity", robot.thrower.getVelo());
+        telemetry.addData("encoder motor colectare: ", robot.collector.getPosition());
+        //telemetry.addData("putere aruncare", robot.thrower.getPower());
+        //telemetry.addData("motor velocity", robot.thrower.getVelo());
 //        telemetry.addData("pozitie motor pivot", robot.collector.getPosition());
 
         telemetry.addLine();
