@@ -80,22 +80,27 @@ public class AutonomousMain extends LinearOpMode {
             throwable.printStackTrace();
         }
 
-        double startAngle = 0;
+        double startAngle, wobbleSpeed;
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.NONE) {
             startAngle = Math.toRadians(-180);
+            wobbleSpeed = 0.2;
         }
-        else {
+        else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
             startAngle = Math.toRadians(60);
+            wobbleSpeed = 0.12;
+        }
+        else{
+            startAngle = Math.toRadians(60);
+            wobbleSpeed = 0.1;
         }
 
-        //move away from the wall so we don't hit it and rotate so that we dont strafe spline
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), 0).splineToLinearHeading(new Pose2d(-2*FOAM_TILE_INCH, -1*FOAM_TILE_INCH, startAngle), 0).build());
 
-        robot.wobbleArm.armPositionToggleAsync(false, 0.2);
-
+        robot.wobbleArm.armPositionToggleAsync(false, wobbleSpeed);
 
         //drive to where we drop the wobble goal
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), startTargetTangent).splineTo(wobbleDropPose, endTargetTangent).build());
+
 
         while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
             robot.wobbleArm.updateSub();
@@ -103,50 +108,68 @@ public class AutonomousMain extends LinearOpMode {
 
         //drop wobble goal and lift arm back up
         robot.wobbleArm.clawToggle(false);
-        robot.wobbleArm.armPositionToggleAsync(true, 0.6);
 
         //move to grab second wobble
-        if(numberOfRing != RingStackDeterminationPipeline.RingPosition.FOUR){
-            if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE)
-                robot.drive.turn(Math.toRadians(-60));
-            else if (numberOfRing ==  RingStackDeterminationPipeline.RingPosition.NONE)
-                robot.drive.turn(Math.toRadians(30));
 
-            //TODO set values of tangents
+
+        robot.wobbleArm.armPositionToggleAsync(true, 0.6);
+
+        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE) {
+            robot.drive.turn(Math.toRadians(-60));
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineTo(secondWobble, Math.toRadians(-180)).build());
-
-            //Just in case the motor hasn't finished rotating :)
-            while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
-                robot.wobbleArm.updateSub();
-            }
-
-            robot.wobbleArm.armPositionToggleAsync(false, 0.3);
-
-            robot.drive.turn(Math.toRadians(-135));
-
-            while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
-                robot.wobbleArm.updateSub();
-            }
-
-            //take wobble goal
-            robot.wobbleArm.clawToggle(true);
-            sleep(600);
-            robot.wobbleArm.armPositionToggleAsync(true);
-
-            //strafe to drop zone again
-
-            //TODO set values of tangents
-            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(0)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-180)), endTargetTangent).build());
-
-            while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
-                robot.wobbleArm.updateSub();
-            }
-
-            //drop wobble
-            robot.wobbleArm.armPositionToggle(false, 0.6);
-            robot.wobbleArm.clawToggle(false);
-            robot.wobbleArm.armPositionToggle(true, 0.7);
         }
+        else if (numberOfRing ==  RingStackDeterminationPipeline.RingPosition.NONE) {
+            robot.drive.turn(Math.toRadians(30));
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineTo(secondWobble, Math.toRadians(-180)).build());
+        }
+        else{
+            robot.drive.turn(Math.toRadians(120));
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-180)).splineTo(secondWobble, Math.toRadians(-180)).build());
+        }
+
+        //Just in case the motor hasn't finished rotating :)
+        while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
+            robot.wobbleArm.updateSub();
+        }
+
+        if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
+            robot.wobbleArm.armPositionToggleAsync(false, 0.25);
+            robot.drive.turn(Math.toRadians(45));
+        }
+        else{
+            robot.wobbleArm.armPositionToggleAsync(false, 0.3);
+            robot.drive.turn(Math.toRadians(-135));
+        }
+
+        while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
+            robot.wobbleArm.updateSub();
+        }
+
+        //take wobble goal
+        robot.wobbleArm.clawToggle(true);
+        sleep(600);
+        robot.wobbleArm.armPositionToggleAsync(true);
+
+        //strafe to drop zone again
+
+        //TODO set values of tangents
+        if(numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(0)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-90)), 0).build());
+        } else if(numberOfRing == RingStackDeterminationPipeline.RingPosition.NONE) {
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(0)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-180)), 0).build());
+        } else{
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(0)).splineToLinearHeading(new Pose2d(1.8*FOAM_TILE_INCH, -2.5*FOAM_TILE_INCH, Math.toRadians(-90)), -15).build());
+        }
+
+        while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
+            robot.wobbleArm.updateSub();
+        }
+
+        //drop wobble
+        robot.wobbleArm.armPositionToggle(false, 0.6);
+        robot.wobbleArm.clawToggle(false);
+        robot.wobbleArm.armPositionToggle(true, 0.7);
+
 
         //park
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){

@@ -121,7 +121,7 @@ public class DriverMode extends OpMode {
 
         //telemetry.addLine();
 
-//        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
+        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
 //        telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
 //        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
 //        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
