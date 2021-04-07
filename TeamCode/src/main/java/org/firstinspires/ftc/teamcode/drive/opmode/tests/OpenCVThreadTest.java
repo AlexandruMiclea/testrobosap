@@ -21,6 +21,7 @@ public class OpenCVThreadTest extends LinearOpMode{
         ring = RingStackDeterminationPipeline.RingPosition.NONE;
 
         openCV.start();
+
         timer = new ElapsedTime();
         telemetry.addData("has initialised", "yes");
         telemetry.update();
@@ -28,26 +29,18 @@ public class OpenCVThreadTest extends LinearOpMode{
         waitForStart();
 
         timer.startTime();
-        timer.reset();
-        timer.startTime();
 
-        while (timer.milliseconds() < MAX_MILISECONDS){
+        while (openCV.getAnalysis() == 0 && timer.milliseconds() < MAX_MILISECONDS){
             ring = openCV.getRingPosition();
-        }
+            telemetry.addData("ho bos", "");
+            telemetry.update();
 
-        if(ring == RingStackDeterminationPipeline.RingPosition.FOUR){
-            test = "ai cam multe tovarase";
-        } else if(ring == RingStackDeterminationPipeline.RingPosition.ONE){
-            test = "numai unu coane";
-        } else {
-            test = "Nema fra";
         }
 
         while(opModeIsActive()){
-            telemetry.addData("timer", timer.milliseconds());
+            //telemetry.addData("timer", timer.milliseconds());
             telemetry.addData("number of ring: ", openCV.getRingPosition());
             telemetry.addData("analysis: ", openCV.getAnalysis());
-            telemetry.addData("ce am eu:", test);
             telemetry.update();
         }
 

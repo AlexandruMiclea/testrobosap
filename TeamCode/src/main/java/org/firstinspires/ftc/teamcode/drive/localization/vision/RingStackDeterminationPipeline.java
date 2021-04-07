@@ -35,12 +35,8 @@ public class RingStackDeterminationPipeline extends OpenCvPipeline {
     static final int REGION_WIDTH = 310;
     static final int REGION_HEIGHT = 310;
 
-    //NONE: 141-143
-    //ONE: 146-148
-    //FOUR: 153-154
-
     final int FOUR_RING_THRESHOLD = 140;
-    final int ONE_RING_THRESHOLD = 134;
+    final int ONE_RING_THRESHOLD = 132;
 
     //TODO end redo
 

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 public class WobbleArm extends Subsystem {
 
     private int LOW_CONSTRAINT = -1150;
-    private int HIGH_CONSTRAINT = 50;
+    private int HIGH_CONSTRAINT = 150;
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
     private double CLAMPED_POS = 0.8, UNCLAMPED_POS = 0;
 
@@ -91,7 +91,7 @@ public class WobbleArm extends Subsystem {
     public void armPositionToggleAsync(boolean up){
         armMotor.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower(0.5);
+        armMotor.setPower(0.2);
         subMode = SubMode.SUB_BUSY;
     }
 
