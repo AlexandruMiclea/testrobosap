@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.teamcode.drive.localization.localizers.BrokeEncoderLocalizer;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 
@@ -167,7 +168,7 @@ public class MecanumDriveChassis extends MecanumDrive {
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //setLocalizer(new ImuLocalizer(hardwareMap));
+        setLocalizer(new BrokeEncoderLocalizer(hardwareMap));
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
@@ -344,8 +345,6 @@ public class MecanumDriveChassis extends MecanumDrive {
         }
     }
 
-
-
     public void setWeightedDrivePower(Pose2d drivePower) {
         Pose2d vel = drivePower;
 
@@ -398,9 +397,4 @@ public class MecanumDriveChassis extends MecanumDrive {
         return imu.getAngularOrientation().firstAngle;
     }
 
-    public void adjustPositionIter(Pose2d targetPose, int iterations){
-        for(int i=0; i < iterations; i++){
-            this.followTrajectory(this.trajectoryBuilder(this.getPoseEstimate()).strafeTo(targetPose.vec()).build());
-        }
-    }
 }

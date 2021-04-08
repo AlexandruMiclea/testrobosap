@@ -63,7 +63,9 @@ public class DriverMode extends OpMode {
             robot.thrower.rotateAsync(gamepad2.left_stick_y);
         } else if (gamepad2.dpad_up){
             robot.thrower.rotateAtSpeedAsync(2800);
-        }else {
+        } else if (gamepad2.x){
+            robot.thrower.rotateAsync(0.9);
+        } else {
             robot.thrower.stop();
         }
 
@@ -116,12 +118,8 @@ public class DriverMode extends OpMode {
 
         //TELEMETRIES
         //telemetry.addData("encoder motor colectare: ", robot.collector.getPosition());
-        //telemetry.addData("putere aruncare", robot.thrower.getPower());
-        //telemetry.addData("motor velocity", robot.thrower.getVelo());
 
-        //telemetry.addLine();
-
-        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
+//        telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
 //        telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
 //        telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
 //        telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
@@ -130,6 +128,9 @@ public class DriverMode extends OpMode {
 //        if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
 //            telemetry.addData("target", robot.wobbleArm.getTargetPosition());
 //        }
+
+        telemetry.addData("ticks/rev (mid, right): ", robot.localizer.getTicksPerRev());
+        telemetry.addData("ticks: ", robot.localizer.getTicks());
 
         telemetry.addData("Thrower current", robot.thrower.getCurrent());
         telemetry.addData("Thrower speed", robot.thrower.getVelo());

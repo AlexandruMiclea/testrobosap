@@ -50,12 +50,13 @@ public class ThrowingMechanism extends Subsystem {
         pushServo.setPosition(SERVO_REST);
     }
 
+
     public void pushRing(boolean push){
         pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
     }
 
     public void rotateAsync(double power){
-        power = Range.clip(power, -0.9, 0.9);
+//        power = Range.clip(power, -0.9, 0.9);
         throwWheelMotor.setPower(power);
         timer.reset();
         subMode = SubMode.SUB_BUSY;

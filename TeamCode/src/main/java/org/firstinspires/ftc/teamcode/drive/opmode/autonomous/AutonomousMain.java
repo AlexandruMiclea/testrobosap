@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 import org.firstinspires.ftc.teamcode.drive.localization.vision.RingStackDeterminationPipeline;
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
 
-@Autonomous(name="Autonomie Standard",group = "autonomous")
+@Autonomous(name="Autonomie Standard", group = "autonomous")
 public class AutonomousMain extends LinearOpMode {
 
     private Robot robot;
@@ -106,8 +106,7 @@ public class AutonomousMain extends LinearOpMode {
             robot.drive.turn(Math.toRadians(-60));
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineTo(secondWobble, Math.toRadians(-180)).build());
         } else if (numberOfRing ==  RingStackDeterminationPipeline.RingPosition.NONE) {
-            robot.drive.turn(Math.toRadians(30));
-            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineTo(secondWobble, Math.toRadians(-180)).build());
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineToLinearHeading(new Pose2d(secondWobble, Math.toRadians(0)), Math.toRadians(-180)).build());
         } else {
             robot.drive.turn(Math.toRadians(120));
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-180)).splineTo(secondWobble, Math.toRadians(-180)).build());
@@ -121,9 +120,12 @@ public class AutonomousMain extends LinearOpMode {
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             robot.wobbleArm.armPositionToggleAsync(false, 0.25);
             robot.drive.turn(Math.toRadians(45));
-        } else {
+        } else if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
             robot.wobbleArm.armPositionToggleAsync(false, 0.3);
             robot.drive.turn(Math.toRadians(-135));
+        } else {
+            robot.wobbleArm.armPositionToggleAsync(false, 0.3);
+            robot.drive.turn(Math.toRadians(45));
         }
 
         while(opModeIsActive() && robot.wobbleArm.isSubBusy()){

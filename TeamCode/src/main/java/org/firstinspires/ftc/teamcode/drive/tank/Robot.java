@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.tank;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.drive.localization.localizers.BrokeEncoderLocalizer;
 import org.firstinspires.ftc.teamcode.drive.localization.vision.OpenCVThread;
 import org.firstinspires.ftc.teamcode.drive.subsystems.CollectionMechanism;
 import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveChassis;
@@ -22,6 +23,8 @@ public class Robot {
     public ThrowingMechanism thrower;
     public CollectionMechanism collector;
 
+    public BrokeEncoderLocalizer localizer;
+
     public Robot (HardwareMap hardwareMap) {
         initialize = true;
 
@@ -32,6 +35,8 @@ public class Robot {
         wobbleArm = new WobbleArm(hardwareMap);
         thrower = new ThrowingMechanism(hardwareMap);
         collector = new CollectionMechanism(hardwareMap);
+
+        localizer = new BrokeEncoderLocalizer(hardwareMap);
 
         initialize = false;
     }
