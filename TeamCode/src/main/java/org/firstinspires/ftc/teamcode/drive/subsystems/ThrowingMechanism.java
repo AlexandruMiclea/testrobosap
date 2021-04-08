@@ -18,7 +18,7 @@ public class ThrowingMechanism extends Subsystem {
     private ElapsedTime timer;
 
     private double SERVO_PUSHED = 1, SERVO_REST = 0;
-    //TODO  this is an arbitrary value
+    //TODO this is an arbitrary value
     private int SPIN_TIME = 5000;
 
     public ThrowingMechanism(HardwareMap hardwareMap){
