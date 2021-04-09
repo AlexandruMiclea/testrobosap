@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class WobbleArm extends Subsystem {
-
     private int LOW_CONSTRAINT = -943, HIGH_CONSTRAINT = 269, MIDDLE_CONSTRAINT = -325;
 
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
@@ -91,14 +90,14 @@ public class WobbleArm extends Subsystem {
     }
 
     public void armPositionToggleAsync(boolean up){
-        armMotor.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
+        armMotor.setTargetPosition(up ? MIDDLE_CONSTRAINT : LOW_CONSTRAINT);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(0.2);
         subMode = SubMode.SUB_BUSY;
     }
 
     public void armPositionToggleAsync(boolean up, double customSpeed){
-        armMotor.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
+        armMotor.setTargetPosition(up ? MIDDLE_CONSTRAINT : LOW_CONSTRAINT);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(customSpeed);
         subMode = SubMode.SUB_BUSY;
