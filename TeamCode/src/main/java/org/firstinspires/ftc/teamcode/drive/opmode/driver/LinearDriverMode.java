@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.driver;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
 
+@Config
+@TeleOp(group = "driver")
 public class LinearDriverMode extends LinearOpMode {
     private Robot robot = null;
 
@@ -50,6 +54,7 @@ public class LinearDriverMode extends LinearOpMode {
             } else if (gamepad1.dpad_up){
                 robot.wobbleArm.armPositionToggle(false, 0.3);
                 robot.wobbleArm.clawToggle(false);
+                sleep(500);
                 robot.wobbleArm.clawToggle(true);
                 robot.wobbleArm.armPositionToggle(true, 0.3);
             } else if (robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER) {
@@ -122,6 +127,8 @@ public class LinearDriverMode extends LinearOpMode {
         telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
         telemetry.addData("motor.isBUsy(): ", robot.wobbleArm.getMotorIsBusy());
         telemetry.addData("subsystem mode", robot.wobbleArm.getMode());
+        telemetry.addLine();
+        telemetry.addData("servo pos", robot.wobbleArm.getServoPosition());
 //
 //        if(robot.wobbleArm.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
 //            telemetry.addData("target", robot.wobbleArm.getTargetPosition());

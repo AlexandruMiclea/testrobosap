@@ -10,32 +10,30 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class WobbleArm extends Subsystem {
-    private int LOW_CONSTRAINT = -943, HIGH_CONSTRAINT = 269, MIDDLE_CONSTRAINT = -325;
+    private int LOW_CONSTRAINT = -568, HIGH_CONSTRAINT = 453, MIDDLE_CONSTRAINT = 71;
 
     private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
-    private double CLAMPED_POS = 0.8, UNCLAMPED_POS = 0;
+    private double CLAMPED_POS = 1, UNCLAMPED_POS = 0;
 
     private DcMotorEx armMotor;
-    private Servo clamServo;
+    private Servo clampServo;
     private boolean isConstraints;
 
     public WobbleArm(HardwareMap hardwareMap) {
         armMotor = hardwareMap.get(DcMotorEx.class, "motorBrat");
-        clamServo = hardwareMap.servo.get("servoBrat");
+        clampServo = hardwareMap.servo.get("servoBrat");
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setTargetPositionTolerance(100);
 
-        clamServo.setPosition(CLAMPED_POS);
+        clampServo.setPosition(CLAMPED_POS);
 
         subMode = SubMode.SUB_IDLE;
     }
 
-    public void setConstraints(boolean constraints){
-        this.isConstraints = constraints;
-    }
+    public void setConstraints(boolean constraints){ this.isConstraints = constraints; }
 
     public void setMotorMode(DcMotor.RunMode mode){ armMotor.setMode(mode); }
 
@@ -47,15 +45,14 @@ public class WobbleArm extends Subsystem {
 
     public int getPosition() { return armMotor.getCurrentPosition(); }
 
+
+    public double getServoPosition() { return clampServo.getPosition(); }
+
     public int getTargetPosition() { return armMotor.getTargetPosition(); }
 
-    public boolean getConstraints(){
-        return isConstraints;
-    }
+    public boolean getConstraints(){ return isConstraints; }
 
-    public void stop() {
-        armMotor.setPower(0);
-    }
+    public void stop() { armMotor.setPower(0); }
 
     public void moveArm(double speed) {
         if (isConstraints){
@@ -73,19 +70,11 @@ public class WobbleArm extends Subsystem {
         }
     }
 
-    public void clawToggle() {
-        if (clamServo.getPosition() == CLAMPED_POS) {
-            clamServo.setPosition(UNCLAMPED_POS);
-        } else if (clamServo.getPosition() == UNCLAMPED_POS) {
-            clamServo.setPosition(CLAMPED_POS);
-        }
-    }
-
     public void clawToggle(boolean clamped) {
         if (!clamped) {
-            clamServo.setPosition(UNCLAMPED_POS);
+            clampServo.setPosition(UNCLAMPED_POS);
         } else if (clamped) {
-            clamServo.setPosition(CLAMPED_POS);
+            clampServo.setPosition(CLAMPED_POS);
         }
     }
 
@@ -122,6 +111,8 @@ public class WobbleArm extends Subsystem {
                 if (!armMotor.isBusy()) {
                     subMode = SubMode.SUB_IDLE;
                 }
+                break;
+            case SERVO:
                 break;
         }
     }

@@ -20,6 +20,7 @@ public class ThrowingMechanism extends Subsystem {
     private double SERVO_PUSHED = 1, SERVO_REST = 0;
     //TODO this is an arbitrary value
     private int SPIN_TIME = 5000;
+    private int PUSH_TIME = 1000;
 
     public ThrowingMechanism(HardwareMap hardwareMap){
         throwWheelMotor = hardwareMap.get(DcMotorEx.class, "motorAruncare");
@@ -44,15 +45,23 @@ public class ThrowingMechanism extends Subsystem {
 
     public void stop(){ throwWheelMotor.setPower(0); }
 
-    //TODO nu stiu daca acest set de instructiuni functioneaza sau daca da skip peste ele
-    public void pushRing(){
-        pushServo.setPosition(SERVO_PUSHED);
-        pushServo.setPosition(SERVO_REST);
+    public void pushRingAsync(boolean push){
+        pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
+        timer.reset();
+        subMode = SubMode.SERVO;
     }
 
-
     public void pushRing(boolean push){
-        pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
+        pushRingAsync(push);
+        waitForSubIdle();
+    }
+
+    //TODO i think this is messy and unecessary dar acm e o singura functie
+    public void pushRing(){
+        pushRingAsync(true);
+        waitForSubIdle();
+        pushRingAsync(false);
+        waitForSubIdle();
     }
 
     public void rotateAsync(double power){
@@ -90,6 +99,13 @@ public class ThrowingMechanism extends Subsystem {
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;
+            case SERVO:
+                if(timer.milliseconds() >= PUSH_TIME){
+                    stop();
+                    subMode = SubMode.SUB_IDLE;
+                }
+                break;
+
         }
     }
 }

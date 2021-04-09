@@ -168,7 +168,7 @@ public class MecanumDriveChassis extends MecanumDrive {
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        setLocalizer(new BrokeEncoderLocalizer(hardwareMap));
+//        setLocalizer(new BrokeEncoderLocalizer(hardwareMap));
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
