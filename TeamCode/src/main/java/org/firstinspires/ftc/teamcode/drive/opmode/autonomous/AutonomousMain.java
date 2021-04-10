@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 import org.firstinspires.ftc.teamcode.drive.localization.vision.RingStackDeterminationPipeline;
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
@@ -161,5 +162,8 @@ public class AutonomousMain extends LinearOpMode {
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR) {
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
         }
+
+        // Transfer the final pose to the PoseStorage class so we can use it in TeleOp
+        PoseStorage.currentPose = robot.drive.getPoseEstimate();
     }
 }
