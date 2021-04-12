@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 public class CollectionMechanism extends Subsystem {
     private DcMotor collectArmMotor;
-    //private Servo servoHoldRing;
+    private Servo servoHoldRing;
 
     //TODO gasit aceste pozitii
     private double CLAMPED_POSE = 1, UNCLAMPED_POSE = 0;
@@ -24,8 +24,8 @@ public class CollectionMechanism extends Subsystem {
         collectArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         collectArmMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-//        servoHoldRing =  hardwareMap.servo.get("servoTinutInele");
-//        servoHoldRing.setPosition(UNCLAMPED_POSE);
+        servoHoldRing =  hardwareMap.servo.get("servoTinutInele");
+        servoHoldRing.setPosition(UNCLAMPED_POSE);
 
         subMode = SubMode.SUB_IDLE;
         //TODO true cand avem constraints
@@ -42,9 +42,10 @@ public class CollectionMechanism extends Subsystem {
         this.isConstraints = constraints;
     }
 
-    /*public void holdRingToggle(boolean hold){
+    public void holdRingToggle(boolean hold){
         servoHoldRing.setPosition(hold? CLAMPED_POSE : UNCLAMPED_POSE);
-    }*/
+    }
+
     public void stop() { collectArmMotor.setPower(0); }
 
     public void moveArm(double speed) {

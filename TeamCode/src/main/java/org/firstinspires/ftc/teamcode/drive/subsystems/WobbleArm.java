@@ -10,10 +10,10 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class WobbleArm extends Subsystem {
-    private int LOW_CONSTRAINT = -568, HIGH_CONSTRAINT = 453, MIDDLE_CONSTRAINT = 71;
+    private final int LOW_CONSTRAINT = -1045, HIGH_CONSTRAINT = -378, MIDDLE_CONSTRAINT = 53;
 
-    private double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
-    private double CLAMPED_POS = 1, UNCLAMPED_POS = 0;
+    private final double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
+    private final double CLAMPED_POS = 1, UNCLAMPED_POS = 0;
 
     private DcMotorEx armMotor;
     private Servo clampServo;
@@ -44,7 +44,6 @@ public class WobbleArm extends Subsystem {
     public SubMode getMode(){ return subMode; }
 
     public int getPosition() { return armMotor.getCurrentPosition(); }
-
 
     public double getServoPosition() { return clampServo.getPosition(); }
 

@@ -17,6 +17,7 @@ public class LinearDriverMode extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap);
         waitForStart();
+        if (isStopRequested()) return;
 
         while (opModeIsActive()){
             //Practic baietii nostri au exact functia noastra de calculat vitezele
@@ -62,31 +63,21 @@ public class LinearDriverMode extends LinearOpMode {
             }
 
             //SIST ARUNCARE
-            if (gamepad2.left_stick_y != 0) {
-                robot.thrower.rotateAsync(gamepad2.left_stick_y);
-            } else if (gamepad2.dpad_up){
+            if (gamepad2.dpad_up){
                 robot.thrower.rotateAtSpeedAsync(2800);
-            } else if (gamepad2.x){
-                robot.thrower.rotateAsync(0.9);
-            } else {
+            } else if (gamepad2.dpad_down){
                 robot.thrower.stop();
             }
 
-            if(gamepad2.a){
+            if(gamepad2.dpad_right){
                 robot.thrower.pushRing(true);
-            } else if (gamepad2.b){
                 robot.thrower.pushRing(false);
             }
-            //this is only for testing purpose
-            else if (gamepad2.y){
-                robot.thrower.pushRing();
-            }
-
 
             //SIST COLECTARE
             //TODO decomentat cand aveti constraints
             //oprit sau pornit constraints
-//        if(gamepad1.x){
+//        if(gamepad2.x){
 //            robot.collector.setConstraints(!robot.wobbleArm.getConstraints());
 //        }
 
@@ -114,6 +105,20 @@ public class LinearDriverMode extends LinearOpMode {
                 robot.collector.stop();
             }
 
+            if (gamepad2.y){
+                robot.collector.holdRingToggle(true);
+            } else if (gamepad2.x){
+                robot.collector.holdRingToggle(false);
+            }
+
+            if(gamepad2.a && gamepad2.b){
+                robot.collector.collectToggle(false);
+                robot.collector.holdRingToggle(false);
+//                robot.thrower.rotateAtSpeedAsync(2800);
+                robot.collector.collectToggle(true);
+            }
+
+            //updates
             if(!Thread.currentThread().isInterrupted()){
                 robot.wobbleArm.updateSub();
                 robot.collector.updateSub();

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
-public class ThrowingMechanism extends Subsystem {
+public class   ThrowingMechanism extends Subsystem {
     private DcMotorEx throwWheelMotor;
     private Servo pushServo;
 
