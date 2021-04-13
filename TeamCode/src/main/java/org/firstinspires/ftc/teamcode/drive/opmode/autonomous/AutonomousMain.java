@@ -101,13 +101,14 @@ public class AutonomousMain extends LinearOpMode {
         robot.wobbleArm.clawToggle(false);
 
         //move to grab second wobble
-        robot.wobbleArm.armPositionToggleAsync(true, 0.6);
+        robot.wobbleArm.armPositionToggleAsync(true, 0.4);
 
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE) {
             robot.drive.turn(Math.toRadians(-60));
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineTo(secondWobble, Math.toRadians(-180)).build());
         } else if (numberOfRing ==  RingStackDeterminationPipeline.RingPosition.NONE) {
-            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineToLinearHeading(new Pose2d(secondWobble, Math.toRadians(0)), Math.toRadians(-180)).build());
+            robot.drive.turn(Math.toRadians(30));
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).splineTo(secondWobble, Math.toRadians(-180)).build());
         } else {
             robot.drive.turn(Math.toRadians(120));
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-180)).splineTo(secondWobble, Math.toRadians(-180)).build());
@@ -119,14 +120,14 @@ public class AutonomousMain extends LinearOpMode {
         }
 
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
-            robot.wobbleArm.armPositionToggleAsync(false, 0.25);
+            robot.wobbleArm.armPositionToggleAsync(false, 0.2);
             robot.drive.turn(Math.toRadians(45));
         } else if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
-            robot.wobbleArm.armPositionToggleAsync(false, 0.3);
+            robot.wobbleArm.armPositionToggleAsync(false, 0.2);
             robot.drive.turn(Math.toRadians(-135));
         } else {
-            robot.wobbleArm.armPositionToggleAsync(false, 0.3);
-            robot.drive.turn(Math.toRadians(45));
+            robot.wobbleArm.armPositionToggleAsync(false, 0.2);
+            robot.drive.turn(Math.toRadians(-135));
         }
 
         while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
@@ -156,7 +157,7 @@ public class AutonomousMain extends LinearOpMode {
         //drop wobble
         robot.wobbleArm.armPositionToggle(false, 0.6);
         robot.wobbleArm.clawToggle(false);
-        robot.wobbleArm.armPositionToggle(true, 0.7);
+        robot.wobbleArm.armPositionToggle(true, 0.6);
 
         //park
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR) {

@@ -32,7 +32,7 @@ public class DriveConstants {
      * from DriveVelocityPIDTuner.
      */
     public static final boolean RUN_USING_ENCODER = true;
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(21, 0, 0.96,
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(23, 0, 0.038,
             12.058604856011767);
 
     /*
@@ -45,7 +45,7 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 1.75; // in
     public static double GEAR_RATIO = 1.75; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 18.25; // in
+    public static double TRACK_WIDTH = 16; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -64,9 +64,9 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 45;
+    public static double MAX_VEL = 38;
     public static double MAX_ACCEL = 30;
-    public static double MAX_ANG_VEL = Math.toRadians(216.07758620689657);
+    public static double MAX_ANG_VEL = 2.874036103327468;
     public static double MAX_ANG_ACCEL = Math.toRadians(60);
 
 

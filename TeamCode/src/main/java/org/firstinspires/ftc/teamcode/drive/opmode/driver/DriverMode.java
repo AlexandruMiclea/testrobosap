@@ -129,8 +129,8 @@ public class DriverMode extends OpMode {
 //            telemetry.addData("target", robot.wobbleArm.getTargetPosition());
 //        }
 
-        telemetry.addData("ticks/rev (mid, right): ", robot.localizer.getTicksPerRev());
-        telemetry.addData("ticks: ", robot.localizer.getTicks());
+//        telemetry.addData("ticks/rev (mid, right): ", robot.localizer.getTicksPerRev());
+//        telemetry.addData("ticks: ", robot.localizer.getTicks());
 
         telemetry.addData("Thrower current", robot.thrower.getCurrent());
         telemetry.addData("Thrower speed", robot.thrower.getVelo());

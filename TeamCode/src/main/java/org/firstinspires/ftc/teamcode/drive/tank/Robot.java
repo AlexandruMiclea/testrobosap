@@ -23,7 +23,7 @@ public class Robot {
     public ThrowingMechanism thrower;
     public CollectionMechanism collector;
 
-    public BrokeEncoderLocalizer localizer;
+//    public BrokeEncoderLocalizer localizer;
 
     public Robot (HardwareMap hardwareMap) {
         initialize = true;
@@ -36,7 +36,7 @@ public class Robot {
         thrower = new ThrowingMechanism(hardwareMap);
         collector = new CollectionMechanism(hardwareMap);
 
-        localizer = new BrokeEncoderLocalizer(hardwareMap);
+//        localizer = new BrokeEncoderLocalizer(hardwareMap);
 
         initialize = false;
     }

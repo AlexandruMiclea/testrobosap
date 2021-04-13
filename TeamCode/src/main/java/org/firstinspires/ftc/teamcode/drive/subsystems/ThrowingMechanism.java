@@ -17,10 +17,10 @@ public class   ThrowingMechanism extends Subsystem {
 
     private ElapsedTime timer;
 
-    private double SERVO_PUSHED = 1, SERVO_REST = 0;
+    private double SERVO_PUSHED = 0, SERVO_REST = 1;
     //TODO this is an arbitrary value
     private int SPIN_TIME = 5000;
-    private int PUSH_TIME = 1000;
+    private int PUSH_TIME = 500;
 
     public ThrowingMechanism(HardwareMap hardwareMap){
         throwWheelMotor = hardwareMap.get(DcMotorEx.class, "motorAruncare");
