@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.tuners;
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.drive.localization.localizers.BrokeEncoderLocalizer;
 import org.firstinspires.ftc.teamcode.drive.mecanumsamples.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveChassis;
 
@@ -40,6 +42,8 @@ public class LocalizationTest extends LinearOpMode {
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("ticc", ((BrokeEncoderLocalizer)drive.getLocalizer()).getTicks());
+            telemetry.addData("pose velo", drive.getLocalizer().getPoseVelocity());
             telemetry.update();
         }
     }

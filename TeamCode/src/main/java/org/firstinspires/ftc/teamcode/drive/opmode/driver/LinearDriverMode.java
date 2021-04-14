@@ -74,59 +74,12 @@ public class LinearDriverMode extends LinearOpMode {
                 robot.thrower.pushRing(false);
             }
 
-            //SIST COLECTARE
-            //TODO decomentat cand aveti constraints
-            //oprit sau pornit constraints
-//        if(gamepad2.x){
-//            robot.collector.setConstraints(!robot.wobbleArm.getConstraints());
-//        }
-
-            //test to position
-            //TODO decomentat astea cand avem constrainturi
-//        if (gamepad2.right_bumper){
-//            robot.collector.collectToggleAsync(false);
-//        }
-//        else if(gamepad2.left_bumper){
-//            robot.collector.collectToggleAsync(true);
-//        }
-//        //miscat brat colecatare sus jos
-//        else
-            if (gamepad2.left_trigger > 0.1 || gamepad2.right_trigger > 0.1) {
-                telemetry.addData("Apasam pe triggere", "");
-                if(robot.collector.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
-                    robot.collector.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                }
-                if(gamepad2.left_trigger > 0)
-                    robot.collector.moveArm(gamepad2.left_trigger);
-                else if(gamepad2.right_trigger > 0)
-                    robot.collector.moveArm(-gamepad2.right_trigger);
-            }
-            else if(robot.collector.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
-                robot.collector.stop();
-            }
-
-            if (gamepad2.y){
-                robot.collector.holdRingToggle(true);
-            } else if (gamepad2.x){
-                robot.collector.holdRingToggle(false);
-            }
-
-            if(gamepad2.a && gamepad2.b){
-                robot.collector.collectToggle(false);
-                robot.collector.holdRingToggle(false);
-//                robot.thrower.rotateAtSpeedAsync(2800);
-                robot.collector.collectToggle(true);
-            }
-
             //updates
             if(!Thread.currentThread().isInterrupted()){
                 robot.wobbleArm.updateSub();
-                robot.collector.updateSub();
             }
 
             //TELEMETRIES
-            //telemetry.addData("encoder motor colectare: ", robot.collector.getPosition());
-
         telemetry.addData("pozitie brat: ", robot.wobbleArm.getPosition());
         telemetry.addData("constraints: ", robot.wobbleArm.getConstraints());
         telemetry.addData("motor mode: ", robot.wobbleArm.getMotorMode());
@@ -144,9 +97,11 @@ public class LinearDriverMode extends LinearOpMode {
 
 //            telemetry.addData("Thrower current", robot.thrower.getCurrent());
 //            telemetry.addData("Thrower speed", robot.thrower.getVelo());
+//
+        telemetry.addData("ticks/rev (mid, right): ", robot.localizer.getTicksPerRev());
+        telemetry.addData("ticks: ", robot.localizer.getTicks());
 
-            telemetry.update();
+        telemetry.update();
         }
-
     }
 }

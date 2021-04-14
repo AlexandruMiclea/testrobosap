@@ -81,10 +81,15 @@ public class BrokeEncoderLocalizer extends TwoTrackingWheelLocalizer {
     }
 
     @Override
+    public Double getHeadingVelocity(){
+        return (double) imu.getAngularVelocity().xRotationRate;
+    }
+
+    @Override
     public List<Double> getWheelVelocities() {
         return Arrays.asList(
                 rightEncoder.getCorrectedVelocity(),
-                middleEncoder.getCorrectedVelocity()
+                middleEncoder.getRawVelocity()
         );
     }
 }

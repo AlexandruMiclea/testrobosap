@@ -81,7 +81,7 @@ public class MecanumDriveChassis extends MecanumDrive {
         FOLLOW_TRAJECTORY
     }
 
-    private FtcDashboard dashboard;
+    public FtcDashboard dashboard; //TODO: revert to private
     private NanoClock clock;
 
     private Mode mode;
@@ -143,7 +143,7 @@ public class MecanumDriveChassis extends MecanumDrive {
 
         // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
         // upward (normal to the floor) using a command like the following:
-         BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
+//         BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
@@ -171,7 +171,7 @@ public class MecanumDriveChassis extends MecanumDrive {
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//        setLocalizer(new BrokeEncoderLocalizer(hardwareMap));
+        setLocalizer(new BrokeEncoderLocalizer(hardwareMap));
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
@@ -253,6 +253,10 @@ public class MecanumDriveChassis extends MecanumDrive {
         packet.put("xError", lastError.getX());
         packet.put("yError", lastError.getY());
         packet.put("headingError (deg)", Math.toDegrees(lastError.getHeading()));
+
+        packet.put("ticcMijloc", ((BrokeEncoderLocalizer)getLocalizer()).getTicks().get(0));
+        packet.put("ticcLateral", ((BrokeEncoderLocalizer)getLocalizer()).getTicks().get(1));
+        packet.put("velocitati", ((BrokeEncoderLocalizer)getLocalizer()).getWheelVelocities());
 
         switch (mode) {
             case IDLE:

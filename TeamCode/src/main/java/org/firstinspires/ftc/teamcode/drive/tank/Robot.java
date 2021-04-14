@@ -21,9 +21,8 @@ public class Robot {
     public WobbleArm wobbleArm;
 
     public ThrowingMechanism thrower;
-    public CollectionMechanism collector;
 
-//    public BrokeEncoderLocalizer localizer;
+    public BrokeEncoderLocalizer localizer;
 
     public Robot (HardwareMap hardwareMap) {
         initialize = true;
@@ -34,9 +33,8 @@ public class Robot {
 
         wobbleArm = new WobbleArm(hardwareMap);
         thrower = new ThrowingMechanism(hardwareMap);
-        collector = new CollectionMechanism(hardwareMap);
 
-//        localizer = new BrokeEncoderLocalizer(hardwareMap);
+        localizer = new BrokeEncoderLocalizer(hardwareMap);
 
         initialize = false;
     }

@@ -31,7 +31,7 @@ public class DriveConstants {
      * If using the built-in motor velocity PID, update MOTOR_VELO_PID with the tuned coefficients
      * from DriveVelocityPIDTuner.
      */
-    public static final boolean RUN_USING_ENCODER = true;
+    public static final boolean RUN_USING_ENCODER = false;
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(23, 0, 0.038,
             12.058604856011767);
 
@@ -53,20 +53,21 @@ public class DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 1 / rpmToVelocity(MAX_RPM);
-    public static double kA = 0;
-    public static double kStatic = 0;
+//    public static double kV = /1 / rpmToVelocity(MAX_RPM);
+    public static double kV = 0.000025;
+    public static double kA = 0.000008;
+    public static double kStatic = 0.05;
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
      * the constraints should never exceed ~80% of the robot's actual capabilities. While Road
      * Runner is designed to enable faster autonomous motion, it is a good idea for testing to start
-     * small and gradually increase them later after everything is working. All distance units are
+     * small and gradually increase them later after everything is wor king. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 38;
-    public static double MAX_ACCEL = 30;
-    public static double MAX_ANG_VEL = 2.874036103327468;
+    public static double MAX_VEL = 24176;
+    public static double MAX_ACCEL = 38000;
+    public static double MAX_ANG_VEL = 3.4422221183776855;
     public static double MAX_ANG_ACCEL = Math.toRadians(60);
 
 

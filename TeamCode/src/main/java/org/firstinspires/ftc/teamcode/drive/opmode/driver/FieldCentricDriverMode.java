@@ -105,43 +105,9 @@ public class FieldCentricDriverMode extends LinearOpMode {
                 robot.thrower.pushRing();
             }
 
-            //SIST COLECTARE
-            //TODO decomentat cand aveti constraints
-            //oprit sau pornit constraints
-//        if(gamepad2.x && !bCollectorConstraint){
-//            robot.collector.setConstraints(!robot.wobbleArm.getConstraints());
-//            bCollectorConstraint = true;
-//        } else if (!gamepad2.x){
-//                bCollectorConstraint = false;
-//        }
-
-            //test to position
-            //TODO decomentat astea cand avem constrainturi
-//        if (gamepad2.right_bumper){
-//            robot.collector.collectToggleAsync(false);
-//        }
-//        else if(gamepad2.left_bumper){
-//            robot.collector.collectToggleAsync(true);
-//        }
-//        //miscat brat colecatare sus jos
-//        else
-            if (gamepad2.left_trigger > 0.1 || gamepad2.right_trigger > 0.1) {
-                telemetry.addData("Apasam pe triggere", "");
-                if(robot.collector.getMotorMode() == DcMotor.RunMode.RUN_TO_POSITION){
-                    robot.collector.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                }
-                if(gamepad2.left_trigger > 0)
-                    robot.collector.moveArm(gamepad2.left_trigger);
-                else if(gamepad2.right_trigger > 0)
-                    robot.collector.moveArm(-gamepad2.right_trigger);
-            }
-            else if(robot.collector.getMotorMode() == DcMotor.RunMode.RUN_USING_ENCODER){
-                robot.collector.stop();
-            }
 
             if(!Thread.currentThread().isInterrupted()){
                 robot.wobbleArm.updateSub();
-                robot.collector.updateSub();
             }
 
             //TELEMETRIES
