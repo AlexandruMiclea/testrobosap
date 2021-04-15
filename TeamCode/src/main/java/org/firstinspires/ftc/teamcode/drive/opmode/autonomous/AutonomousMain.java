@@ -21,7 +21,6 @@ public class AutonomousMain extends LinearOpMode {
     private final Pose2d startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
     private final Vector2d parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-2.3 * FOAM_TILE_INCH);
     private final Vector2d secondWobble = new Vector2d(-1.3 * FOAM_TILE_INCH, -2.4 * FOAM_TILE_INCH);
-    private final Pose2d throwRing = new Pose2d(-0.5 * FOAM_TILE_INCH, -1.2 * FOAM_TILE_INCH, 0);
     private Vector2d wobbleDropPose = new Vector2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH);
     private static double endTargetTangent = Math.toRadians(-180);
     private static double startTargetTangent = Math.toRadians(60);
@@ -87,8 +86,10 @@ public class AutonomousMain extends LinearOpMode {
             throwable.printStackTrace();
         }
 
+        //move ewey from wall
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), 0).splineToLinearHeading(new Pose2d(-2*FOAM_TILE_INCH, -1*FOAM_TILE_INCH, 0), 0).build());
 
+        //try to throw rings
         robot.thrower.rotateAtSpeedAsync(2500);
         robot.thrower.pushRing();
         robot.thrower.pushRing();
@@ -148,10 +149,7 @@ public class AutonomousMain extends LinearOpMode {
         sleep(600);
         robot.wobbleArm.armPositionToggleAsync(true);
 
-
-
         //strafe to drop zone again
-        //TODO set values of tangents
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-10)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-90)), 0).build());
         } else if (numberOfRing == RingStackDeterminationPipeline.RingPosition.NONE) {

@@ -107,11 +107,9 @@ public class WobbleArm extends Subsystem {
                 //do nothing
                 break;
             case SUB_BUSY:
-                if (armMotor.isBusy()) {
+                if (!armMotor.isBusy()) {
                     subMode = SubMode.SUB_IDLE;
                 }
-                break;
-            case SERVO:
                 break;
         }
     }
