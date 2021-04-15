@@ -8,9 +8,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class WobbleArm extends Subsystem {
-    private final int LOW_CONSTRAINT = -500, HIGH_CONSTRAINT = 430, MIDDLE_CONSTRAINT = 786;
+    //TODO De decomentat daca nu merge tuner ul de constraints uri si de comentat linia de jos
+    //private final int LOW_CONSTRAINT = -500, HIGH_CONSTRAINT = 430, MIDDLE_CONSTRAINT = 786;
+    private static int LOW_CONSTRAINT, HIGH_CONSTRAINT, MIDDLE_CONSTRAINT;
 
     private final double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;
     private final double CLAMPED_POS = 1, UNCLAMPED_POS = 0;
@@ -22,6 +28,22 @@ public class WobbleArm extends Subsystem {
     public WobbleArm(HardwareMap hardwareMap) {
         armMotor = hardwareMap.get(DcMotorEx.class, "motorBrat");
         clampServo = hardwareMap.servo.get("servoBrat");
+
+        //TODO De comentat daca nu merge tuner ul de constraints uri
+        //********
+        try (InputStream input = getClass().getResourceAsStream("/org/firstinspires/ftc/teamcode/drive/constants.properties")) {
+            //load a properties file
+            Properties constants = new Properties();
+            constants.load(input);
+
+            HIGH_CONSTRAINT = Integer.parseInt(constants.getProperty("VA_HIGH_CONSTRAINT"));
+            MIDDLE_CONSTRAINT = Integer.parseInt(constants.getProperty("VA_MIDDLE_CONSTRAINT"));
+            LOW_CONSTRAINT = Integer.parseInt(constants.getProperty("VA_LOW_CONSTRAINT"));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        //*********
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -36,6 +58,12 @@ public class WobbleArm extends Subsystem {
     public void setConstraints(boolean constraints){ this.isConstraints = constraints; }
 
     public void setMotorMode(DcMotor.RunMode mode){ armMotor.setMode(mode); }
+
+    public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior beh){ armMotor.setZeroPowerBehavior(beh); }
+
+    public void setSpeed(double speed){ armMotor.setVelocity(speed); }
+
+    public double getSpeed(){ return armMotor.getVelocity(); }
 
     public DcMotor.RunMode getMotorMode(){ return armMotor.getMode(); }
 
