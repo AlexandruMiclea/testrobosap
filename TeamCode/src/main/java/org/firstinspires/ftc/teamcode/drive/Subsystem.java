@@ -4,8 +4,7 @@ public abstract class Subsystem {
 
     protected enum SubMode {
         SUB_IDLE,
-        SUB_BUSY,
-        SERVO
+        SUB_BUSY
     }
 
     protected SubMode subMode;

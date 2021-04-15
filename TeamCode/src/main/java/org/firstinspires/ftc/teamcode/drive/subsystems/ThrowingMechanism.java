@@ -49,7 +49,7 @@ public class   ThrowingMechanism extends Subsystem {
     public void pushRingAsync(boolean push){
         pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
         timer.reset();
-        subMode = SubMode.SERVO;
+        subMode = SubMode.SUB_BUSY;
     }
 
     public void pushRing(boolean push){
@@ -57,7 +57,6 @@ public class   ThrowingMechanism extends Subsystem {
         waitForSubIdle();
     }
 
-    //TODO i think this is messy and unecessary dar acm e o singura functie
     public void pushRing(){
         pushRingAsync(true);
         waitForSubIdle();
@@ -69,23 +68,11 @@ public class   ThrowingMechanism extends Subsystem {
         power = Range.clip(power, -0.9, 0.9);
         throwWheelMotor.setPower(power);
         timer.reset();
-        subMode = SubMode.SUB_BUSY;
     }
 
     public void rotateAtSpeedAsync(double speed){
         throwWheelMotor.setVelocity(speed);
         timer.reset();
-        subMode = SubMode.SUB_BUSY;
-    }
-
-    public void rotate(double power){
-        rotateAsync(power);
-        waitForSubIdle();
-    }
-
-    public void rotateAtSpeed(double speed){
-        rotateAtSpeedAsync(speed);
-        waitForSubIdle();
     }
 
     @Override
@@ -95,17 +82,11 @@ public class   ThrowingMechanism extends Subsystem {
                 //do nothing
                 break;
             case SUB_BUSY:
-                if(timer.milliseconds() >= SPIN_TIME){
+                if(timer.milliseconds() >= PUSH_TIME){
                     stop();
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;
-            case SERVO:
-                if(timer.milliseconds() >= PUSH_TIME){
-                    subMode = SubMode.SUB_IDLE;
-                }
-                break;
-
         }
     }
 }

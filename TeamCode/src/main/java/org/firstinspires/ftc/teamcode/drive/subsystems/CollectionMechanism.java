@@ -86,8 +86,6 @@ public class CollectionMechanism extends Subsystem {
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;
-            case SERVO:
-                break;
         }
     }
 }
