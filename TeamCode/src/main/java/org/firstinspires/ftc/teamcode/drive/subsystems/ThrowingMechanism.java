@@ -43,13 +43,13 @@ public class   ThrowingMechanism extends Subsystem {
 
     public double getCurrent(){ return  throwWheelMotor.getCurrent(CurrentUnit.AMPS); }
 
-    public void stop(){ throwWheelMotor.setPower(0); }
+    public void stop(){ throwWheelMotor.setPower(0);
+    subMode = SubMode.SUB_IDLE;}
 
     public void pushRingAsync(boolean push){
         pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
         timer.reset();
         subMode = SubMode.SERVO;
-
     }
 
     public void pushRing(boolean push){
@@ -66,7 +66,7 @@ public class   ThrowingMechanism extends Subsystem {
     }
 
     public void rotateAsync(double power){
-//        power = Range.clip(power, -0.9, 0.9);
+        power = Range.clip(power, -0.9, 0.9);
         throwWheelMotor.setPower(power);
         timer.reset();
         subMode = SubMode.SUB_BUSY;
@@ -102,7 +102,6 @@ public class   ThrowingMechanism extends Subsystem {
                 break;
             case SERVO:
                 if(timer.milliseconds() >= PUSH_TIME){
-                    stop();
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;

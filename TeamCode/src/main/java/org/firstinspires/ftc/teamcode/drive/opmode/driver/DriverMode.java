@@ -62,7 +62,7 @@ public class DriverMode extends OpMode {
         if (gamepad2.left_stick_y != 0) {
             robot.thrower.rotateAsync(gamepad2.left_stick_y);
         } else if (gamepad2.dpad_up){
-            robot.thrower.rotateAtSpeedAsync(2800);
+            robot.thrower.rotateAtSpeedAsync(800);
         } else if (gamepad2.x){
             robot.thrower.rotateAsync(0.9);
         } else {

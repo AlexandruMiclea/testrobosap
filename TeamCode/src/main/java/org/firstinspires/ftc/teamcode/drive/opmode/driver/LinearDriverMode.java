@@ -38,9 +38,9 @@ public class LinearDriverMode extends LinearOpMode {
 
             //test to position
             if (gamepad1.right_bumper) {
-                robot.wobbleArm.armPositionToggleAsync(false);
+                robot.wobbleArm.armPositionToggleAsync(false, 0.2);
             } else if (gamepad1.left_bumper) {
-                robot.wobbleArm.armPositionToggleAsync(true);
+                robot.wobbleArm.armPositionToggleAsync(true, 0.2);
             }
             //miscat brat wobble goal sus jos
             else if (gamepad1.left_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
@@ -69,7 +69,7 @@ public class LinearDriverMode extends LinearOpMode {
                 robot.thrower.stop();
             }
 
-            if(gamepad2.dpad_right){
+            if(gamepad2.y){
                 robot.thrower.pushRing(true);
                 robot.thrower.pushRing(false);
             }
