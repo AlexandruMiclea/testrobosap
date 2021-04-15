@@ -37,9 +37,9 @@ public class BrokeEncoderLocalizer extends TwoTrackingWheelLocalizer {
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
         ));
 
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
-        rightEncoder.setDirection(Encoder.Direction.REVERSE);
-        middleEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightEncoder"));
+        middleEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "middleEncoder"));
+        middleEncoder.setDirection(Encoder.Direction.REVERSE);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -47,7 +47,7 @@ public class BrokeEncoderLocalizer extends TwoTrackingWheelLocalizer {
         imu.initialize(parameters);
     }
 
-    public static double encoderTicksToInches(int ticks) {
+    public static double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
     }
 
@@ -88,8 +88,8 @@ public class BrokeEncoderLocalizer extends TwoTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelVelocities() {
         return Arrays.asList(
-                rightEncoder.getCorrectedVelocity(),
-                middleEncoder.getRawVelocity()
+                encoderTicksToInches(rightEncoder.getCorrectedVelocity()) * ENCODER_RATIO,
+                encoderTicksToInches(middleEncoder.getRawVelocity())
         );
     }
 }

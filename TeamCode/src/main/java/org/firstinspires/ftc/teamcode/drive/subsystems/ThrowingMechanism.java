@@ -49,6 +49,7 @@ public class   ThrowingMechanism extends Subsystem {
         pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
         timer.reset();
         subMode = SubMode.SERVO;
+
     }
 
     public void pushRing(boolean push){

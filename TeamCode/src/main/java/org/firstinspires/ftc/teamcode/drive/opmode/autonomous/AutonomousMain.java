@@ -39,13 +39,13 @@ public class AutonomousMain extends LinearOpMode {
 
         robot.openCV.start();
 
-        while (robot.isInitialize() && opModeIsActive()) {
-            idle();
-        }
+            while (robot.isInitialize() && opModeIsActive()) {
+                idle();
+            }
 
-        telemetry.addData(">", "Initialized");
-        telemetry.update();
-    }
+            telemetry.addData(">", "Initialized");
+            telemetry.update();
+        }
 
     @Override
     public void runOpMode(){
@@ -73,7 +73,7 @@ public class AutonomousMain extends LinearOpMode {
             startAngle = Math.toRadians(60);
             wobbleSpeed = 0.12;
         } else {
-            wobbleDropPose = new Pose2d(0.8 * FOAM_TILE_INCH, -1.6 * FOAM_TILE_INCH, Math.toRadians(-180)).vec();
+            wobbleDropPose = new Pose2d(0.6 * FOAM_TILE_INCH, -1.6 * FOAM_TILE_INCH, Math.toRadians(-180)).vec();
             startTargetTangent = Math.toRadians(0);
             endTargetTangent = Math.toRadians(0);
             startAngle = Math.toRadians(-180);
@@ -140,24 +140,24 @@ public class AutonomousMain extends LinearOpMode {
         sleep(600);
         robot.wobbleArm.armPositionToggleAsync(true);
 
-
-        //throw rings
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(0)).splineToLinearHeading(throwRing, 0).build());
-
-        while (opModeIsActive() && robot.wobbleArm.isSubBusy()) {
-            robot.wobbleArm.updateSub();
-        }
-
-        robot.thrower.rotateAtSpeedAsync(2800);
-        robot.thrower.pushRing();
-
-        robot.drive.turn(10);
-        robot.thrower.pushRing();
-
-        robot.drive.turn(-20);
-        robot.thrower.pushRing();
-
-        robot.thrower.stop();
+//
+//        //throw rings
+//        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(0)).splineToLinearHeading(throwRing, 0).build());
+//
+//        while (opModeIsActive() && robot.wobbleArm.isSubBusy()) {
+//            robot.wobbleArm.updateSub();
+//        }
+//
+//        robot.thrower.rotateAtSpeedAsync(2800);
+//        robot.thrower.pushRing();
+//
+//        robot.drive.turn(10);
+//        robot.thrower.pushRing();
+//
+//        robot.drive.turn(-20);
+//        robot.thrower.pushRing();
+//
+//        robot.thrower.stop();
 
         //strafe to drop zone again
         //TODO set values of tangents
@@ -171,13 +171,17 @@ public class AutonomousMain extends LinearOpMode {
 
         //drop wobble
         robot.wobbleArm.armPositionToggle(false, 0.6);
+        while(opModeIsActive() && robot.wobbleArm.isSubBusy()) {
+            telemetry.addData("sub mode", robot.wobbleArm.getMode());
+            telemetry.update();
+        }
         robot.wobbleArm.clawToggle(false);
         robot.wobbleArm.armPositionToggle(true, 0.6);
 
         //park
-        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR) {
+//        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR) {
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(parkingVector).build());
-        }
+//        }
 
         // Transfer the final pose to the PoseStorage class so we can use it in TeleOp
         PoseStorage.currentPose = robot.drive.getPoseEstimate();
