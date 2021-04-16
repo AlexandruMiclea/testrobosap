@@ -31,9 +31,9 @@ public class FieldCentricDriverMode extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive() && !isStopRequested()) {
-            Pose2d poseEstimate = robot.drive.getPoseEstimate();
+            PoseStorage.currentPose = robot.drive.getPoseEstimate();
 
-            Vector2d input = new Vector2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x).rotated(-poseEstimate.getHeading());
+            Vector2d input = new Vector2d(gamepad1.left_stick_x, gamepad1.left_stick_y).rotated(-PoseStorage.currentPose.getHeading());
 
             robot.drive.setWeightedDrivePower(new Pose2d (input.getX(), input.getY(), -gamepad1.right_stick_x));
 
@@ -111,9 +111,9 @@ public class FieldCentricDriverMode extends LinearOpMode {
             }
 
             //TELEMETRIES
-            telemetry.addData("x pos: ", poseEstimate.getX());
-            telemetry.addData("y pos: ", poseEstimate.getY());
-            telemetry.addData("heading: ", poseEstimate.getHeading());
+            telemetry.addData("x pos: ", PoseStorage.currentPose.getX());
+            telemetry.addData("y pos: ", PoseStorage.currentPose.getY());
+            telemetry.addData("heading: ", PoseStorage.currentPose.getHeading());
             telemetry.update();
 
             robot.drive.update();

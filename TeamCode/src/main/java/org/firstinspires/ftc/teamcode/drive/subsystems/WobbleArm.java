@@ -15,7 +15,7 @@ import java.util.Properties;
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class WobbleArm extends Subsystem {
     //TODO De decomentat daca nu merge tuner ul de constraints uri si de comentat linia de jos
-    private final int LOW_CONSTRAINT = -500, HIGH_CONSTRAINT = 430, MIDDLE_CONSTRAINT = 786;
+    private final int LOW_CONSTRAINT = -642, HIGH_CONSTRAINT = 224, MIDDLE_CONSTRAINT = 786;
 //    private static int LOW_CONSTRAINT, HIGH_CONSTRAINT, MIDDLE_CONSTRAINT;
 
     private final double MAX_LIFT_SPEED = 0.5, MAX_LOWER_SPEED = 0.3;

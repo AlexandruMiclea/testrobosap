@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.tank.Robot;
 
 @Config
@@ -33,6 +34,9 @@ public class LinearDriverMode extends LinearOpMode {
         while (opModeIsActive()){
             //Practic baietii nostri au exact functia noastra de calculat vitezele
             robot.drive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x));
+
+            //Updatam pozitia in caz ca schimbam la field centric driver
+            PoseStorage.currentPose = robot.drive.getPoseEstimate();
 
             //SIST WOBBLE GOAL
             //inchis/deschis gheara wobble goal
