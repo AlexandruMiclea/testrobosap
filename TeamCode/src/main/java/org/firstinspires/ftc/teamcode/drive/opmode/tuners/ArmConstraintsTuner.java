@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.tuners;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.subsystems.WobbleArm;
@@ -17,7 +19,8 @@ import java.util.Properties;
 * cand apesi pe dpad_down ar trebui sa iti seteze LOW CONSTRAINT
 * cand apesi pe dpad_right ar trebui sa iti seteze MIDDLE_CONSTRAINT
  */
-
+@Config
+@TeleOp(group = "tuner")
 public class ArmConstraintsTuner extends LinearOpMode {
     private WobbleArm wobbleArm;
 

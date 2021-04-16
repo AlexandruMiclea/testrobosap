@@ -83,7 +83,6 @@ public class   ThrowingMechanism extends Subsystem {
                 break;
             case SUB_BUSY:
                 if(timer.milliseconds() >= PUSH_TIME){
-                    stop();
                     subMode = SubMode.SUB_IDLE;
                 }
                 break;

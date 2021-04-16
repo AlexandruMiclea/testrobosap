@@ -15,7 +15,18 @@ public class LinearDriverMode extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry.addData(">", "Initializing...");
+        telemetry.update();
+
         robot = new Robot(hardwareMap);
+
+        while (robot.isInitialize() && opModeIsActive()) {
+            idle();
+        }
+
+        telemetry.addData(">", "Initialized");
+        telemetry.update();
+
         waitForStart();
         if (isStopRequested()) return;
 
@@ -64,7 +75,7 @@ public class LinearDriverMode extends LinearOpMode {
 
             //SIST ARUNCARE
             if (gamepad2.dpad_up){
-                robot.thrower.rotateAtSpeedAsync(2800);
+                robot.thrower.rotateAtSpeedAsync(2200);
             } else if (gamepad2.dpad_down){
                 robot.thrower.stop();
             }
