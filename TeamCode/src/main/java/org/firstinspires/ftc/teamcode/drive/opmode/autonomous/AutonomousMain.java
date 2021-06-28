@@ -21,9 +21,11 @@ public class AutonomousMain extends LinearOpMode {
     private final Pose2d startPose = new Pose2d(-2.6 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH, Math.toRadians(-90));
     private final Vector2d parkingVector = new Vector2d(0.5 * FOAM_TILE_INCH,-2.3 * FOAM_TILE_INCH);
     private final Vector2d secondWobble = new Vector2d(-1.3 * FOAM_TILE_INCH, -2.4 * FOAM_TILE_INCH);
-    private Vector2d wobbleDropPose = new Vector2d(0.3 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH);
+    private Pose2d wobbleDropPose = new Pose2d(0.2 * FOAM_TILE_INCH, -1 * FOAM_TILE_INCH);
     private static double endTargetTangent = Math.toRadians(-180);
     private static double startTargetTangent = Math.toRadians(60);
+
+    private final Pose2d throwWobble = new Pose2d(-0.2*FOAM_TILE_INCH, -1.3 * FOAM_TILE_INCH, Math.toRadians(0));
 
     private RingStackDeterminationPipeline.RingPosition numberOfRing = RingStackDeterminationPipeline.RingPosition.NONE;
 
@@ -62,17 +64,17 @@ public class AutonomousMain extends LinearOpMode {
 
         //Set a target position on the field depending on the number of rings identified
         if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
-            wobbleDropPose = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH,Math.toRadians(-90)).vec();
+            wobbleDropPose = new Pose2d(1.5 * FOAM_TILE_INCH, -2.5 * FOAM_TILE_INCH,Math.toRadians(-90));
             endTargetTangent = Math.toRadians(-90);
             startAngle = Math.toRadians(60);
             wobbleSpeed = 0.08;
         } else if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
-            wobbleDropPose = new Pose2d(0.5 * FOAM_TILE_INCH, -1.8 * FOAM_TILE_INCH, Math.toRadians(-90)).vec();
+            wobbleDropPose = new Pose2d(0.5 * FOAM_TILE_INCH, -1.8 * FOAM_TILE_INCH, Math.toRadians(-90));
             endTargetTangent = Math.toRadians(-90);
             startAngle = Math.toRadians(60);
             wobbleSpeed = 0.12;
         } else {
-            wobbleDropPose = new Pose2d(0.5 * FOAM_TILE_INCH, -1.6 * FOAM_TILE_INCH, Math.toRadians(-180)).vec();
+            wobbleDropPose = new Pose2d(0.5 * FOAM_TILE_INCH, -1.6 * FOAM_TILE_INCH, Math.toRadians(-180));
             startTargetTangent = Math.toRadians(0);
             endTargetTangent = Math.toRadians(0);
             startAngle = Math.toRadians(-180);
@@ -87,21 +89,21 @@ public class AutonomousMain extends LinearOpMode {
         }
 
         //move ewey from wall
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), 0).splineToLinearHeading(new Pose2d(-2*FOAM_TILE_INCH, -1*FOAM_TILE_INCH, 0), 0).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), 0).splineToLinearHeading(new Pose2d(-2*FOAM_TILE_INCH, -1*FOAM_TILE_INCH, startAngle), 0).build());
 
         //try to throw rings
-//        robot.thrower.rotateAtSpeedAsync(2800);
-        robot.thrower.pushRing();
-        robot.thrower.pushRing();
-        robot.thrower.pushRing();
+//        robot.thrower.rotateAtSpeedAsync(2900);
+//        robot.thrower.pushRing();
+//        robot.thrower.pushRing();
+//        robot.thrower.pushRing();
 //        robot.thrower.stop();
-
-        robot.drive.turn(startAngle);
+//
+//        robot.drive.turn(startAngle);
 
         robot.wobbleArm.armPositionToggleAsync(false, wobbleSpeed);
 
         //drive to where we drop the wobble goal
-        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), startTargetTangent).splineTo(wobbleDropPose, endTargetTangent).build());
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), startTargetTangent).splineTo(wobbleDropPose.vec(), endTargetTangent).build());
 
         while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
             robot.wobbleArm.updateSub();
@@ -131,7 +133,7 @@ public class AutonomousMain extends LinearOpMode {
 
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
             robot.wobbleArm.armPositionToggleAsync(false, 0.2);
-            robot.drive.turn(Math.toRadians(56));
+            robot.drive.turn(Math.toRadians(58));
         } else if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
             robot.wobbleArm.armPositionToggleAsync(false, 0.2);
             robot.drive.turn(Math.toRadians(-135));
@@ -147,22 +149,44 @@ public class AutonomousMain extends LinearOpMode {
         //take wobble goal
         robot.wobbleArm.clawToggle(true);
         sleep(600);
-//        robot.wobbleArm.armPositionToggleAsync(true);
+        robot.wobbleArm.armPositionToggleAsync(true);
+
+        robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-20)).splineToLinearHeading(throwWobble, 20).build());
+
+        while (opModeIsActive() && robot.wobbleArm.isSubBusy()) {
+            robot.wobbleArm.updateSub();
+        }
+
+        robot.thrower.rotateAtSpeedAsync(3000);
+        robot.thrower.pushRing();
+        robot.thrower.pushRing();
+        robot.thrower.pushRing();
+        robot.thrower.pushRing();
+        robot.thrower.stop();
 
         //strafe to drop zone again
-        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
-            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-10)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-90)), 40).build());
-        } else if (numberOfRing == RingStackDeterminationPipeline.RingPosition.NONE) {
-            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-10)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-200)), 0).build());
-        } else{
-            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-10)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-90)), 0).build());
-        }
-//        while (opModeIsActive() && robot.wobbleArm.isSubBusy()) {
-//            robot.wobbleArm.updateSub();
+//        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.ONE){
+//            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-10)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-90)), 40).build());
+//        } else if (numberOfRing == RingStackDeterminationPipeline.RingPosition.NONE) {
+//            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-10)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-200)), 0).build());
+//        } else{
+//            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-10)).splineToLinearHeading(new Pose2d(wobbleDropPose, Math.toRadians(-90)), 0).build());
 //        }
 
+        robot.wobbleArm.armPositionToggleAsync(false, 0.3);
+
+        if (numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).lineToLinearHeading(new Pose2d(wobbleDropPose.getX(), wobbleDropPose.getY(), Math.toRadians(-100))).build());
+        } else {
+            robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).lineToLinearHeading(wobbleDropPose).build());
+        }
+
+        while (opModeIsActive() && robot.wobbleArm.isSubBusy()) {
+            robot.wobbleArm.updateSub();
+        }
+
         //drop wobble
-        robot.wobbleArm.armPositionToggle(false, 0.6);
+//        robot.wobbleArm.armPositionToggle(false, 0.6);
         robot.wobbleArm.clawToggle(false);
 
         robot.wobbleArm.armPositionToggleAsync(true, 0.6);
