@@ -32,7 +32,7 @@ public class   ThrowingMechanism extends Subsystem {
         pushServo = hardwareMap.servo.get("servoImpins");
         pushServo.setPosition(SERVO_REST);
 
-        subMode = SubMode.SUB_IDLE;
+        mode = Mode.IDLE;
 
         timer = new ElapsedTime();
     }
@@ -44,24 +44,24 @@ public class   ThrowingMechanism extends Subsystem {
     public double getCurrent(){ return  throwWheelMotor.getCurrent(CurrentUnit.AMPS); }
 
     public void stop(){ throwWheelMotor.setPower(0);
-    subMode = SubMode.SUB_IDLE;}
+    mode = Mode.IDLE;}
 
     public void pushRingAsync(boolean push){
         pushServo.setPosition(push? SERVO_PUSHED : SERVO_REST);
         timer.reset();
-        subMode = SubMode.SUB_BUSY;
+        mode = Mode.BUSY;
     }
 
     public void pushRing(boolean push){
         pushRingAsync(push);
-        waitForSubIdle();
+        waitForIdle();
     }
 
     public void pushRing(){
         pushRingAsync(true);
-        waitForSubIdle();
+        waitForIdle();
         pushRingAsync(false);
-        waitForSubIdle();
+        waitForIdle();
     }
 
     public void rotateAsync(double power){
@@ -76,14 +76,14 @@ public class   ThrowingMechanism extends Subsystem {
     }
 
     @Override
-    protected void updateSub() {
-        switch (subMode){
-            case SUB_IDLE:
+    protected void update() {
+        switch (mode){
+            case IDLE:
                 //do nothing
                 break;
-            case SUB_BUSY:
+            case BUSY:
                 if(timer.milliseconds() >= PUSH_TIME){
-                    subMode = SubMode.SUB_IDLE;
+                    mode = Mode.IDLE;
                 }
                 break;
         }

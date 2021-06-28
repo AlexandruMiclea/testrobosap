@@ -27,7 +27,7 @@ public class CollectionMechanism extends Subsystem {
         servoHoldRing =  hardwareMap.servo.get("servoTinutInele");
         servoHoldRing.setPosition(UNCLAMPED_POSE);
 
-        subMode = SubMode.SUB_IDLE;
+        mode = Mode.IDLE;
         //TODO true cand avem constraints
         isConstraints = false;
     }
@@ -67,23 +67,23 @@ public class CollectionMechanism extends Subsystem {
         collectArmMotor.setTargetPosition(isCollecting ? COLLECT_POSE : THROW_RAMP_POSE);
         collectArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         collectArmMotor.setPower(0.2);
-        subMode = SubMode.SUB_BUSY;
+        mode = Mode.BUSY;
     }
 
     public void collectToggle(boolean isCollecting){
         collectToggleAsync(isCollecting);
-        waitForSubIdle();
+        waitForIdle();
     }
 
     @Override
-    public void updateSub() {
-        switch (subMode){
-            case SUB_IDLE:
+    public void update() {
+        switch (mode){
+            case IDLE:
                 //do nothing
                 break;
-            case SUB_BUSY:
+            case BUSY:
                 if(collectArmMotor.getCurrentPosition() == collectArmMotor.getTargetPosition()){
-                    subMode = SubMode.SUB_IDLE;
+                    mode = Mode.IDLE;
                 }
                 break;
         }

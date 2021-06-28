@@ -8,10 +8,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.Subsystem;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 //TODO: to the thread - (clasa Subsystem care e thread)
 public class WobbleArm extends Subsystem {
     //TODO De decomentat daca nu merge tuner ul de constraints uri si de comentat linia de jos
@@ -52,7 +48,7 @@ public class WobbleArm extends Subsystem {
 
         clampServo.setPosition(CLAMPED_POS);
 
-        subMode = SubMode.SUB_IDLE;
+        mode = Mode.IDLE;
     }
 
     public void setConstraints(boolean constraints){ this.isConstraints = constraints; }
@@ -69,7 +65,7 @@ public class WobbleArm extends Subsystem {
 
     public boolean getMotorIsBusy(){ return armMotor.isBusy(); }
 
-    public SubMode getMode(){ return subMode; }
+    public Mode getMode(){ return mode; }
 
     public int getPosition() { return armMotor.getCurrentPosition(); }
 
@@ -109,34 +105,34 @@ public class WobbleArm extends Subsystem {
         armMotor.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(0.2);
-        subMode = SubMode.SUB_BUSY;
+        mode = Mode.BUSY;
     }
 
     public void armPositionToggleAsync(boolean up, double customSpeed){
         armMotor.setTargetPosition(up ? HIGH_CONSTRAINT : LOW_CONSTRAINT);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        subMode = SubMode.SUB_BUSY;
+        mode = Mode.BUSY;
         armMotor.setPower(customSpeed);
     }
 
     public void armPositionToggle(boolean up){
         armPositionToggleAsync(up);
-        waitForSubIdle();
+        waitForIdle();
     }
 
     public void armPositionToggle(boolean up, double customSpeed){
         armPositionToggleAsync(up, customSpeed);
-        waitForSubIdle();
+        waitForIdle();
     }
 
-    public void updateSub(){
-        switch (subMode){
-            case SUB_IDLE:
+    public void update(){
+        switch (mode){
+            case IDLE:
                 //do nothing
                 break;
-            case SUB_BUSY:
+            case BUSY:
                 if (!armMotor.isBusy()) {
-                    subMode = SubMode.SUB_IDLE;
+                    mode = Mode.IDLE;
                 }
                 break;
         }

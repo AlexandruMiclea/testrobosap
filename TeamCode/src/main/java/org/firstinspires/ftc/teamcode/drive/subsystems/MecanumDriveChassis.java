@@ -9,7 +9,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.drive.DriveSignal;
-import com.acmerobotics.roadrunner.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -35,10 +35,8 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.teamcode.drive.Subsystem;
 import org.firstinspires.ftc.teamcode.drive.localization.localizers.BrokeEncoderLocalizer;
-import org.firstinspires.ftc.teamcode.util.AxesSigns;
-import org.firstinspires.ftc.teamcode.util.BNO055IMUUtil;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 
@@ -75,8 +73,7 @@ public class MecanumDriveChassis extends MecanumDrive {
 
     public static int POSE_HISTORY_LIMIT = 100;
 
-    public enum Mode {
-        IDLE,
+    public enum BusyMode {
         TURN,
         FOLLOW_TRAJECTORY
     }
@@ -84,7 +81,7 @@ public class MecanumDriveChassis extends MecanumDrive {
     public FtcDashboard dashboard; //TODO: revert to private
     private NanoClock clock;
 
-    private Mode mode;
+    private BusyMode busyMode;
 
     private PIDFController turnController;
     private MotionProfile turnProfile;
@@ -199,7 +196,8 @@ public class MecanumDriveChassis extends MecanumDrive {
         );
 
         turnStart = clock.seconds();
-        mode = Mode.TURN;
+        mode = Mode.BUSY;
+        busyMode = BusyMode.TURN;
     }
 
     public void turn(double angle) {
@@ -209,7 +207,8 @@ public class MecanumDriveChassis extends MecanumDrive {
 
     public void followTrajectoryAsync(Trajectory trajectory) {
         follower.followTrajectory(trajectory);
-        mode = Mode.FOLLOW_TRAJECTORY;
+        mode = Mode.BUSY;
+        busyMode = BusyMode.FOLLOW_TRAJECTORY;
     }
 
     public void followTrajectory(Trajectory trajectory) {
@@ -219,10 +218,13 @@ public class MecanumDriveChassis extends MecanumDrive {
 
     public Pose2d getLastError() {
         switch (mode) {
-            case FOLLOW_TRAJECTORY:
-                return follower.getLastError();
-            case TURN:
-                return new Pose2d(0, 0, turnController.getLastError());
+            case BUSY:
+                switch (busyMode) {
+                    case FOLLOW_TRAJECTORY:
+                        return follower.getLastError();
+                    case TURN:
+                        return new Pose2d(0, 0, turnController.getLastError());
+                }
             case IDLE:
                 return new Pose2d();
         }
@@ -262,56 +264,59 @@ public class MecanumDriveChassis extends MecanumDrive {
             case IDLE:
                 // do nothing
                 break;
-            case TURN: {
-                double t = clock.seconds() - turnStart;
+            case BUSY:
+                switch (busyMode) {
+                    case TURN: {
+                        double t = clock.seconds() - turnStart;
 
-                MotionState targetState = turnProfile.get(t);
+                        MotionState targetState = turnProfile.get(t);
 
-                turnController.setTargetPosition(targetState.getX());
+                        turnController.setTargetPosition(targetState.getX());
 
-                double correction = turnController.update(currentPose.getHeading());
+                        double correction = turnController.update(currentPose.getHeading());
 
-                double targetOmega = targetState.getV();
-                double targetAlpha = targetState.getA();
-                setDriveSignal(new DriveSignal(new Pose2d(
-                        0, 0, targetOmega + correction
-                ), new Pose2d(
-                        0, 0, targetAlpha
-                )));
+                        double targetOmega = targetState.getV();
+                        double targetAlpha = targetState.getA();
+                        setDriveSignal(new DriveSignal(new Pose2d(
+                                0, 0, targetOmega + correction
+                        ), new Pose2d(
+                                0, 0, targetAlpha
+                        )));
 
-                Pose2d newPose = lastPoseOnTurn.copy(lastPoseOnTurn.getX(), lastPoseOnTurn.getY(), targetState.getX());
+                        Pose2d newPose = lastPoseOnTurn.copy(lastPoseOnTurn.getX(), lastPoseOnTurn.getY(), targetState.getX());
 
-                fieldOverlay.setStroke("#4CAF50");
-                DashboardUtil.drawRobot(fieldOverlay, newPose);
+                        fieldOverlay.setStroke("#4CAF50");
+                        DashboardUtil.drawRobot(fieldOverlay, newPose);
 
-                if (t >= turnProfile.duration()) {
-                    mode = Mode.IDLE;
-                    setDriveSignal(new DriveSignal());
+                        if (t >= turnProfile.duration()) {
+                            mode = Mode.IDLE;
+                            setDriveSignal(new DriveSignal());
+                        }
+
+                        break;
+                    }
+                    case FOLLOW_TRAJECTORY: {
+                        setDriveSignal(follower.update(currentPose, getPoseVelocity()));
+
+                        Trajectory trajectory = follower.getTrajectory();
+
+                        fieldOverlay.setStrokeWidth(1);
+                        fieldOverlay.setStroke("#4CAF50");
+                        DashboardUtil.drawSampledPath(fieldOverlay, trajectory.getPath());
+                        double t = follower.elapsedTime();
+                        DashboardUtil.drawRobot(fieldOverlay, trajectory.get(t));
+
+                        fieldOverlay.setStroke("#3F51B5");
+                        DashboardUtil.drawPoseHistory(fieldOverlay, poseHistory);
+
+                        if (!follower.isFollowing()) {
+                            mode = Mode.IDLE;
+                            setDriveSignal(new DriveSignal());
+                        }
+
+                        break;
+                    }
                 }
-
-                break;
-            }
-            case FOLLOW_TRAJECTORY: {
-                setDriveSignal(follower.update(currentPose, getPoseVelocity()));
-
-                Trajectory trajectory = follower.getTrajectory();
-
-                fieldOverlay.setStrokeWidth(1);
-                fieldOverlay.setStroke("#4CAF50");
-                DashboardUtil.drawSampledPath(fieldOverlay, trajectory.getPath());
-                double t = follower.elapsedTime();
-                DashboardUtil.drawRobot(fieldOverlay, trajectory.get(t));
-
-                fieldOverlay.setStroke("#3F51B5");
-                DashboardUtil.drawPoseHistory(fieldOverlay, poseHistory);
-
-                if (!follower.isFollowing()) {
-                    mode = Mode.IDLE;
-                    setDriveSignal(new DriveSignal());
-                }
-
-                break;
-            }
         }
 
         fieldOverlay.setStroke("#3F51B5");
@@ -320,15 +325,15 @@ public class MecanumDriveChassis extends MecanumDrive {
         dashboard.sendTelemetryPacket(packet);
     }
 
-    public void waitForIdle() {
-        while (!Thread.currentThread().isInterrupted() && isBusy()) {
-            update();
-        }
-    }
-
-    public boolean isBusy() {
-        return mode != Mode.IDLE;
-    }
+//    public void waitForIdle() {
+//        while (!Thread.currentThread().isInterrupted() && isBusy()) {
+//            update();
+//        }
+//    }
+//
+//    public boolean isBusy() {
+//        return mode != Mode.IDLE;
+//    }
 
     public void setMode(DcMotor.RunMode runMode) {
         for (DcMotorEx motor : motors) {
