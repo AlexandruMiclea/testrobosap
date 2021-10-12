@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.Subsystem;
 public class CollectionMechanism extends Subsystem {
     private DcMotor collectArmMotor;
     private Servo servoHoldRing;
-
+    
     //TODO gasit aceste pozitii
     private double CLAMPED_POSE = 1, UNCLAMPED_POSE = 0;
     private int THROW_RAMP_POSE, COLLECT_POSE;
@@ -23,6 +23,9 @@ public class CollectionMechanism extends Subsystem {
         collectArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         collectArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         collectArmMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        collectArmMo
+
 
         servoHoldRing =  hardwareMap.servo.get("servoTinutInele");
         servoHoldRing.setPosition(UNCLAMPED_POSE);

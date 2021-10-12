@@ -91,7 +91,7 @@ public class LinearDriverMode extends LinearOpMode {
 
             //updates
             if(!Thread.currentThread().isInterrupted()){
-                robot.wobbleArm.updateSub();
+                robot.wobbleArm.update();
             }
 
             //TELEMETRIES

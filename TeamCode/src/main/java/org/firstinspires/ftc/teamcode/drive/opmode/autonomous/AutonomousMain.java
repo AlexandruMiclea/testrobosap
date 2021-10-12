@@ -91,7 +91,7 @@ public class AutonomousMain extends LinearOpMode {
         //move ewey from wall
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), 0).splineToLinearHeading(new Pose2d(-2*FOAM_TILE_INCH, -1*FOAM_TILE_INCH, startAngle), 0).build());
 
-        //try to throw rings
+//        try to throw rings
 //        robot.thrower.rotateAtSpeedAsync(2900);
 //        robot.thrower.pushRing();
 //        robot.thrower.pushRing();
