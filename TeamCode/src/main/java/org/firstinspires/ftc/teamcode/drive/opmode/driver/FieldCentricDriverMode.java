@@ -107,7 +107,7 @@ public class FieldCentricDriverMode extends LinearOpMode {
 
 
             if(!Thread.currentThread().isInterrupted()){
-                robot.wobbleArm.updateSub();
+                robot.wobbleArm.update();
             }
 
             //TELEMETRIES

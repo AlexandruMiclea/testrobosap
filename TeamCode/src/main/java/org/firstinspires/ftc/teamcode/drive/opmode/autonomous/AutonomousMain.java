@@ -105,8 +105,8 @@ public class AutonomousMain extends LinearOpMode {
         //drive to where we drop the wobble goal
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), startTargetTangent).splineTo(wobbleDropPose.vec(), endTargetTangent).build());
 
-        while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
-            robot.wobbleArm.updateSub();
+        while(opModeIsActive() && robot.wobbleArm.isBusy()){
+            robot.wobbleArm.update();
         }
 
         //drop wobble goal and lift arm back up
@@ -127,8 +127,8 @@ public class AutonomousMain extends LinearOpMode {
         }
 
         //Just in case the motor hasn't finished rotating :)
-        while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
-            robot.wobbleArm.updateSub();
+        while(opModeIsActive() && robot.wobbleArm.isBusy()){
+            robot.wobbleArm.update();
         }
 
         if(numberOfRing == RingStackDeterminationPipeline.RingPosition.FOUR){
@@ -142,8 +142,8 @@ public class AutonomousMain extends LinearOpMode {
             robot.drive.turn(Math.toRadians(-135));
         }
 
-        while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
-            robot.wobbleArm.updateSub();
+        while(opModeIsActive() && robot.wobbleArm.isBusy()){
+            robot.wobbleArm.update();
         }
 
         //take wobble goal
@@ -153,8 +153,8 @@ public class AutonomousMain extends LinearOpMode {
 
         robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate(), Math.toRadians(-20)).splineToLinearHeading(throwWobble, 20).build());
 
-        while (opModeIsActive() && robot.wobbleArm.isSubBusy()) {
-            robot.wobbleArm.updateSub();
+        while (opModeIsActive() && robot.wobbleArm.isBusy()) {
+            robot.wobbleArm.update();
         }
 
         robot.thrower.rotateAtSpeedAsync(3000);
@@ -181,8 +181,8 @@ public class AutonomousMain extends LinearOpMode {
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).lineToLinearHeading(wobbleDropPose).build());
         }
 
-        while (opModeIsActive() && robot.wobbleArm.isSubBusy()) {
-            robot.wobbleArm.updateSub();
+        while (opModeIsActive() && robot.wobbleArm.isBusy()) {
+            robot.wobbleArm.update();
         }
 
         //drop wobble
@@ -198,8 +198,8 @@ public class AutonomousMain extends LinearOpMode {
             robot.drive.followTrajectory(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()).strafeTo(new Vector2d(0.5 * FOAM_TILE_INCH, -1.3 * FOAM_TILE_INCH)).build());
         }
 
-        while(opModeIsActive() && robot.wobbleArm.isSubBusy()){
-            robot.wobbleArm.updateSub();
+        while(opModeIsActive() && robot.wobbleArm.isBusy()){
+            robot.wobbleArm.update();
         }
         // Transfer the final pose to the PoseStorage class so we can use it in TeleOp
         PoseStorage.currentPose = robot.drive.getPoseEstimate();

@@ -41,3 +41,4 @@ public class Robot {
 
     public boolean isInitialize() {return initialize;}
 }
+          
